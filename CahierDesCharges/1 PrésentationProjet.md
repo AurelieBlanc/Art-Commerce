@@ -15,7 +15,7 @@ Montrer mes competences en developpement web (site e-commerce dans mon portfolio
 
  2/ Coté business: tester la vente d'affiche numeriques et peintures, donc aussi stimuler mon coté créa (production d'affiches numériques sur Canva et de peintures).
 
- 3/ Coté autonomie: gérer ce développement de A à Z seule, et ne pas dependre d'une plateforme de e-commerce. 
+ 3/ Coté autonomie: gérer ce développement de site de A à Z seule, et ne pas dependre d'une plateforme de e-commerce. 
 
 
 - ## Cible :
