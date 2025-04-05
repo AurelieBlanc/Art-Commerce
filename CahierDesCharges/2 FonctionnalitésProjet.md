@@ -4,19 +4,19 @@
 
 | En tant que ...| Je veux ...| Afin de ... | Via quel moyen ?|
 |:---------------|:-----------|:------------|:----------------|
-|VISITEUR||||
-| visiteur | consulter le site | voir si des produits répondent à mes besoins | la consultation simple du site |
-| visiteur | créer un compte | pouvoir acheter des produits et consulter mes commandes | la page création de compte |
-| visiteur | me connecter sur mon compte | pouvoir acheter des produits et consulter mes commandes | un bouton ou une icone de connexion puis un form à remplir et valdider |
-| visiteur | réinitialiser mon mot de passe | pouvoir réinitialiser mon mot de passe si je le perds | un lien cliquable "mot de passe perdu" |
-| visiteur | déconnecter de mon compte | déconnecter de mon compte | un bouton ou une icone de deconnexion |
-| visiteur | ajouter des produits au panier | pouvoir calculer mon panier et les acheter | la page panier |
-| visiteur | ajouter des produits au panier | pouvoir calculer mon total panier ainsi que mes frais de ports | la page panier |
-| visiteur | valider des produits dans le panier | pouvoir acheter le ou les produits désirés | la page panier, un bouton validation |
-| visiteur | payer les produits apres avoir validé le panier | pouvoir acheter le ou les produits désirés | la page paiement |
-| visiteur | valider mon paiement | pouvoir acheter le ou les produits désirés | un bouton de validation de paiement |
-| visiteur | être rédirigé sur la page principale après avoir finalisé la commande | pour une expérience utilisateur fluide | une redirection automatique une fois que la commande a été finalisée |
-| visiteur | contacter le service client | poser une question, faire remonter un probleme | une page contact avec un formulaire de contact |
+| UTILISATEUR ||||
+| utilisateur | consulter le site | voir si des produits répondent à mes besoins | la consultation simple du site |
+| utilisateur | créer un compte | pouvoir acheter des produits et consulter mes commandes | la page création de compte |
+| utilisateur | me connecter sur mon compte | pouvoir accéder à mes informations et acheter des produits | un bouton ou une icone de connexion puis un form à remplir et valider |
+| utilisateur | réinitialiser mon mot de passe | pouvoir réinitialiser mon mot de passe en cas d'oubli | un lien cliquable "mot de passe perdu" |
+| utilisateur | déconnecter de mon compte | sécuriser ma session ou changer de compte | un bouton ou une icone de deconnexion |
+| utilisateur | ajouter des produits au panier | calculer le total et préparer mon achat | bouton sur la page produit et/ou accès à la page panier |
+| utilisateur | consulter mon panier | voir mon total et mes frais de ports | la page panier |
+| utilisateur | valider mon panier | finaliser ma sélection de produits | bouton "Valider" sur la page panier |
+| utilisateur | payer mes produits | completer mon achat | la page paiement |
+| utilisateur | valider mon paiement | confirmer l'achat | un bouton de validation de paiement |
+| utilisateur | être rédirigé sur la page principale après avoir finalisé la commande | pour une expérience utilisateur fluide | une redirection automatique une fois que la commande a été finalisée |
+| utilisateur | contacter le service client | poser une question, faire remonter un probleme | une page contact avec un formulaire de contact |
 
 
 
@@ -25,10 +25,14 @@
 | En tant que ...| Je veux ...| Afin de ... | Via quel moyen ?|
 |:---------------|:-----------|:------------|:----------------|
 |ADMIN||||
-| admin | changer le mot de passe de mon compte | reinitialiser mon mot de passe en cas de perte ou de suspiscion de faille de sécurité | un lien cliquable "mot de passe perdu" |
-| admin | voir quels sont les utilisateurs connectés sur leurs comptes grace aux sessions server | surveiller l'activité du site | la page dashboard |
+| admin | réinitialiser le mot de passe de mon compte | acceder àn mon compte en cas d'oubli | un lien cliquable "mot de passe perdu" |
 | admin | arreter les sessions de certains utilisateurs | controler les accès pour + de sécurité | la page dashboard  |
 | admin | consulter les statistiques de ventes | suivre l'évolution des ventes | la page dashboard |
+| admin | suivre les commandes | préparer les commandes | la page dashboard |
+| admin | actualiser les commandes | renseigner les statuts de commandes | la page dashboard |
+| admin | ajouter un produit | ajouter un produit en vente | la page produits, avec une petite icone + |
+| admin | modifier un produit | modifier un produit en vente | la fiche produit, grace a une petite icone crayon |
+| admin | supprimer un produit | supprimer un produit en vente | la fiche produit, grace a une petite icone poubelle |
 
 
 
@@ -39,15 +43,19 @@
 
 | En tant que ...| Je veux ...| Afin de ... | Via quel moyen ?|
 |:---------------|:-----------|:------------|:----------------|
-|VISITEUR||||
-| visiteur | liker un produit | sauvegarder les produits likés pour plus tard peut-etre ? | une icone coeur cliquable sur la page produit |
+| UTILISATEUR||||
+| utlisateur | liker un produit | sauvegarder les produits likés pour plus tard peut-etre ? | une icone coeur cliquable sur la page produit |
+| utlisateur | envoyer une demande de commande personnalisée | d'obtenir un produit 100% personnalisé selon mes attentes | une page ou une fenêtre spéciale pour les commandes personnalisées  |
+| utlisateur | déposer un commentaire | de faire un retour d'expérience | une page speciale pour déposer un commentaire  |
+| utlisateur | filtrer les produits par catégories | faciliter la navigation | un systeme de filtres en haut de la page produit  |
 
 
 | En tant que ...| Je veux ...| Afin de ... | Via quel moyen ?|
 |:---------------|:-----------|:------------|:----------------|
 |ADMIN||||
-| admin |  |  |  |
-
+| admin | créer des catgories | pouvoir filtrer les produits | la page dashboard |
+| admin | rajouter des catégories aux produits | filtrer les produits par cétegorie pour les retrouver + vite | lorsqu'on ajoute ou modifie un produit |
+| admin | voir quels sont les utilisateurs connectés sur leurs comptes grace aux sessions server | surveiller l'activité du site | la page dashboard |
 
 
 
