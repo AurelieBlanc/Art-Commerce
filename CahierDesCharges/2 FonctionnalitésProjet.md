@@ -50,6 +50,7 @@
 | utlisateur | filtrer les produits par catégories | faciliter la navigation | un systeme de filtres en haut de la page produit  |
 
 
+
 | En tant que ...| Je veux ...| Afin de ... | Via quel moyen ?|
 |:---------------|:-----------|:------------|:----------------|
 |ADMIN||||
