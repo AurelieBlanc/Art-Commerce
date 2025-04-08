@@ -25,7 +25,7 @@
 | En tant que ...| Je veux ...| Afin de ... | Via quel moyen ?|
 |:---------------|:-----------|:------------|:----------------|
 |ADMIN||||
-| admin | réinitialiser le mot de passe de mon compte | acceder àn mon compte en cas d'oubli | un lien cliquable "mot de passe perdu" |
+| admin | réinitialiser le mot de passe de mon compte | acceder à mon compte en cas d'oubli | un lien cliquable "mot de passe perdu" |
 | admin | arreter les sessions de certains utilisateurs | controler les accès pour + de sécurité | la page dashboard  |
 | admin | consulter les statistiques de ventes | suivre l'évolution des ventes | la page dashboard |
 | admin | suivre les commandes | préparer les commandes | la page dashboard |
