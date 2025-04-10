@@ -4,7 +4,7 @@
 
 | En tant que ...| Je veux ...| Afin de ... | Via quel moyen ?|
 |:---------------|:-----------|:------------|:----------------|
-| UTILISATEUR ||||
+| <mark> UTILISATEUR ||||
 | utilisateur | consulter le site | voir si des produits répondent à mes besoins | la consultation simple du site |
 | utilisateur | créer un compte | pouvoir acheter des produits et consulter mes commandes | la page création de compte |
 | utilisateur | me connecter sur mon compte | pouvoir accéder à mes informations et acheter des produits | un bouton ou une icone de connexion puis un form à remplir et valider |
@@ -24,7 +24,7 @@
 
 | En tant que ...| Je veux ...| Afin de ... | Via quel moyen ?|
 |:---------------|:-----------|:------------|:----------------|
-|ADMIN||||
+|<mark> ADMIN||||
 | admin | réinitialiser le mot de passe de mon compte | acceder à mon compte en cas d'oubli | un lien cliquable "mot de passe perdu" |
 | admin | arreter les sessions de certains utilisateurs | controler les accès pour + de sécurité | la page dashboard  |
 | admin | consulter les statistiques de ventes | suivre l'évolution des ventes | la page dashboard |
@@ -43,7 +43,7 @@
 
 | En tant que ...| Je veux ...| Afin de ... | Via quel moyen ?|
 |:---------------|:-----------|:------------|:----------------|
-| UTILISATEUR||||
+| <mark> UTILISATEUR||||
 | utlisateur | liker un produit | sauvegarder les produits likés pour plus tard peut-etre ? | une icone coeur cliquable sur la page produit |
 | utlisateur | envoyer une demande de commande personnalisée | d'obtenir un produit 100% personnalisé selon mes attentes | une page ou une fenêtre spéciale pour les commandes personnalisées  |
 | utlisateur | déposer un commentaire | de faire un retour d'expérience | une page speciale pour déposer un commentaire  |
@@ -53,7 +53,7 @@
 
 | En tant que ...| Je veux ...| Afin de ... | Via quel moyen ?|
 |:---------------|:-----------|:------------|:----------------|
-|ADMIN||||
+|<mark> ADMIN||||
 | admin | créer des catgories | pouvoir filtrer les produits | la page dashboard |
 | admin | rajouter des catégories aux produits | filtrer les produits par cétegorie pour les retrouver + vite | lorsqu'on ajoute ou modifie un produit |
 | admin | voir quels sont les utilisateurs connectés sur leurs comptes grace aux sessions server | surveiller l'activité du site | la page dashboard |
