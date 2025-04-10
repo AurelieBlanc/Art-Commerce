@@ -27,7 +27,6 @@
 |<mark> ADMIN||||
 | admin | réinitialiser le mot de passe de mon compte | acceder à mon compte en cas d'oubli | un lien cliquable "mot de passe perdu" |
 | admin | arreter les sessions de certains utilisateurs | controler les accès pour + de sécurité | la page dashboard  |
-| admin | consulter les statistiques de ventes | suivre l'évolution des ventes | la page dashboard |
 | admin | suivre les commandes | préparer les commandes | la page dashboard |
 | admin | actualiser les commandes | renseigner les statuts de commandes | la page dashboard |
 | admin | ajouter un produit | ajouter un produit en vente | la page produits, avec une petite icone + |
@@ -57,7 +56,7 @@
 | admin | créer des catgories | pouvoir filtrer les produits | la page dashboard |
 | admin | rajouter des catégories aux produits | filtrer les produits par cétegorie pour les retrouver + vite | lorsqu'on ajoute ou modifie un produit |
 | admin | voir quels sont les utilisateurs connectés sur leurs comptes grace aux sessions server | surveiller l'activité du site | la page dashboard |
-
+| admin | consulter les statistiques de ventes | suivre l'évolution des ventes | la page dashboard |
 
 
 
