@@ -4,7 +4,7 @@
 id_client  
 mail  
 mdp_hash  
-role
+role  
 prenom  
 nom  
 adresse_livraison  
