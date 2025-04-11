@@ -40,17 +40,20 @@ model Session {
   date_creation DateTime @default(now())
 
   id_client Int
-  id_admin Int?
+  id_admin Int?  // ? car pas obligatoire 
   
-
-  client Client @relation(fields: [id_client], references:[id_client])
+  client Client @relation(fields: [id_client], references:[id_client]) // ce champ id_client fait référence à la colonne id_client du modèle Client
   admin Admin? @relation(fields: [id_admin], references: [id_admin])
-  
-
 }
 
 model Admin {
   id_admin Int @id @default(autoincrement())
+  mail String @unique 
+  nom String
+  prenom String
+  mdp_hash String
+  role String
+  dernier_login DateTime
 
   sessions Session[]
 }
