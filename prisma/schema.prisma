@@ -9,6 +9,7 @@ generator client {
   output   = "../app/generated/prisma"
 }
 
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -29,6 +30,8 @@ model Client {
   updatedAt DateTime @updatedAt
 
   sessions Session[] 
+  paniers Panier[]
+  commandes Commande[]
 }
 
 model Session {
@@ -56,4 +59,48 @@ model Admin {
   dernier_login DateTime
 
   sessions Session[]
+  commandes Commande[]
 }
+
+model Produit {
+  id_produit Int @id @default(autoincrement())
+  nom String
+  description String
+  prix Decimal @db.Decimal(10,2) // 10 > jusqu'à 10 chiffres au total, dont 2 après la virgule , attention à bien utiliser avec .toNumber !!!!
+  image String
+  date_creation DateTime @default(now())
+  is_active Boolean
+}
+
+model Categorie {
+  id_categorie Int @id @default(autoincrement())
+  nom String
+  date_creation DateTime @default(now())
+}
+
+model Panier {
+  id_panier Int @id @default(autoincrement())
+  date_creation DateTime @default(now())
+  id_client Int
+
+  client Client @relation(fields: [id_client], references:[id_client]) 
+}
+
+model Commande {
+  id_commande Int @id @default(autoincrement())
+  date_commande DateTime @default(now())
+  statut String
+  total Decimal @db.Decimal(10, 2)
+  moyen_paiement String
+  adresse_livraison String
+  cp_livraison String
+  ville_livraison String
+   
+  id_client Int 
+  id_admin Int?
+
+  client Client @relation(fields: [id_client], references: [id_client])
+  admin Admin? @relation(fields: [id_admin], references: [id_admin])
+}
+
+
