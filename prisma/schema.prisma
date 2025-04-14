@@ -70,9 +70,11 @@ model Produit {
   image String
   date_creation DateTime @default(now())
   is_active Boolean
+  id_commande Int?
+
+  commande Commande? @relation(fields: [id_commande], references: [id_commande])
 
   produit_paniers Produit_Panier[]
-
   produit_categories Produit_Categorie []
 }
 
@@ -128,6 +130,8 @@ model Commande {
 
   client Client @relation(fields: [id_client], references: [id_client])
   admin Admin? @relation(fields: [id_admin], references: [id_admin])
+
+  produits Produit[]
 }
 
 

@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id_client         Int      @id @default(autoincrement())
+  mail              String   @unique
+  mdp_hash          String
+  role              String
+  prenom            String
+  nom               String
+  adresse_livraison String
+  cp_livraison      String
+  ville_livraison   String
+  telephone         String
+  date_creation     DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  sessions  Session[]
+  paniers   Panier[]
+  commandes Commande[]
+}
+
+model Session {
+  id_session       Int       @id @default(autoincrement())
+  token            String    @unique
+  date_connexion   DateTime  @default(now())
+  date_deconnexion DateTime?
+  is_active        Boolean
+  date_creation    DateTime  @default(now())
+
+  id_client Int
+  id_admin  Int? // ? car pas obligatoire , c'est seulement si on veut identifier l'admin qui mettra potentiellement un terme à une session
+
+  client Client @relation(fields: [id_client], references: [id_client]) // ce champ id_client fait référence à la colonne id_client du modèle Client
+  admin  Admin? @relation(fields: [id_admin], references: [id_admin])
+}
+
+model Admin {
+  id_admin      Int      @id @default(autoincrement())
+  mail          String   @unique
+  nom           String
+  prenom        String
+  mdp_hash      String
+  role          String
+  dernier_login DateTime
+
+  sessions  Session[]
+  commandes Commande[]
+}
+
+model Produit {
+  id_produit    Int      @id @default(autoincrement())
+  nom           String
+  description   String
+  prix          Decimal  @db.Decimal(10, 2) // 10 > jusqu'à 10 chiffres au total, dont 2 après la virgule , attention à bien utiliser avec .toNumber !!!!
+  image         String
+  date_creation DateTime @default(now())
+  is_active     Boolean
+  id_commande   Int?
+
+  commande Commande? @relation(fields: [id_commande], references: [id_commande])
+
+  produit_paniers    Produit_Panier[]
+  produit_categories Produit_Categorie[]
+}
+
+model Produit_Panier {
+  id_produit_panier Int @id @default(autoincrement())
+  id_panier         Int
+  id_produit        Int
+
+  panier  Panier  @relation(fields: [id_panier], references: [id_panier])
+  produit Produit @relation(fields: [id_produit], references: [id_produit])
+}
+
+model Categorie {
+  id_categorie  Int      @id @default(autoincrement())
+  nom           String
+  date_creation DateTime @default(now())
+
+  produit_categories Produit_Categorie[]
+}
+
+model Produit_Categorie {
+  id_produit_categorie Int @id @default(autoincrement())
+  id_categorie         Int
+  id_produit           Int
+
+  categorie Categorie @relation(fields: [id_categorie], references: [id_categorie])
+  produit   Produit   @relation(fields: [id_produit], references: [id_produit])
+}
+
+model Panier {
+  id_panier     Int      @id @default(autoincrement())
+  date_creation DateTime @default(now())
+  id_client     Int
+
+  produit_paniers Produit_Panier[]
+
+  client Client @relation(fields: [id_client], references: [id_client])
+}
+
+model Commande {
+  id_commande       Int      @id @default(autoincrement())
+  date_commande     DateTime @default(now())
+  statut            String
+  total             Decimal  @db.Decimal(10, 2)
+  moyen_paiement    String
+  adresse_livraison String
+  cp_livraison      String
+  ville_livraison   String
+
+  id_client Int
+  id_admin  Int? // pas obligatoire, on ne renseignera peut-etre meme pas me champ
+
+  client Client @relation(fields: [id_client], references: [id_client])
+  admin  Admin? @relation(fields: [id_admin], references: [id_admin])
+
+  produits Produit[]
+}
