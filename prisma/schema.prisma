@@ -39,11 +39,11 @@ model Session {
   token String @unique
   date_connexion DateTime @default(now())
   date_deconnexion DateTime?
-  isActive Boolean
+  is_active Boolean
   date_creation DateTime @default(now())
 
   id_client Int
-  id_admin Int?  // ? car pas obligatoire 
+  id_admin Int?  // ? car pas obligatoire , c'est seulement si on veut identifier l'admin qui mettra potentiellement un terme à une session
   
   client Client @relation(fields: [id_client], references:[id_client]) // ce champ id_client fait référence à la colonne id_client du modèle Client
   admin Admin? @relation(fields: [id_admin], references: [id_admin])
@@ -70,18 +70,45 @@ model Produit {
   image String
   date_creation DateTime @default(now())
   is_active Boolean
+
+  produit_paniers Produit_Panier[]
+
+  produit_categories Produit_Categorie []
+}
+
+model Produit_Panier {
+  id_produit_panier Int @id @default(autoincrement())
+  id_panier Int
+  id_produit Int
+
+  panier Panier @relation(fields:[id_panier], references: [id_panier])
+  produit Produit @relation(fields: [id_produit], references: [id_produit])
+
 }
 
 model Categorie {
   id_categorie Int @id @default(autoincrement())
   nom String
   date_creation DateTime @default(now())
+
+  produit_categories Produit_Categorie []
+}
+
+model Produit_Categorie {
+  id_produit_categorie Int @id @default(autoincrement())
+  id_categorie Int
+  id_produit Int
+
+  categorie Categorie @relation(fields: [id_categorie], references:[id_categorie])
+  produit Produit @relation(fields: [id_produit], references: [id_produit])
 }
 
 model Panier {
   id_panier Int @id @default(autoincrement())
   date_creation DateTime @default(now())
   id_client Int
+
+  produit_paniers Produit_Panier[]
 
   client Client @relation(fields: [id_client], references:[id_client]) 
 }
@@ -97,7 +124,7 @@ model Commande {
   ville_livraison String
    
   id_client Int 
-  id_admin Int?
+  id_admin Int?  // pas obligatoire, on ne renseignera peut-etre meme pas me champ
 
   client Client @relation(fields: [id_client], references: [id_client])
   admin Admin? @relation(fields: [id_admin], references: [id_admin])

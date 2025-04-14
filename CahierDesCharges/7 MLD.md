@@ -42,7 +42,7 @@ prix
 image  
 date_creation  
 is_active  
-
+#id_commande
 
 ## Produit_Panier
 id_produit_panier  
@@ -80,9 +80,3 @@ cp_livraison
 ville_livraison   
 #id_client   
 #id_admin  
-
-
-## Produit_Commande
-id_produit_commande  
-#id_commande  
-#id_produit
