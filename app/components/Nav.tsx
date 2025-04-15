@@ -16,7 +16,7 @@ export default function Nav() {
     <div
         className="bg-[url('/fond/fondArtCommerceRose.png')] bg-cover bg-center w-full h-[60px] flex items-center justify-center">
             <ul
-                className="flex gap-5 font-sedgwick text-pink-900 text-[26px]">
+                className="flex gap-5 font-sedgwick text-slate-800 text-[26px]">
                     <li>
                         <Link href ="/"
                               className=""

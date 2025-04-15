@@ -8,7 +8,9 @@ module.exports = {
     theme: {
       extend: {
         fontFamily: {
-            sedgwick: ['Sedgwick Ave', 'cursive']
+            boogaloo: ['Boogaloo', 'sans-serif'], 
+            rubik: ['Rubik', 'sans-serif'], 
+
         }, 
       },
     },
