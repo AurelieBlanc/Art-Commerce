@@ -1,11 +1,11 @@
-// Code pour les imports : --------------------------------------------------------------------------------------------------------//
+// Code pour les imports : ------------------------------------------------//
 import Image from 'next/image'
 
 
 
 
 
-//Code pour retourner le composant: -------------------------------------------------------------------------------------------------//
+//Code pour retourner le composant: ----------------------------------------//
 export default function Banner() {
   return (
     <div

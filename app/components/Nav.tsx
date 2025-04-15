@@ -1,4 +1,4 @@
-// Code pour les imports : ----------------------------------------------------------------------------------------------------------//
+// Code pour les imports : --------------------------------------------------//
 import { FaUserCircle } from "react-icons/fa"; // import de l'icone user <FaUserCircle />
 import { FaHeart } from "react-icons/fa"; // import de l'icone coeur <FaHeart />
 import { FaShoppingBasket } from "react-icons/fa"; // import de l'icone panier <FaShoppingBasket />
@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 
 
-// Code pour retourner composant Nav: ---------------------------------------------------------------------------------------------//
+// Code pour retourner composant Nav: -----------------------------------------//
 export default function Nav() {
   return (
     <div

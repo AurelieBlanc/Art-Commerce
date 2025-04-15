@@ -1,4 +1,4 @@
-// Code pour les imports : -----------------------------------------------------------------------------------------------------------------------------//
+// Code pour les imports : -----------------------------------------//
 import { AiFillInstagram } from "react-icons/ai"; // import icone instagram <AiFillInstagram />
 
 
@@ -8,7 +8,7 @@ import { AiFillInstagram } from "react-icons/ai"; // import icone instagram <AiF
 
 
 
-// Code pour retourner composant Footer: -------------------------------------------------------------------------------------------------------------//
+// Code pour retourner composant Footer: ---------------------------//
 export default function Footer() {
   return (
     <div

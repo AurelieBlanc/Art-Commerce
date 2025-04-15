@@ -1,17 +1,35 @@
-// Code pour les imports : ----------------------------------------------------------------------------------------------------------------------//
+// Code pour les imports : -------------------------------------------------------//
 "use client" // composant éxécuté coté client
 import { useRef } from "react"; 
+import { z } from "zod"; 
+
+
+
+
+// Code pour les schémas de validation Zod : -------------------------------------//
+export const loginSchema = z.object({
+  email: z.string().email({ message: "Email invalide"}), 
+  password: z
+  .string()
+  .min(5, {message: "le mot de passe doit contenir au moins 5 caractères"})
+  .regex(/[a-z]/, { message: "le mot de passe doit contenir au moins une lettre minuscule"})
+  .regex(/[A-Z]/, { message: "le mot de passe doit contenir au moins une lettre majuscule"})
+  .regex(/[0-9]/, { message: "le mot de passe doit contenir au moins un chiffre"})
+  .regex(/[^a-zA-Z0-9]/, { message: "le mot de passe doit contenir au moins un caractère spécial"})
+})
+
+
+
+
+// schema ZOD pour le register à faire ici:
 
 
 
 
 
-
-// Code pour retourner le composant Login & Register : ------------------------------------------------------------------------------------------//
 export default function pageLoginRegister() {
 
-
-// Code pour gérer la logique du form LOGIN : ----------------------------------------------------------------------------------------------------//
+// Code pour gérer la logique du form LOGIN : ------------------------------------//
   const emailLoginRef =  useRef<HTMLInputElement>(null)
   const mdpLoginRef = useRef<HTMLInputElement>(null)
 
@@ -22,6 +40,19 @@ export default function pageLoginRegister() {
     const mdp = mdpLoginRef.current?.value
 
     console.log(email, mdp)
+
+   
+      const result = loginSchema.safeParse({
+        email, 
+        password: mdp
+      })
+
+      if(!result.success) {
+        alert("le format du mail ou du mot de passe est invalide")
+        return; 
+      } else {
+        console.log("schéma de l'email et du mot de passe corrects")
+      }
 
     try {
       const response = await fetch ("api/auth/login", {
@@ -48,18 +79,16 @@ export default function pageLoginRegister() {
       alert ("Echec lors de la connexion , verifiez vos identifiants")
     }
     
-
-
-      
-
-
   }
 
 
 
 
 
-// Code pour gérer la logique du form REGISTER : ----------------------------------------------------------------------------------------------------//
+
+
+
+// Code pour gérer la logique du form REGISTER : -------------------------------------------//
 
 
   return (
@@ -94,7 +123,7 @@ export default function pageLoginRegister() {
                         </label>
                         <input 
                             className="border-2 mb-4 border-slate-200 rounded-md"
-                            type="text"
+                            type="password"
                             id="mdpLogin"
                             ref={mdpLoginRef}
                             />
