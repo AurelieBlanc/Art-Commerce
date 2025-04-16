@@ -6,7 +6,6 @@ import jwt from "jsonwebtoken";
 import * as cookie from "cookie"; 
 import Tokens from "csrf"; 
 import { z } from "zod"; 
-import crypto from "crypto"; 
 
 const prisma = new PrismaClient(); 
 const SECRET_KEY = process.env.JWT_SECRET; 
