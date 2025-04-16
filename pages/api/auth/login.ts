@@ -60,7 +60,8 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
 
 
         if (client) {
-            const passwordMatch = await bcrypt.compare(client.mdp_hash, mdp); 
+            const passwordMatch = await bcrypt.compare(mdp, client.mdp_hash,); 
+            console.log("passwordMatch: ", passwordMatch); 
 
             if(!passwordMatch) {
                 return res.status(401).json({ message: "identifiants invalides" })

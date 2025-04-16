@@ -185,7 +185,7 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
       alert("Erreurs dans le formulaire:\n- " + messages.join("\n- "))
       return
     } else {
-      alert("Les données entrées sont correctes")
+      console.log("Les données entrées sont correctes")
     }
 
    
@@ -238,7 +238,7 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
 
     {/* FORM LOGIN     */}
         <div
-            className="formLogin flex flex-col justify-center mt-10 text-center  border-slate-300  border-2 h-[40vh] bg-[url('/fond/fondArtCommerceRose.png')] bg-cover bg-center rounded-sm">
+            className="formLogin flex flex-col justify-center mt-10 text-center  border-slate-300  border-2 h-[350px] bg-[url('/fond/fondArtCommerceRose.png')] bg-cover bg-center rounded-sm">
                 <h2
                     className="font-boogaloo text-2xl text-slate-700 mt-2 ">
                       Se Connecter: 
@@ -294,7 +294,7 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
    {/* FORM REGISTER     */}  
 
         <div
-            className="formRegister flex flex-col justify-center mt-10 text-center  border-slate-300  border-2 h-[90vh] bg-[url('/fond/fondArtCommerceRose.png')] bg-cover bg-center rounded-sm mb-10">
+            className="formRegister flex flex-col justify-center mt-10 text-center  border-slate-300  border-2 h-[800px] bg-[url('/fond/fondArtCommerceRose.png')] bg-cover bg-center rounded-sm mb-10">
                 <h2
                     className="font-boogaloo text-2xl text-slate-700 ">
                       S'enregistrer : 
