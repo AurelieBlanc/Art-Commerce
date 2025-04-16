@@ -60,7 +60,8 @@ export default function pageLoginRegister() {
         headers: {
           'Content-Type': "application/json"
         }, 
-        body: JSON.stringify({email, mdp})
+        body: JSON.stringify({email, mdp}), 
+        credentials : "include" // on prepare le navigateur a accepter un cookie onlyHTTP dans la réponse 
       })
   
       if(!response.ok) {
