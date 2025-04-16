@@ -121,15 +121,81 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
         }
 
  
+
+
+
+
+
 // Code pour la connexion de l'admin : "si ce n'est pas un client qui essaie de se connecter , alors c'est peut-être l'admin" ----------------------------------------//
+
         else { const admin = await prisma.admin.findUnique({
                 where: { mail: email }
             })
         
         if(admin) {
             console.log("resultat admin : ", admin);
-
+            console.log("mot de passe loggué ", mdp); 
+            console.log("mot de passe BDD", admin.mdp_hash)
         
+            const passwordMatch = await bcrypt.compare(mdp, admin.mdp_hash); 
+            console.log("passwordMatch : ", passwordMatch)
+    
+            if(!passwordMatch) {
+                return res.status(401).json({ message: "identifiants invalides" })
+                }
+    
+            if (!SECRET_KEY) { // on verifie que la secret_key est bien définie pour eviter une erreur typeSecript
+            throw new Error ("le clé secrete SECRET_KEY n'est pas définie dans les variables d'environnement")
+            }
+ 
+            
+
+// génération d'un token jwt pour l'admin : -------------------------------------------//
+            const token = jwt.sign(
+                { id: admin.id_admin, email: admin.mail, role: admin.role},
+                SECRET_KEY, 
+                { expiresIn: "7d" }
+            ); 
+
+            console.log("Token JWT généré : ", token)
+
+ 
+            
+// génération d'un cookie onlyHTTP comportant le token d'authentification pour l'admin  //
+            res.setHeader("Set-Cookie", cookie.serialize("authToken", token, {
+                httpOnly: true, 
+                secure: ENV === "production" ? true : false, // en dev, on le met à false pour que ca fonctionne sans https
+                sameSite: "lax",  // ici en prod il faudra bien verifier si on met "lax" ou "none"
+                maxAge: 7 * 24 * 60 * 60 , 
+                path: "/"
+
+            }))
+
+
+
+// génération d'un cookie onlyHTTP comportant le token CSRF pour l'admin -------------//
+            const csrfToken = await tokens.secret();  
+
+            res.setHeader("Set-Cookie", [
+                cookie.serialize("csrfToken", csrfToken, {
+                httpOnly: true, 
+                secure: ENV === "production" ? true : false, 
+                sameSite: "lax", // ici en prod il faudra bien verifier si on met "lax" 
+                maxAge: 60 * 60 * 1, // 1h 
+                path: "/" // tous les chemins 
+            }), 
+                cookie.serialize("csrfToken", csrfToken, {
+                httpOnly: false, // on ne veut pas un cookie onlyHTTP là, on veut que ce soit accessible coté client, coté JS
+                secure: ENV === "production" ? true : false, 
+                sameSite: "lax", // en prod on verra si on met "lax" ou "none"
+                maxAge: 60 * 60 * 1, // 1h de validité 
+                path: "/", 
+            })
+]); 
+
+return res.status(200).json({ message: "Connexion client réussie", data: admin })
+
+
 
 
 
@@ -140,14 +206,13 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
             return res.status(404).json({ message: "Utilisateur non trouvé ! "})
         }
 
-        }
-
-
-
-    } catch(error) {
-        console.error("erreur lors de la connexion Admin")
-        return res.status(500).json({ message: "Erreur interne du serveur"})
     }
+
+
+} catch(error) {
+    console.error("erreur lors de la connexion Admin")
+    return res.status(500).json({ message: "Erreur interne du serveur"})
+}
     
 
 

@@ -30,12 +30,14 @@ export const loginSchema = z.object({
 export default function pageLoginRegister() {
 
 // Code pour gérer la logique du form LOGIN : ------------------------------------//
+  
   const emailLoginRef =  useRef<HTMLInputElement>(null)
   const mdpLoginRef = useRef<HTMLInputElement>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); 
-
+    
+    const form = e.currentTarget as HTMLFormElement  // cette ligne nous permettra de reset les champs du formulaire une fois que l user sera connecté
     const email = emailLoginRef.current?.value
     const mdp = mdpLoginRef.current?.value
 
@@ -68,12 +70,15 @@ export default function pageLoginRegister() {
         throw new Error("Identifiants invalides")
        }
   
-       const data = await response.json(); 
+       const data = await response.json();
+       console.log( "messsage:", data.message, data.data )
        alert("Vous etes bien connecté !");
 
        // ici il, faudra qu'on reset le formulaire: 
-       const form = e.currentTarget as HTMLFormElement 
+       
        form.reset(); 
+
+       return; 
        
     } catch (error) {
       console.error("Erreur serveur: ", error); 
