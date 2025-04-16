@@ -132,6 +132,7 @@ export default function pageLoginRegister() {
 // Code pour gérer la logique du form REGISTER : -------------------------------------------//
 const emailRegisterRef =  useRef<HTMLInputElement>(null)
 const mdpRegisterRef = useRef<HTMLInputElement>(null)
+const mdpCheckRegisterRef = useRef<HTMLInputElement>(null)
 const nomRegisterRef = useRef<HTMLInputElement>(null)
 const prenomRegisterRef = useRef<HTMLInputElement>(null)
 const adresseRegisterRef = useRef<HTMLInputElement>(null)
@@ -143,10 +144,11 @@ const telRegisterRef = useRef<HTMLInputElement>(null)
 const handleSubmitRegister = async (e: React.FormEvent) => {
   e.preventDefault(); 
   
-  const form = e.currentTarget as HTMLFormElement  // cette ligne nous permettra de reset les champs du formulaire une fois que l user sera connecté
+  const form = e.currentTarget as HTMLFormElement  // cette ligne nous permettra de reset les champs du formulaire une fois que l'user sera connecté
 
   const email = emailRegisterRef.current?.value
   const mdp = mdpRegisterRef.current?.value
+  const mdpCheck = mdpCheckRegisterRef.current?.value
   const nom = nomRegisterRef.current?.value
   const prenom = prenomRegisterRef.current?.value 
   const adresse = adresseRegisterRef.current?.value 
@@ -155,37 +157,63 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
   const telephone = telRegisterRef.current?.value 
 
 
-  console.log(email, mdp, nom, prenom, adresse, cp, ville, telephone )
+  console.log(mdp, mdpCheck )
 
- 
-    const result = loginSchema.safeParse({
-      //    A ADAPTER
+  if(mdp !== mdpCheck){
+    alert("les mots de passe doivent se correspondre"); 
+    return; 
+  }
+
+    const result = registerSchema.safeParse({
+      email, 
+      password: mdp, 
+      nom, 
+      prenom, 
+      adresse, 
+      codePostal: cp, 
+      ville, 
+      telephone
     })
 
-    if(!result.success) {
-      alert("les formats des données sont incorrects")
-      return; 
+    if (!result.success) {
+      const errors = result.error.flatten().fieldErrors
+    
+      const messages = Object.entries(errors) // convertit en tableau d'erreurs
+        .map(([field, errs]) => errs?.join(', '))
+        .filter(Boolean)
+    
+      alert("Erreurs dans le formulaire:\n- " + messages.join("\n- "))
+      return
     } else {
-      console.log("les données entrées sont correctes")
+      alert("Les données entrées sont correctes")
     }
 
+   
+
   try {
-    const response = await fetch ("api/auth/login", {
+    const response = await fetch ("api/clients/register", {
       method: "POST", 
       headers: {
         'Content-Type': "application/json"
       }, 
-      body: JSON.stringify({email, mdp}), 
-      credentials : "include" // ????? a checker car le login est pas créé on s'enregistre juste on prepare le navigateur a accepter un cookie onlyHTTP dans la réponse 
+      body: JSON.stringify({
+        email, 
+        mdp, 
+        nom, 
+        prenom, 
+        adresse, 
+        cp, 
+        ville, 
+        telephone}), 
     })
 
     if(!response.ok) {
-      throw new Error("Identifiants invalides")
+      throw new Error("Création de client non aboutie")
      }
 
      const data = await response.json();
-     console.log( "messsage:", data.message, data.data ) // A ADAPTER AU BACK !!! 
-     alert("Vous etes bien connecté !");
+     console.log( "messsage:", data.message, data.newClient ); 
+     alert("Vous etes bien enregistré ! Vous pouvez vous connecter maintenant!");
 
      // ici il, on reset le formulaire: 
      form.reset(); 
@@ -194,7 +222,7 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
      
   } catch (error) {
     console.error("Erreur serveur: ", error); 
-    alert ("Echec lors de la connexion , verifiez vos identifiants")
+    alert ("Echec lors de l'enregistrement")
   }
   
 }
@@ -314,6 +342,7 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
                             type="password"
                             id="mdpRegisterCheck"
                             required
+                            ref={mdpCheckRegisterRef}
                             />
 
 
@@ -354,7 +383,7 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
                             className="border-2 mb-4 border-slate-200 rounded-md"
                             type="text"
                             id="adresseRegister"
-                            ref={mdpRegisterRef}
+                            ref={adresseRegisterRef}
                             required
                             />
 
