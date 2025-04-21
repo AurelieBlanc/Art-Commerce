@@ -109,7 +109,25 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
                 })
             ]); 
 
-        return res.status(200).json({ message: "Connexion client réussie", data: client })
+
+
+
+// Code pour la création d'une session lors de la connexion d'un user :----------------//
+
+        const session = await prisma.session.create ({
+            data: {
+                token: token,
+                date_connexion: new Date(),  
+                is_active: true, 
+                id_client: client.id_client,
+            }
+        })
+
+
+
+
+// Code pour la réponse en cas de succès de l'appel API : -------------------------//
+return res.status(200).json({ message: "Connexion client réussie", data: client })
 
         }
 
