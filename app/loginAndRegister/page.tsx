@@ -6,7 +6,7 @@ import { z } from "zod";
 
 
 
-// Code pour les schémas de validation Zod : -------------------------------------//
+// Code pour les schémas de validation Zod pour le form LOGIN :-----------------------------//
 export const loginSchema = z.object({
   email: z.string().email({ message: "Email invalide"}), 
   password: z
@@ -21,7 +21,7 @@ export const loginSchema = z.object({
 
 
 
-// schema ZOD pour le register à faire ici:
+// code pour le schéma de validation ZOD pour le form Register : ---------------------------------//
 export const registerSchema = z.object({
   email: z.string().email({ message: "Email invalide"}),
 
@@ -68,21 +68,21 @@ export const registerSchema = z.object({
 
 export default function pageLoginRegister() {
 
-// Code pour gérer la logique du form LOGIN : ------------------------------------//
-  
+////// Code pour gérer la logique du form LOGIN : ------------------------------------//////
   const emailLoginRef =  useRef<HTMLInputElement>(null)
   const mdpLoginRef = useRef<HTMLInputElement>(null)
 
   const handleSubmitLogin = async (e: React.FormEvent) => {
     e.preventDefault(); 
-    
-    const form = e.currentTarget as HTMLFormElement  // cette ligne nous permettra de reset les champs du formulaire une fois que l user sera connecté
+  
+
+// Récupération des données grace au hook useRef de React: -----------------------// 
+    const form = e.currentTarget as HTMLFormElement  // cette ligne nous permettra de reset les champs du formulaire une fois que l'user sera connecté
     const email = emailLoginRef.current?.value
     const mdp = mdpLoginRef.current?.value
 
-    console.log(email, mdp)
 
-   
+// Ici, on valide ou pas le bon schéma de données : ----------------------------//
       const result = loginSchema.safeParse({
         email, 
         password: mdp
@@ -94,7 +94,9 @@ export default function pageLoginRegister() {
       } else {
         console.log("schéma de l'email et du mot de passe corrects")
       }
-
+    
+      
+// On fait l'appel API : ---------------------------------------------------------//    
     try {
       const response = await fetch ("api/auth/login", {
         method: "POST", 
@@ -110,12 +112,10 @@ export default function pageLoginRegister() {
        }
   
        const data = await response.json();
-       console.log( "messsage:", data.message, data.data )
+       console.log( "messsage:", data.message )
        alert("Vous etes bien connecté !");
 
-       // ici il, faudra qu'on reset le formulaire: 
-       
-       form.reset(); 
+       form.reset(); // on reset le formulaire pour le nettoyer: 
 
        return; 
        
@@ -129,7 +129,7 @@ export default function pageLoginRegister() {
 
 
 
-// Code pour gérer la logique du form REGISTER : -------------------------------------------//
+///// Code pour gérer la logique du form REGISTER : --------------------------------------//////
 const emailRegisterRef =  useRef<HTMLInputElement>(null)
 const mdpRegisterRef = useRef<HTMLInputElement>(null)
 const mdpCheckRegisterRef = useRef<HTMLInputElement>(null)
@@ -146,6 +146,7 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
   
   const form = e.currentTarget as HTMLFormElement  // cette ligne nous permettra de reset les champs du formulaire une fois que l'user sera connecté
 
+// recupération des données du form :-----------------------------------------------------------------//  
   const email = emailRegisterRef.current?.value
   const mdp = mdpRegisterRef.current?.value
   const mdpCheck = mdpCheckRegisterRef.current?.value
@@ -157,13 +158,18 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
   const telephone = telRegisterRef.current?.value 
 
 
-  console.log(mdp, mdpCheck )
 
+
+// verification de la bonne correspondance des mots de passe : ----------------------------------------//
   if(mdp !== mdpCheck){
     alert("les mots de passe doivent se correspondre"); 
     return; 
   }
 
+
+
+
+// validation des formats de données : --------------------------------------------------------//
     const result = registerSchema.safeParse({
       email, 
       password: mdp, 
@@ -189,7 +195,7 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
     }
 
    
-
+// appel API pour créer un nouvel user : ------------------------------------------------//
   try {
     const response = await fetch ("api/clients/register", {
       method: "POST", 
@@ -212,11 +218,11 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
      }
 
      const data = await response.json();
-     console.log( "messsage:", data.message, data.newClient ); 
+     console.log( "messsage:", data.message); 
      alert("Vous etes bien enregistré ! Vous pouvez vous connecter maintenant!");
 
-     // ici il, on reset le formulaire: 
-     form.reset(); 
+    
+     form.reset(); // ici on reset le formulaire
 
      return; 
      

@@ -14,7 +14,8 @@ const tokens = new Tokens();
 
 
 
-// Code pour les schémas de validation de données Zod : -----------------------//
+
+// Code pour le schéma de validation de données Zod pour le form LOGIN : -----------------------//
 export const loginSchema = z.object({
     email: z.string().email({ message: "Email invalide"}), 
     password: z
@@ -56,12 +57,10 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
         const client = await prisma.client.findUnique({ 
             where: {mail: email}
         })
-        console.log("resultat client : ", client)
 
 
         if (client) {
-            const passwordMatch = await bcrypt.compare(mdp, client.mdp_hash,); 
-            console.log("passwordMatch: ", passwordMatch); 
+            const passwordMatch = await bcrypt.compare(mdp, client.mdp_hash,);  
 
             if(!passwordMatch) {
                 return res.status(401).json({ message: "identifiants invalides" })
@@ -80,33 +79,27 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
                 {expiresIn: "7d"}
             ); 
 
-            console.log("Token JWT généré : ", token)
 
 
+// Génération d'un header comportant le token d'authentification pour l'user dans un cookie onlyHTTP, + le token CSRF
+// dans un cookie onlyHTTP et un token CSRF dans un cookie simple : //
+    const csrfToken = await tokens.secret(); 
 
-// génération d'un cookie onlyHTTP comportant le token d'authentification pour le client //
-            res.setHeader("Set-Cookie", cookie.serialize("authToken", token, {
+            res.setHeader("Set-Cookie", [
+            cookie.serialize("authToken", token, {
                 httpOnly: true, 
                 secure: ENV === "production" ? true : false, // en dev, on le met à false pour que ca fonctionne sans https
                 sameSite: "lax",  // ici en prod il faudra bien verifier si on met "lax" ou "none"
                 maxAge: 7 * 24 * 60 * 60 , 
                 path: "/"
-
-            }))
-            
-
-
-// génération d'un cookie onlyHTTP comportant le token CSRF pour le client -------------//
-            const csrfToken = await tokens.secret();  
-
-            res.setHeader("Set-Cookie", [
-                cookie.serialize("csrfToken", csrfToken, {
+            }), 
+            cookie.serialize("csrfToken", csrfToken, {
                 httpOnly: true, 
                 secure: ENV === "production" ? true : false, 
                 sameSite: "lax", // ici en prod il faudra bien verifier si on met "lax" 
                 maxAge: 60 * 60 * 1, // 1h 
                 path: "/" // tous les chemins 
-                }), 
+            }), 
                 cookie.serialize("csrfToken", csrfToken, {
                 httpOnly: false, // on ne veut pas un cookie onlyHTTP là, on veut que ce soit accessible coté client, coté JS
                 secure: ENV === "production" ? true : false, 
@@ -133,12 +126,8 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
             })
         
         if(admin) {
-            console.log("resultat admin : ", admin);
-            console.log("mot de passe loggué ", mdp); 
-            console.log("mot de passe BDD", admin.mdp_hash)
         
             const passwordMatch = await bcrypt.compare(mdp, admin.mdp_hash); 
-            console.log("passwordMatch : ", passwordMatch)
     
             if(!passwordMatch) {
                 return res.status(401).json({ message: "identifiants invalides" })
@@ -148,6 +137,7 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
             throw new Error ("le clé secrete SECRET_KEY n'est pas définie dans les variables d'environnement")
             }
  
+       
             
 
 // génération d'un token jwt pour l'admin : -------------------------------------------//
@@ -157,28 +147,24 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
                 { expiresIn: "7d" }
             ); 
 
-            console.log("Token JWT généré : ", token)
+
 
  
             
-// génération d'un cookie onlyHTTP comportant le token d'authentification pour l'admin  //
-            res.setHeader("Set-Cookie", cookie.serialize("authToken", token, {
-                httpOnly: true, 
+// Génération d'un header comportant le token d'authentification pour l'admin dans un cookie onlyHTTP, + le token CSRF
+// dans un cookie onlyHTTP et un token CSRF dans un cookie simple : //
+        const csrfToken = await tokens.secret();      
+
+        res.setHeader("Set-Cookie", [
+            cookie.serialize("authToken", token, {
+                httpOnly: true,  // dans un cookie only-HTTP
                 secure: ENV === "production" ? true : false, // en dev, on le met à false pour que ca fonctionne sans https
                 sameSite: "lax",  // ici en prod il faudra bien verifier si on met "lax" ou "none"
                 maxAge: 7 * 24 * 60 * 60 , 
                 path: "/"
-
-            }))
-
-
-
-// génération d'un cookie onlyHTTP comportant le token CSRF pour l'admin -------------//
-            const csrfToken = await tokens.secret();  
-
-            res.setHeader("Set-Cookie", [
-                cookie.serialize("csrfToken", csrfToken, {
-                httpOnly: true, 
+            }), 
+            cookie.serialize("csrfToken", csrfToken, {
+                httpOnly: true, // dans un cookie onlyHTTP
                 secure: ENV === "production" ? true : false, 
                 sameSite: "lax", // ici en prod il faudra bien verifier si on met "lax" 
                 maxAge: 60 * 60 * 1, // 1h 
@@ -190,8 +176,8 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
                 sameSite: "lax", // en prod on verra si on met "lax" ou "none"
                 maxAge: 60 * 60 * 1, // 1h de validité 
                 path: "/", 
-            })
-]); 
+            }), 
+        ]); 
 
 return res.status(200).json({ message: "Connexion client réussie", data: admin })
 
@@ -212,8 +198,6 @@ return res.status(200).json({ message: "Connexion client réussie", data: admin 
 } catch(error) {
     console.error("erreur lors de la connexion Admin")
     return res.status(500).json({ message: "Erreur interne du serveur"})
-}
-    
-
+}   
 
 }

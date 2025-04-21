@@ -9,7 +9,8 @@ const prisma = new PrismaClient();
 
 
 
-// Code pour les schémas de validation de données Zod : -----------------------//
+
+// Code pour les schémas de validation de données Zod pour le form REGISTER : -----------------------//
 export const registerSchema = z.object({
     email: z.string().email({ message: "Email invalide"}),
   
@@ -52,15 +53,21 @@ export const registerSchema = z.object({
   
   
 
-  export default async function handler (req: NextApiRequest, res: NextApiResponse) {
+
+
+export default async function handler (req: NextApiRequest, res: NextApiResponse) {
     if(req.method !== "POST") {
         return res.status(405).json({ message: "requête HTTP non autorisée "})
     }
 
-
+// code pour récupérer les données du body : ----------------------------------------//
     const { email, mdp, nom, prenom, adresse, cp, ville, telephone } = req.body;  
         
 
+
+
+
+// Code pour checker les formats des données : ------------------------------------//
      const result = registerSchema.safeParse({
           email, 
           password: mdp, 
@@ -85,6 +92,9 @@ export const registerSchema = z.object({
         console.log("Les données entrées sont correctes")
       }; 
 
+
+
+// Code pour créer un nouveau client, en prenant bien soin de hasher son mdp avant l'enregistrement en BDD : //
     try {
 
       const hashedPassword = await bcrypt.hash(mdp, 10); 
@@ -106,6 +116,10 @@ export const registerSchema = z.object({
       return res.status(200).json({ message: "utilisateur bien créé", newClient })
 
 
+
+
+
+// Code pour gérer une erreur : -------------------------------------------------//
     } catch(error) {
         console.error("erreur lors de l'enregistrement d'un nouveau client")
         return res.status(500).json({ message: "Erreur interne du serveur"})
