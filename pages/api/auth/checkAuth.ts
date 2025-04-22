@@ -3,10 +3,18 @@ import { NextApiRequest, NextApiResponse } from "next";
 import jwt  from "jsonwebtoken";
 import * as cookie from "cookie";
 import { PrismaClient } from "@prisma/client"; 
+import Tokens from "csrf";
 
 const prisma = new PrismaClient(); 
+const tokens = new Tokens(); 
+const ENV = process.env.NODE_ENV; 
 const SECRET_KEY = process.env.JWT_SECRET; 
 
+interface JwtPayload {
+    id: number, 
+    email: string, 
+    role: string
+}
 
 
 
@@ -16,38 +24,61 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
         return res.status(405).json({ message: "requete HTTP non autorisée "})
     }
 
-// Code pour recupérer et lire les cookies : --------------------------------------------- //
-    
+// Code pour recupérer et lire les cookies : ------------------------------------ //
 try {
     const cookies = cookie.parse(req.headers.cookie || ""); 
-    console.log("cookies : ", cookies)
 
     const authToken = cookies.authToken; 
-    console.log("token : ", authToken ); 
 
-  
-    const csrfToken = cookies.csrfToken; 
-    console.log("tokenCSRF ", csrfToken); 
-
-    if(!authToken ) {
+    if(!authToken) {
     return res.status(401).json({ message: "Token Auth manquant" })
     }
 
     if(!SECRET_KEY) {
-        throw new Error ("la clé sécrète n'est pas correcetement définie")
+        throw new Error ("la clé sécrète n'est pas correctement définie")
     }
 
-    const decoded = jwt.verify(authToken, SECRET_KEY); 
+
+// on va verifier que l'on est bien un objet decoded (sinon ca veut dire que notre authToken n'est pas bon ou expiré) : //
+    const decoded = jwt.verify(authToken, SECRET_KEY) as JwtPayload; 
     
+    if(decoded) {
 
-    if(decoded && typeof decoded !== "string") {
+    const csrfToken = await tokens.secret();
         
-        console.log("decoded",decoded,  decoded.role, decoded.id, decoded.email ); 
-        return res.status(200).json({ isAuthenticated : true});
         
-        // ICI on rajoutera un token CSRF 
 
 
+// Code pour recréer un Set-Cookie avec authToken qui sera rafraichit et le token CSRF coté navigateur et coté serveur : //
+         res.setHeader("Set-Cookie", [
+            cookie.serialize("authToken", authToken, {
+                httpOnly: true, 
+                secure: ENV === "production" ? true : false, // en dev, on le met à false pour que ca fonctionne sans https
+                sameSite: "lax",  // ici en prod il faudra bien verifier si on met "lax" ou "none"
+                maxAge: 7 * 24 * 60 * 60 , 
+                path: "/"
+                }), 
+            cookie.serialize("csrfToken", csrfToken, {
+                httpOnly: true, 
+                secure: ENV === "production" ? true : false, 
+                sameSite: "lax", // ici en prod il faudra bien verifier si on met "lax" 
+                maxAge: 60 * 60 * 1, // 1h 
+                path: "/" // tous les chemins 
+                }), 
+            cookie.serialize("csrfToken", csrfToken, {
+                httpOnly: false, // on ne veut pas un cookie onlyHTTP là, on veut que ce soit accessible coté client, coté JS
+                secure: ENV === "production" ? true : false, 
+                sameSite: "lax", // en prod on verra si on met "lax" ou "none"
+                maxAge: 60 * 60 * 1, // 1h de validité 
+                path: "/", 
+                })
+            ]); 
+
+        
+       
+        return res.status(200).json({ isAuthenticated : true, role: decoded.role, id: decoded.id });
+        
+       
     } else {
         return res.status(401).json({ message: "Non Autorisé"})
     }

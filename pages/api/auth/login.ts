@@ -9,7 +9,7 @@ import { z } from "zod";
 
 const prisma = new PrismaClient(); 
 const SECRET_KEY = process.env.JWT_SECRET; 
-const ENV = process.env.NODE_DEV
+const ENV = process.env.NODE_ENV; 
 const tokens = new Tokens(); 
 
 
