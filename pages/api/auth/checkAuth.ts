@@ -76,7 +76,7 @@ try {
 
         
        
-        return res.status(200).json({ isAuthenticated : true, role: decoded.role, id: decoded.id });
+        return res.status(200).json({ message: "user ou admin authentifié", isAuthenticated : true, role: decoded.role, id: decoded.id });
         
        
     } else {
@@ -87,5 +87,4 @@ try {
     console.error("Erreur lors de la vérif de la connexion de l'user ou l'admin", error); 
     return res.status(500).json({ isAuthenticated: false })
 }
-
 }

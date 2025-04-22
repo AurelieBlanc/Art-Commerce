@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useEffect } from "react"; 
 import Cookies from "js-cookie"; 
-
+import useStore from '@/stores/useStore';
 
 
 
@@ -13,6 +13,8 @@ export default function Banner() {
 //Code pour lancer un appel API au montage du composant pour faire un checkAuth : //
   
 useEffect(() => {
+
+  const { setAuthenticated } = useStore(); 
 
     async function checkAuth(){
   
@@ -30,11 +32,13 @@ useEffect(() => {
           throw new Error ("reponse Auth erreur")
         }
         const data = await response.json();
-        console.log("message : ") // A ADAPTER SELON MON BACK
-  
-        // ET BIEN METTRE A JOUR un fichier ZUSTAND avec user authenticated or not
-        // donc creation d'un fichier avec un STORE GLOBAL à la racine du projet
-        
+        console.log("message :", data.message, "isAuth :", data.isAuthenticated, "role :", data.role, "id :",  data.id); 
+
+        setAuthenticated ({
+         isAuthenticated: data.isAuthenticated, 
+         role: data.role, 
+         id: data.id
+      })
   
       } catch(error) {
         console.error("La verification de l'auth a échoué : ", error)
