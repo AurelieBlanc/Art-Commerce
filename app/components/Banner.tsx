@@ -11,10 +11,10 @@ import useStore from '@/stores/useStore';
 
 export default function Banner() {
 //Code pour lancer un appel API au montage du composant pour faire un checkAuth : //
-  
-useEffect(() => {
 
-  const { setAuthenticated } = useStore(); 
+const { setAuthenticated } = useStore(); 
+
+useEffect(() => {
 
     async function checkAuth(){
   
