@@ -127,7 +127,9 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
 
 
 // Code pour la réponse en cas de succès de l'appel API : -------------------------//
-return res.status(200).json({ message: "Connexion client réussie", data: client })
+
+console.log("client en back ", client)
+return res.status(200).json({ message: "Connexion client réussie", user: client })
 
         }
 
@@ -197,7 +199,8 @@ return res.status(200).json({ message: "Connexion client réussie", data: client
             }), 
         ]); 
 
-return res.status(200).json({ message: "Connexion client réussie", data: admin })
+console.log("admin", admin)
+return res.status(200).json({ message: "Connexion admin réussie", user: admin })
 
 
 

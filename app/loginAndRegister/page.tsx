@@ -2,7 +2,7 @@
 "use client" // composant éxécuté coté client
 import { useRef } from "react"; 
 import { z } from "zod"; 
-
+import useStore from "@/stores/useStore";
 
 
 
@@ -68,6 +68,9 @@ export const registerSchema = z.object({
 
 export default function pageLoginRegister() {
 
+
+const { setAuthenticated, role } = useStore(); 
+
 ////// Code pour gérer la logique du form LOGIN : ------------------------------------//////
   const emailLoginRef =  useRef<HTMLInputElement>(null)
   const mdpLoginRef = useRef<HTMLInputElement>(null)
@@ -112,8 +115,20 @@ export default function pageLoginRegister() {
        }
   
        const data = await response.json();
-       console.log( "messsage:", data.message )
+       console.log( "messsage:", data.message ); 
+       console.log("datas back admin ou client : ", data.user);
+    
+
+       setAuthenticated({
+        isAuthenticated: true , 
+        role: data.user.role, 
+        id: data.user.id
+    }); 
+
+       
        alert("Vous etes bien connecté !");
+
+       
 
        form.reset(); // on reset le formulaire pour le nettoyer: 
 
@@ -218,8 +233,11 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
      }
 
      const data = await response.json();
-     console.log( "messsage:", data.message); 
+    
+     console.log( "messsage:", data.message ); 
+      
      alert("Vous etes bien enregistré ! Vous pouvez vous connecter maintenant!");
+
 
     
      form.reset(); // ici on reset le formulaire
