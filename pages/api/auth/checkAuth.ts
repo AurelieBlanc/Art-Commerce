@@ -29,8 +29,8 @@ try {
     const csrfToken = cookies.csrfToken; 
     console.log("tokenCSRF ", csrfToken); 
 
-    if(!authToken || !csrfToken ) {
-    return res.status(401).json({ message: "Token(s) manquant(s)" })
+    if(!authToken ) {
+    return res.status(401).json({ message: "Token Auth manquant" })
     }
 
     if(!SECRET_KEY) {
@@ -42,7 +42,7 @@ try {
 
     if(decoded && typeof decoded !== "string") {
         
-        console.log("decoded", decoded.role, decoded.id, decoded.email ); 
+        console.log("decoded",decoded,  decoded.role, decoded.id, decoded.email ); 
         return res.status(200).json({ isAuthenticated : true});
         
         // ICI on rajoutera un token CSRF 
