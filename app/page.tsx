@@ -75,9 +75,14 @@ export default function Home() {
 
             <div
                 className="addProduct block m-5">
-                  <IoMdAddCircle
-                  className="text-5xl block text-slate-500 " /> 
+                  
+                  <Link
+                    className=""
+                    href="/products/newProduct">
 
+                    <IoMdAddCircle
+                    className="text-5xl block text-slate-500 " /> 
+                  </Link>
             </div>
             
   
@@ -117,8 +122,15 @@ export default function Home() {
       
                     </button>
 
-                    <FaPencilAlt />
-                    <MdDeleteForever />
+                    <div
+                      className="flex gap-5 mt-5 text-2xl">
+                        <FaPencilAlt
+                          className="text-green-600" />
+                        <MdDeleteForever 
+                          className="text-red-600"/>
+
+                    </div>
+                    
 
                     </div>
                 ))}

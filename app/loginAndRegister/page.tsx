@@ -245,7 +245,7 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
      return; 
      
   } catch (error) {
-    console.error("Erreur serveur: ", error); 
+    console.error("Erreur lors du register: ", error); 
     alert ("Echec lors de l'enregistrement")
   }
   

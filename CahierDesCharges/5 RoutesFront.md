@@ -1,4 +1,4 @@
-# Routes Front-End: 
+# Routes Front-End:
 
 |Routes |Description |
 |:-------:|------------|
