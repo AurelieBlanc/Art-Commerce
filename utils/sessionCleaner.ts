@@ -1,1 +1,0 @@
-// ici on va créer un code qui nettoyera régulièrement les sessions inactives de la BDD

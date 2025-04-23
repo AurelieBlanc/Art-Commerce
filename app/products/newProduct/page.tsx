@@ -53,8 +53,6 @@ const handleSubmitNewProduct =  async(e: React.FormEvent) => {
     const prix = prixRef.current?.value
     const image = imageRef.current?.value
 
-    console.log(nom, description, prix, image); 
-
     const result = productSchema.safeParse({
         nom, 
         description, 
@@ -96,7 +94,9 @@ const handleSubmitNewProduct =  async(e: React.FormEvent) => {
            }
       
         const data = await response.json();
-        // A ADAPTER peut etre a mon back, à voir 
+        console.log("nouveau produit ajouté : ", data.newProduct )
+        alert("le nouveau produit a bien été ajouté"); 
+        
 
         form.reset() // on reset le formulaire
         return; 
