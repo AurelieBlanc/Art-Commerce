@@ -12,34 +12,15 @@ export default async function middleware(req: NextRequest) {
     console.log("MIDDLEWARE ADMIN BIEN EXECUTE")
 
     const authToken = req.cookies.get("authToken")?.value;
-    const csrfToken = req.cookies.get("csrfToken")?.value; 
-
-
-// ici on recupere le csrf coté client, dans le header:
-    const csrfTokenClient = req.headers.get("x-csrf-token"); 
 
     if(!authToken) {
       console.log("authToken manquant; redirection vers la page d'accueil"); 
       return NextResponse.redirect(new URL("/", req.url))
     }
 
-    if(!csrfToken) {
-        console.log("csrfToken manquant; redirection vers la page d'accueil"); 
-        return NextResponse.redirect(new URL("/", req.url))
-    }
-
-    if(!csrfTokenClient) {
-        console.log("csrfTokenClient manquant; redirection vers la page d'accueil"); 
-      return NextResponse.redirect(new URL("/", req.url))
-      }
-
       try {
 
-        if(csrfToken !== csrfTokenClient) {
-            console.log("CSRF invalides")
-            return NextResponse.redirect(new URL("/", req.url))
-        }
-
+       
         if(!SECRET_KEY) {
             throw new Error("la secret Key n'est pas définie dans les variables d'env")
         }
@@ -63,5 +44,7 @@ export default async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: [ "/products/newProduct/:path*" ] //path* : toutes les routes et sous routes de : products/newProduct 
+    matcher: [ 
+        "/products/newProduct/:path*",
+     ] //path* : toutes les routes et sous routes de : products/newProduct 
 }
