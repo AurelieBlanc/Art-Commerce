@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react"; 
 import useStore from "@/stores/useStore";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 import Cookies from "js-cookie";
 import { IoMdAddCircle } from "react-icons/io"; // icone pour ajouter un produit <IoMdAddCircle /> 
 import { FaPencilAlt } from "react-icons/fa"; // icone pour modifier un produit <FaPencilAlt />
@@ -32,6 +33,8 @@ interface Produits {
 
 export default function Home() {
 
+  const router = useRouter(); 
+
   const { isAuthenticated, role } = useStore(); 
 
   const [produits, setProduits ] = useState<Produits[]>([]); 
@@ -53,8 +56,7 @@ export default function Home() {
           throw new Error("réponse appel Produits erreur")
         }
 
-        const data = await response.json(); 
-        console.log("voici le retour des produits, data : ", data)
+        const data = await response.json();
 
         setProduits(data); 
 
@@ -93,6 +95,8 @@ export default function Home() {
 
        const data = await response.json();
        console.log(data.message, data.deletedProduct); 
+
+       router.refresh(); // pour rafraichir la page apres la suppression du produit
        alert("le produit a bien été supprimé"); 
 
 
