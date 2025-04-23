@@ -46,5 +46,6 @@ export default async function middleware(req: NextRequest) {
 export const config = {
     matcher: [ 
         "/products/newProduct/:path*",
+        "/products/updateProduct/:path*", 
      ] //path* : toutes les routes et sous routes de : products/newProduct 
 }
