@@ -42,7 +42,11 @@ export const productSchema = z.object({
 
   url: z
   .string()
-  .url({ message: "URL invalide"})
+  .url({ message: "URL invalide"}), 
+
+  is_active: z.boolean()
+  // .enum(["true", "false"])  // acceptation uniquement de 2 valeurs possibles, true ou false
+  // .transform((val) => val === "true") // on transforme bien la valeur en boolean
 })
 
 
@@ -50,11 +54,26 @@ export const productSchema = z.object({
 
 export default function updateProduit() {
 
+
+// Code pour state local et recup du paramètre dynamique dans l'URL : ----------------------//
 const params = useParams(); 
 const id = params?.idProduct; 
 
-const [ produit, setProduit ]  = useState<Produit>()
+const [ produit, setProduit ]  = useState<Produit>({
+  id_produit: 0, 
+   nom: "", 
+   description: "", 
+   prix: 0, 
+   image: "", 
+   is_active: false, 
+})
+   
 
+
+
+
+
+// Code pour gérer la récup des données du produit concerné et pour pré-remplir le formulaire : //
 useEffect (() =>  {
 
   async function getProduct(id: number) {
@@ -73,10 +92,8 @@ useEffect (() =>  {
          }
     
         const data = await response.json();
-        console.log("a quoi ressemble les datas retournées ?", data); 
 
         setProduit(data); 
-        console.log(data.is_active); 
       
       } catch(error) {
         console.error("Erreur lors de la récupération des infos du produit", error); 
@@ -90,10 +107,93 @@ useEffect (() =>  {
 
 }, [])
 
-function handleChange() {
+
+
+
+// Code pour gérer les changements d'etat dans les champs du form : ----------------------//
+function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+  event.preventDefault(); 
+
+  // if(!produit) return; 
+  
+  const name = event.target.name
+  const value = event.target.value
+
+  setProduit((prevState) => ({
+      ...prevState,
+      [name]: name === "is_active" ? value === "true" : value, // ici on mettra cette condition pour etre sur de transfomer les strings "true" ou "false" en boolean
+  })); 
+
 }
 
+
+
+// Code pour la soumission du form avec les modifs , appel API en methode PUT : ------//
 async function handleSubmitUpdateProduct() {
+
+  if(!produit) return; 
+
+  const result = productSchema.safeParse({
+    nom: produit.nom, 
+    description: produit.description, 
+    prix: produit.prix, 
+    url: produit.image, 
+    is_active: produit.is_active
+  })
+
+    if(!result.success) {
+    const errors = result.error.flatten().fieldErrors
+
+    const messages = Object.entries(errors) // convertit en tableau d'erreurs
+      .map(([field, errs]) => errs?.join(', '))
+      .filter(Boolean)
+  
+    alert("Erreurs dans le formulaire:\n- " + messages.join("\n- "))
+    return
+    } else {
+    alert("Les données entrées sont correctes")
+    }; 
+
+    const idNumber =  Number(id);
+ 
+    try {
+
+      const response = await fetch (`api/produits/updateOneProduct/${idNumber}`, {
+        method: "PUT", 
+        credentials: "include", 
+        headers: {
+          'Content-Type': "application/json", 
+          "x-csrf-token": Cookies.get("csrfToken") || "", 
+        }, 
+        body: JSON.stringify(produit)
+      });
+
+      if(!response.ok) {
+        throw new Error("Création de client non aboutie")
+       }
+  
+        const data = await response.json();
+       
+        alert("le produit a bien été modifié"); 
+    
+
+       setProduit({
+        id_produit: 0, 
+        nom: "", 
+        description: "", 
+        prix: 0, 
+        image: "", 
+        is_active: false})// on reset le formulaire
+
+      return; 
+
+
+    } catch(error) {
+      console.error("Erreur lors de la modification du produit", error); 
+        alert("Echec lors de la modification du produit")
+    }
+
+
 
 }
 
@@ -102,7 +202,7 @@ async function handleSubmitUpdateProduct() {
     <div
       className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center flex justify-center">
 
-<div
+        <div
             className="w-[350px] h-[1000px] flex flex-col text-center">
 
         <h2
@@ -113,94 +213,94 @@ async function handleSubmitUpdateProduct() {
 
 {produit && (
   
-<form
-className="flex flex-col mt-10 font-rubik"
-onSubmit={handleSubmitUpdateProduct}>
+            <form
+            className="flex flex-col mt-10 font-rubik"
+            onSubmit={handleSubmitUpdateProduct}>
 
-{/* Champ nom: */}
-<label 
-    htmlFor="nomProduit"
-    className="">
-    Nom du produit: 
-</label>
-<input 
-    type="text"
-    className="rounded-sm"
-    id="nomProduit"
-    onChange={handleChange}
-    value={produit?.nom}
-    required/>
-
-
-{/* Champ description: */}
-<label 
-    htmlFor="description"
-    className="">
-    Description du produit: 
-</label>
-<textarea 
-    className="rounded-sm"
-    id="description"
-    rows={3}
-    cols={5}
-    onChange={handleChange}
-    value={produit?.description}
-    required/>
-
-  {/* Champ prix: */}
-  <label 
-    htmlFor="prix"
-    className="">
-    Prix du produit en euro: 
-</label>
-<input 
-    type="text"
-    className="rounded-sm"
-    id="prix"
-    onChange={handleChange}
-    value={produit?.prix}
-    required/>
-
- {/* Champ image: */}
- <label 
-    htmlFor="imageProduit"
-    className="">
-    URL de l'image du produit: 
-</label>
-<input 
-    type="text"
-    className="rounded-sm "
-    id="imageProduit"
-    onChange={handleChange}
-    value={produit?.image}
-    required/>
-
-{/* Champ is_active: */}
- <label 
-    htmlFor="isActiveProduit"
-    className="">
-    Produit Actif sur le site ?  
-</label>
-<select 
-    className="mb-10"
-    name="isActive" 
-    id="isActiveProduit"
-    defaultValue={produit?.is_active === true ? "true" : "false"}>
-    <option value="true">Actif</option>
-    <option value="false">Inactif</option>
-</select>
-
-<button
-    className="w-[150px] h-[60px] bg-slate-700 text-white rounded-md font-boogaloo mx-auto text-xl ">
-    Valider les modifs  
-</button>
+            {/* Champ nom: */}
+            <label 
+                htmlFor="nomProduit"
+                className="">
+                Nom du produit: 
+            </label>
+            <input
+                type="text"
+                className="rounded-sm"
+                id="nomProduit"
+                onChange={handleChange}
+                name="nom" 
+                value={produit?.nom}
+                required/>
 
 
+            {/* Champ description: */}
+            <label 
+                htmlFor="description"
+                className="">
+                Description du produit: 
+            </label>
+            <textarea 
+                className="rounded-sm"
+                id="description"
+                rows={3}
+                cols={5}
+                onChange={handleChange}
+                name="description"
+                value={produit?.description}
+                required/>
 
-</form>
+              {/* Champ prix: */}
+              <label 
+                htmlFor="prix"
+                className="">
+                Prix du produit en euro: 
+            </label>
+            <input 
+                type="text"
+                className="rounded-sm"
+                id="prix"
+                onChange={handleChange}
+                name="prix"
+                value={produit?.prix}
+                required/>
 
+            {/* Champ image: */}
+            <label 
+                htmlFor="imageProduit"
+                className="">
+                URL de l'image du produit: 
+            </label>
+            <input 
+                type="text"
+                className="rounded-sm "
+                id="imageProduit"
+                onChange={handleChange}
+                name="image"
+                value={produit?.image}
+                required/>
 
+            {/* Champ is_active: */}
+            <label 
+                htmlFor="isActiveProduit"
+                className="">
+                Produit Actif sur le site ?  
+            </label>
+            <select 
+                className="mb-10"
+                name="isActive" 
+                id="isActiveProduit"
+                onChange={handleChange}
+                value={produit?.is_active ? "true" : "false"}>
+                <option value="true">Actif</option>
+                <option value="false">Inactif</option>
+            </select>
 
+            <button
+                className="w-[150px] h-[60px] bg-slate-700 text-white rounded-md font-boogaloo mx-auto text-xl ">
+                Valider les modifs  
+            </button>
+
+          </form>
 )}
         
         </div>
