@@ -11,6 +11,8 @@ const SECRET_KEY = process.env.JWT_SECRET;
 
 
 
+
+
 //Code pour les schémas de validation de données Zod pour le form updateProduct : //
 export const productSchema = z.object({
     nom: z
@@ -32,9 +34,9 @@ export const productSchema = z.object({
     .string()
     .url({ message: "URL invalide"}), 
   
-    is_active: z
-    .enum(["true", "false"])  // acceptation uniquement de 2 valeurs possibles, true ou false
-    .transform((val) => val === "true") // on transforme bien la valeur en boolean
+    is_active: z.boolean()
+    // .enum(["true", "false"])  // acceptation uniquement de 2 valeurs possibles, true ou false
+    // .transform((val) => val === "true") // on transforme bien la valeur en boolean
   })
 
 
@@ -47,6 +49,115 @@ export default async function updateProduct(req:NextApiRequest, res:NextApiRespo
     const { id } = req.query
     console.log("id récupéré coté back : ", id); 
 
-    const body = req.body.produit
-    console.log("body récupéré voté back", body)
+    const produit = req.body.produit
+    console.log("body récupéré voté back", produit); 
+
+
+
+// Code pour valider coté back le format des données :---------------------------//
+        const result = productSchema.safeParse({
+            nom: produit.nom, 
+            description: produit.description, 
+            prix: produit.prix, 
+            url: produit.image,
+            is_active: produit.is_active
+        })
+    
+        if(!result.success) {
+            const errors = result.error.flatten().fieldErrors
+        
+            const messages = Object.entries(errors) // convertit en tableau d'erreurs
+              .map(([field, errs]) => errs?.join(', '))
+              .filter(Boolean)
+          
+            console.log("Erreurs dans le formulaire:\n- " + messages.join("\n- "))
+            return
+          } else {
+            console.log("Les données entrées sont correctes")
+          }; 
+
+// Code pour verifier l'authentification de l'admin et la provenance de la requete : // 
+          
+                
+        try {
+// Recup des cookies OnlyHTTP seulement :
+        const cookies = cookie.parse(req.headers.cookie || "" ); // là on recup les cookies onlyHTTP seulement car on est coté serveur
+                
+        const authToken = cookies.authToken // cookie onlyHTTP 
+        const csrfToken = cookies.csrfToken // cookie onlyHTTP
+
+        if(!authToken) {
+        throw new Error ("pas de authToken")
+        }
+
+        if(!csrfToken) {
+        throw new Error ("pas de csrfToken")
+        }               
+          
+                  
+          
+//Recup du cookie envoyé par le header de la requete:
+        const csrfTokenClient = req.headers["x-csrf-token"]; 
+          
+        if(!csrfTokenClient) {
+            throw new Error ("pas de csrfTokenClient dans le header")
+        }
+          
+                  
+          
+//Les différentes validation pour la secu : 
+        if(!authToken && !csrfToken && !csrfTokenClient ) {
+            return res.status(401).json({ message: "Token(s) mmanquant(s)" })
+        }
+
+        if(!SECRET_KEY) {
+            throw new Error ("la clé sécrète n'est pas correctement définie")
+        }
+
+        const decoded = jwt.verify(authToken, SECRET_KEY); 
+
+        if(!decoded) {
+            return res.status(403).json({ message: "authToken invalide"})
+        }
+
+        if(csrfToken !== csrfTokenClient ) {
+            return res.status(403).json({ message: "CSRF invalide"})
+        }
+
+
+
+// Si authToken valide et la requete aussi (CSRF), alors on crée un nouveau produit : //    
+    let updatedProduct; 
+    
+    if(decoded && csrfToken) {
+
+        updatedProduct = await prisma.produit.update({
+            where: {
+                id_produit: Number(id)
+            }, 
+            data: {
+                nom: produit.nom, 
+                description: produit.description, 
+                prix: produit.prix, 
+                image: produit.image,
+                is_active: produit.is_active
+            }
+            
+          })
+
+
+        }
+
+        return res.status(200).json({ message: "produit bien modifié", updatedProduct })
+
+
+
+
+          
+// Code en cas d'erreur: -----------------------------------------------//
+} catch(error) {
+    console.error("erreur lors de la création d'un nouveau produit")
+    return res.status(500).json({ message: "Erreur interne du serveur"})
+}
+  
 }

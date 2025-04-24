@@ -45,14 +45,14 @@ export default async function newProduct(req:NextApiRequest, res:NextApiResponse
         return res.status(405).json({ message: "requête HTTP non autorisée "})
     }
 
-    const { nom, description, prix, image } = req.body;
+    const { nom, description, prix, image} = req.body;
   
 
 
 
 // Code pour valider coté back le format des données :---------------------------//
     const result = productSchema.safeParse({
-        nom, 
+        nom,  
         description, 
         prix, 
         url: image, 

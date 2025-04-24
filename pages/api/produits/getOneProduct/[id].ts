@@ -59,9 +59,7 @@ interface JwtPayload {
         })
 
         }
-
-        console.log("oneProduct", oneProduct)
-
+        
     return res.status(200).json(oneProduct); 
 
 // Code en cas d'erreur: -----------------------------------------------//

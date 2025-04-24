@@ -45,8 +45,6 @@ export const productSchema = z.object({
   .url({ message: "URL invalide"}), 
 
   is_active: z.boolean()
-  // .enum(["true", "false"])  // acceptation uniquement de 2 valeurs possibles, true ou false
-  // .transform((val) => val === "true") // on transforme bien la valeur en boolean
 })
 
 
@@ -57,7 +55,7 @@ export default function updateProduit() {
 
 // Code pour state local et recup du paramètre dynamique dans l'URL : ----------------------//
 const params = useParams(); 
-const id = params?.idProduct; 
+let id = params?.idProduct; 
 
 const [ produit, setProduit ]  = useState<Produit>({
   id_produit: 0, 
@@ -114,14 +112,21 @@ useEffect (() =>  {
 function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
   event.preventDefault(); 
 
-  // if(!produit) return; 
-  
   const name = event.target.name
   const value = event.target.value
 
+  let updatedValue; 
+
+  if (name ==="is_active") {   // ici on gère le cas du select
+    updatedValue = value === "true" ? true: false // ...pour transformer la string en boolean
+  } else {
+    updatedValue = value
+  }
+
   setProduit((prevState) => ({
       ...prevState,
-      [name]: name === "is_active" ? value === "true" : value, // ici on mettra cette condition pour etre sur de transfomer les strings "true" ou "false" en boolean
+      [name] : updatedValue,
+
   })); 
 
 }
@@ -154,18 +159,21 @@ async function handleSubmitUpdateProduct() {
     alert("Les données entrées sont correctes")
     }; 
 
-    const idNumber =  Number(id);
  
     try {
 
-      const response = await fetch (`api/produits/updateOneProduct/${idNumber}`, {
+      console.log("produit que l'on va envoyer en back : ", produit)
+      console.log("id qui va nous servirpour url ", id )
+
+
+      const response = await fetch (`/api/produits/updateOneProduct/${id}`, {
         method: "PUT", 
         credentials: "include", 
         headers: {
           'Content-Type': "application/json", 
           "x-csrf-token": Cookies.get("csrfToken") || "", 
         }, 
-        body: JSON.stringify(produit)
+        body: JSON.stringify({produit})
       });
 
       if(!response.ok) {
@@ -287,10 +295,10 @@ async function handleSubmitUpdateProduct() {
             </label>
             <select 
                 className="mb-10"
-                name="isActive" 
+                name="is_active" 
                 id="isActiveProduit"
                 onChange={handleChange}
-                value={produit?.is_active ? "true" : "false"}>
+                value={produit?.is_active === true ? "true" : "false"}>
                 <option value="true">Actif</option>
                 <option value="false">Inactif</option>
             </select>
