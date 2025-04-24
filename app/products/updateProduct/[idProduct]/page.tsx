@@ -110,92 +110,99 @@ async function handleSubmitUpdateProduct() {
             Page pour modifier le produit id n° {id}
         </h2>
 
-        <form
-            className="flex flex-col mt-10 font-rubik"
-            onSubmit={handleSubmitUpdateProduct}>
-            
-            {/* Champ nom: */}
-            <label 
-                htmlFor="nomProduit"
-                className="">
-                Nom du produit: 
-            </label>
-            <input 
-                type="text"
-                className="rounded-sm"
-                id="nomProduit"
-                onChange={handleChange}
-                value={produit?.nom}
-                required/>
+
+{produit && (
+  
+<form
+className="flex flex-col mt-10 font-rubik"
+onSubmit={handleSubmitUpdateProduct}>
+
+{/* Champ nom: */}
+<label 
+    htmlFor="nomProduit"
+    className="">
+    Nom du produit: 
+</label>
+<input 
+    type="text"
+    className="rounded-sm"
+    id="nomProduit"
+    onChange={handleChange}
+    value={produit?.nom}
+    required/>
 
 
-            {/* Champ description: */}
-            <label 
-                htmlFor="description"
-                className="">
-                Description du produit: 
-            </label>
-            <textarea 
-                className="rounded-sm"
-                id="description"
-                rows={3}
-                cols={5}
-                onChange={handleChange}
-                value={produit?.description}
-                required/>
+{/* Champ description: */}
+<label 
+    htmlFor="description"
+    className="">
+    Description du produit: 
+</label>
+<textarea 
+    className="rounded-sm"
+    id="description"
+    rows={3}
+    cols={5}
+    onChange={handleChange}
+    value={produit?.description}
+    required/>
 
-              {/* Champ prix: */}
-              <label 
-                htmlFor="prix"
-                className="">
-                Prix du produit en euro: 
-            </label>
-            <input 
-                type="text"
-                className="rounded-sm"
-                id="prix"
-                onChange={handleChange}
-                value={produit?.prix}
-                required/>
+  {/* Champ prix: */}
+  <label 
+    htmlFor="prix"
+    className="">
+    Prix du produit en euro: 
+</label>
+<input 
+    type="text"
+    className="rounded-sm"
+    id="prix"
+    onChange={handleChange}
+    value={produit?.prix}
+    required/>
 
-             {/* Champ image: */}
-             <label 
-                htmlFor="imageProduit"
-                className="">
-                URL de l'image du produit: 
-            </label>
-            <input 
-                type="text"
-                className="rounded-sm "
-                id="imageProduit"
-                onChange={handleChange}
-                value={produit?.image}
-                required/>
+ {/* Champ image: */}
+ <label 
+    htmlFor="imageProduit"
+    className="">
+    URL de l'image du produit: 
+</label>
+<input 
+    type="text"
+    className="rounded-sm "
+    id="imageProduit"
+    onChange={handleChange}
+    value={produit?.image}
+    required/>
 
-            {/* Champ is_active: */}
-             <label 
-                htmlFor="isActiveProduit"
-                className="">
-                Produit Actif sur le site ?  
-            </label>
-            <select 
-                className="mb-10"
-                name="isActive" 
-                id="isActiveProduit"
-                defaultValue={produit?.is_active === true ? "true" : "false"}>
-                <option value="true">Actif</option>
-                <option value="false">Inactif</option>
+{/* Champ is_active: */}
+ <label 
+    htmlFor="isActiveProduit"
+    className="">
+    Produit Actif sur le site ?  
+</label>
+<select 
+    className="mb-10"
+    name="isActive" 
+    id="isActiveProduit"
+    defaultValue={produit?.is_active === true ? "true" : "false"}>
+    <option value="true">Actif</option>
+    <option value="false">Inactif</option>
+</select>
 
-            </select>
+<button
+    className="w-[150px] h-[60px] bg-slate-700 text-white rounded-md font-boogaloo mx-auto text-xl ">
+    Valider les modifs  
+</button>
 
-            <button
-                className="w-[150px] h-[60px] bg-slate-700 text-white rounded-md font-boogaloo mx-auto text-xl ">
-                Valider les modifs  
-            </button>
-           
-            
 
-        </form>
+
+</form>
+
+
+
+)}
+        
         </div>
        
     </div>
