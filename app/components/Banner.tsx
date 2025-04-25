@@ -38,6 +38,7 @@ useEffect(() => {
          role: data.role, 
          id: data.id
       })
+
   
       } catch(error) {
         console.error("La verification de l'auth a échoué : ", error)

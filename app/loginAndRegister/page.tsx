@@ -118,12 +118,23 @@ const { setAuthenticated, role } = useStore();
        }
   
        const data = await response.json();
-       console.log( "message:", data.message );
+       console.log( "message:", data.message, data, data.isAuthenticated );
+       console.log("les retours pour l'auth sont : ", data.isAuthenticated, data.user.role); // A EFFACER une fois que test fini 
+
+       let id 
+
+       if(data.user.role === "admin") {
+        id = data.user.id_admin
+       } else if (data.user.role === "client") {
+        id = data.user.id_client
+       }
+
+       console.log("id admin ou client : ", id)
 
        setAuthenticated({
         isAuthenticated: true , 
         role: data.user.role, 
-        id: data.user.id
+        id: Number(id)
     }); 
 
        alert("Vous etes bien connecté !");
@@ -231,6 +242,7 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
 
      const data = await response.json();
      console.log( "messsage:", data.message ); 
+
      alert("Vous etes bien enregistré ! Vous pouvez vous connecter maintenant!");
 
     
