@@ -3,11 +3,13 @@ import { FaUserCircle } from "react-icons/fa"; // import de l'icone user <FaUser
 import { FaHeart } from "react-icons/fa"; // import de l'icone coeur <FaHeart />
 import { FaShoppingBasket } from "react-icons/fa"; // import de l'icone panier <FaShoppingBasket />
 import { IoHome } from "react-icons/io5"; // import de l'icone home , accueil <IoHome />
+import { BiSolidLogInCircle } from "react-icons/bi"; // import de l'icone login, <BiSolidLogInCircle />
+
+
 import Link from 'next/link';
 
 
-
-
+// AMELIORATION UX : IL FAUDRA IMPORTER LE USESTORE POUR CONDITIONNER OU PAS L AFFICHAGE DANS LA BARRE DE NAV DU LOGO DASHBOARD ADMIN  OU USER : pas possible d'y acceder si le user n'est pas connecté 
 
 
 // Code pour retourner le composant Nav: -----------------------------------------//
@@ -31,6 +33,15 @@ export default function Nav() {
                     {/* Icone Login :  */}
                     <li>
                         <Link href ="/loginAndRegister"
+                              className="">
+                              <BiSolidLogInCircle />
+                        </Link>
+                    </li>
+
+
+                    {/* Icone Dashboard Client ou Admin  :  */}
+                    <li>
+                        <Link href ="/dashboard"
                               className="">
                               <FaUserCircle />
                         </Link>

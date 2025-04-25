@@ -34,7 +34,7 @@ export default function Home() {
 
 // Code pour définir les states : --------------------------------- //
 
-  const { isAuthenticated, role } = useStore(); // state global
+  const { role } = useStore(); // state global
   const [produits, setProduits ] = useState<Produits[]>([]);  // state local
 
 
