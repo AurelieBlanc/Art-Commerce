@@ -108,7 +108,6 @@ const handleSubmitNewProduct =  async(e: React.FormEvent) => {
            }
       
         const data = await response.json();
-        console.log("nouveau produit ajouté")
         alert("le nouveau produit a bien été ajouté"); 
 
         form.reset() // on reset le formulaire

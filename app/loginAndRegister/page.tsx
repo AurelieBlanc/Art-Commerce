@@ -220,7 +220,7 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
    
 // appel API pour créer un nouvel user : ------------------------------------------------//
   try {
-    const response = await fetch ("api/clients/register", {
+    const response = await fetch ("/api/clients/register", {
       method: "POST", 
       headers: {
         'Content-Type': "application/json"
