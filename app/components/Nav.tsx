@@ -5,7 +5,6 @@ import { FaShoppingBasket } from "react-icons/fa"; // import de l'icone panier <
 import { IoHome } from "react-icons/io5"; // import de l'icone home , accueil <IoHome />
 import { BiSolidLogInCircle } from "react-icons/bi"; // import de l'icone login, <BiSolidLogInCircle />
 
-
 import Link from 'next/link';
 
 
