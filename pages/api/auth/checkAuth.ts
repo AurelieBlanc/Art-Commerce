@@ -19,12 +19,15 @@ interface JwtPayload {
 
 
 
+
 export default async function handler (req: NextApiRequest, res: NextApiResponse) {
     if(req.method !== "POST") {
         return res.status(405).json({ message: "requete HTTP non autorisée "})
     }
 
-// Code pour recupérer et lire les cookies : ------------------------------------ //
+
+
+// Code pour recupérer et lire le cookie authToken : ------------------------------------ //
 try {
     const cookies = cookie.parse(req.headers.cookie || ""); 
 
@@ -39,16 +42,14 @@ try {
     }
 
 
-// on va verifier que l'on est bien un objet decoded (sinon ca veut dire que notre authToken n'est pas bon ou expiré) : //
+
+// Code pour vérifier que l'on a bien un objet decoded (sinon ca veut dire que notre authToken n'est pas bon ou expiré) : //
     const decoded = jwt.verify(authToken, SECRET_KEY) as JwtPayload; 
     
     if(decoded) {
-
-    const csrfToken = await tokens.secret();
+    const csrfToken = await tokens.secret(); // on génere un code csrf
         
         
-
-
 // Code pour recréer un Set-Cookie avec authToken qui sera rafraichit et le token CSRF coté navigateur et coté serveur : //
          res.setHeader("Set-Cookie", [
             cookie.serialize("authToken", authToken, {
@@ -75,10 +76,9 @@ try {
             ]); 
 
         
-       
-        return res.status(200).json({ message: "user ou admin authentifié", isAuthenticated : true, role: decoded.role, id: decoded.id });
-        
-       
+// on retourne une réponse de succès + les données pour s'authentifier au front : ----------//       
+    return res.status(200).json({ message: "user ou admin authentifié", isAuthenticated : true, role: decoded.role, id: decoded.id });
+           
     } else {
         return res.status(401).json({ message: "Non Autorisé"})
     }

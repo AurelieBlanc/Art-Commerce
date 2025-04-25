@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react"; 
 import useStore from "@/stores/useStore";
 import Link from "next/link";
-import { useRouter } from 'next/navigation';
 import Cookies from "js-cookie";
 import { IoMdAddCircle } from "react-icons/io"; // icone pour ajouter un produit <IoMdAddCircle /> 
 import { FaPencilAlt } from "react-icons/fa"; // icone pour modifier un produit <FaPencilAlt />
@@ -33,18 +32,17 @@ interface Produits {
 
 export default function Home() {
 
-  const router = useRouter(); 
+// Code pour définir les states : --------------------------------- //
 
-  const { isAuthenticated, role } = useStore(); 
+  const { isAuthenticated, role } = useStore(); // state global
+  const [produits, setProduits ] = useState<Produits[]>([]);  // state local
 
-  const [produits, setProduits ] = useState<Produits[]>([]); 
+
 
 
 
 // Code appel API au montage du composant pour recupérer tous les produits : //
   useEffect(() => {
-
-    console.log("role loggue : ", role, "isAuth", isAuthenticated); 
 
     async function getProducts() {
       try {
@@ -55,9 +53,7 @@ export default function Home() {
         if(!response.ok) {
           throw new Error("réponse appel Produits erreur")
         }
-
         const data = await response.json();
-
         setProduits(data); 
 
       } catch(error) {
@@ -67,26 +63,32 @@ export default function Home() {
 
     getProducts(); 
 
-  }, [ ]); 
+  }, []); 
 
+
+
+// Fonction pour supprimer un produit selon son ID récupéré : -----------//
   async function deleteProduct(id: number) {
 
-    const isConfirmed = confirm(`etes vous sur de vouloir supprimer le produit suivant : ${id} ?` ); 
+    const isConfirmed = confirm(`Etes vous sur de vouloir supprimer le produit suivant : ${id} ?` ); 
 
     if(!isConfirmed) {
       alert ("annulation de la suppression du produit"); 
       return; 
     }
 
-    try {
 
+
+
+// Code appel API en méthode DELETE : ------------------------------------//
+    try {
       const response = await fetch (`/api/produits/deleteOneProduct/${id}`, {
         method: "DELETE", 
-        credentials: "include", 
+        credentials: "include", // envoi des cookies onlyHTTP au serveur
         headers: {
           'Content-Type': "application/json", 
-          "x-csrf-token": Cookies.get("csrfToken") || "", 
-      }, 
+          "x-csrf-token": Cookies.get("csrfToken") || "", //envoi du cookie classique csrf
+        }, 
       })
 
       if(!response.ok) {
@@ -94,19 +96,18 @@ export default function Home() {
        }
 
        const data = await response.json();
-       console.log(data.message, data.deletedProduct); 
+       console.log(data.message); 
 
-       router.refresh(); // pour rafraichir la page apres la suppression du produit
+       const idToDelete = Number(id); 
+       const result = produits.filter(elem => elem.id_produit !== idToDelete )
+       setProduits(result); 
+
        alert("le produit a bien été supprimé"); 
-
 
     } catch (error) {
       console.error("Erreur lors de la suppression du produit", error); 
       alert ("Echec lors de la suppression du produit")
     }
-
-
-    
   }
 
 
@@ -114,7 +115,7 @@ export default function Home() {
   if ( role === "admin") {
     return (
       <div
-        className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center h-full flex justify-center gap-10">
+        className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center h-full flex justify-center gap-6 flex-wrap">
 
             <div
                 className="addProduct block m-5">

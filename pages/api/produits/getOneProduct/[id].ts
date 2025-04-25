@@ -19,7 +19,7 @@ interface JwtPayload {
 
 
 
-  export default async function getOneProduct(req:NextApiRequest, res:NextApiResponse) {
+export default async function getOneProduct(req:NextApiRequest, res:NextApiResponse) {
     if(req.method !== "GET") {
         return res.status(405).json({ message: "requête HTTP non autorisée "})
     }
@@ -28,7 +28,6 @@ interface JwtPayload {
 
 
 //Code pour verif l'auth de l'admin : -------------------------------------//
-
     try {
         const cookies = cookie.parse(req.headers.cookie || "" ); // recup des cookies onlyHttp
 
@@ -42,15 +41,20 @@ interface JwtPayload {
             throw new Error ("la clé sécrète n'est pas correctement définie")
         };
 
+
+// Code pour verif l'existence de l'objet decoded --------------------------- //
         const decoded = jwt.verify(authToken, SECRET_KEY) as JwtPayload; 
 
         if(!decoded) {
            return res.status(403).json({ message: "authToken invalide"})
         }
 
+
+
+// si decoded est true, et que le role est bien l'admin alors on recupere le produit en question grace a son id :
         let oneProduct; 
 
-        if(decoded && decoded.role ==="admin") {
+        if(decoded && decoded.role ==="admin") { 
 
             oneProduct = await prisma.produit.findUnique ({
                 where:{
@@ -61,6 +65,9 @@ interface JwtPayload {
         }
         
     return res.status(200).json(oneProduct); 
+
+
+    
 
 // Code en cas d'erreur: -----------------------------------------------//
     } catch(error) {

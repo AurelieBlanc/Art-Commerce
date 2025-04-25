@@ -41,16 +41,18 @@ export const productSchema = z.object({
 
 
 
+
+
 export default async function updateProduct(req:NextApiRequest, res:NextApiResponse) {
     if(req.method !== "PUT") {
         return res.status(405).json({ message: "requête HTTP non autorisée "})
     }
 
-    const { id } = req.query
-    console.log("id récupéré coté back : ", id); 
 
+// Code pour récup l'id dans la requete + le produit dans le body de la requête : //
+    const { id } = req.query
     const produit = req.body.produit
-    console.log("body récupéré voté back", produit); 
+   
 
 
 
@@ -75,6 +77,9 @@ export default async function updateProduct(req:NextApiRequest, res:NextApiRespo
           } else {
             console.log("Les données entrées sont correctes")
           }; 
+
+
+
 
 // Code pour verifier l'authentification de l'admin et la provenance de la requete : // 
           
@@ -105,7 +110,7 @@ export default async function updateProduct(req:NextApiRequest, res:NextApiRespo
           
                   
           
-//Les différentes validation pour la secu : 
+// Code pour faire les différentes validation pour la secu : 
         if(!authToken && !csrfToken && !csrfTokenClient ) {
             return res.status(401).json({ message: "Token(s) mmanquant(s)" })
         }
@@ -148,7 +153,7 @@ export default async function updateProduct(req:NextApiRequest, res:NextApiRespo
 
         }
 
-        return res.status(200).json({ message: "produit bien modifié", updatedProduct })
+        return res.status(200).json({ message: "produit bien modifié"})
 
 
 

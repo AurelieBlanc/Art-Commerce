@@ -6,6 +6,7 @@ import useStore from "@/stores/useStore";
 
 
 
+
 // Code pour les schémas de validation Zod pour le form LOGIN :-----------------------------//
 export const loginSchema = z.object({
   email: z.string().email({ message: "Email invalide"}), 
@@ -79,10 +80,12 @@ const { setAuthenticated, role } = useStore();
     e.preventDefault(); 
   
 
+
 // Récupération des données grace au hook useRef de React: -----------------------// 
     const form = e.currentTarget as HTMLFormElement  // cette ligne nous permettra de reset les champs du formulaire une fois que l'user sera connecté
     const email = emailLoginRef.current?.value
     const mdp = mdpLoginRef.current?.value
+
 
 
 // Ici, on valide ou pas le bon schéma de données : ----------------------------//
@@ -99,7 +102,7 @@ const { setAuthenticated, role } = useStore();
       }
     
       
-// On fait l'appel API : ---------------------------------------------------------//    
+// Code pour l'appel API pour se connecter : ---------------------------------------------------//    
     try {
       const response = await fetch ("api/auth/login", {
         method: "POST", 
@@ -115,9 +118,7 @@ const { setAuthenticated, role } = useStore();
        }
   
        const data = await response.json();
-       console.log( "messsage:", data.message ); 
-       console.log("datas back admin ou client : ", data.user);
-    
+       console.log( "message:", data.message );
 
        setAuthenticated({
         isAuthenticated: true , 
@@ -125,20 +126,14 @@ const { setAuthenticated, role } = useStore();
         id: data.user.id
     }); 
 
-       
        alert("Vous etes bien connecté !");
-
-       
-
        form.reset(); // on reset le formulaire pour le nettoyer: 
-
        return; 
        
     } catch (error) {
       console.error("Erreur serveur: ", error); 
       alert ("Echec lors de la connexion , verifiez vos identifiants")
-    }
-    
+    } 
   }
 
 
@@ -175,11 +170,13 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
 
 
 
+
 // verification de la bonne correspondance des mots de passe : ----------------------------------------//
   if(mdp !== mdpCheck){
     alert("les mots de passe doivent se correspondre"); 
     return; 
   }
+
 
 
 
@@ -233,15 +230,11 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
      }
 
      const data = await response.json();
-    
      console.log( "messsage:", data.message ); 
-      
      alert("Vous etes bien enregistré ! Vous pouvez vous connecter maintenant!");
-
 
     
      form.reset(); // ici on reset le formulaire
-
      return; 
      
   } catch (error) {

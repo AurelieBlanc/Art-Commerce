@@ -10,8 +10,8 @@ import useStore from '@/stores/useStore';
 
 
 export default function Banner() {
-//Code pour lancer un appel API au montage du composant pour faire un checkAuth : //
 
+//Code pour lancer un appel API au montage du composant pour faire un checkAuth : //
 const { setAuthenticated } = useStore(); 
 
 useEffect(() => {
@@ -47,6 +47,9 @@ useEffect(() => {
     
   }, []) // se lance au montage du composant
 
+
+
+  
   return (
     <div
         className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center w-full h-[400px] flex justify-center">

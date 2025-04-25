@@ -36,7 +36,8 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
         return res.status(405).json({ message: "requête HTTP non autorisée "})
     }
 
-// Code pour verif les formats des données : -------------------------------------------//
+
+// Code pour verif les formats des données pour le login : ------------------------------//
     const { email, mdp } = req.body; 
 
     const result = loginSchema.safeParse({
@@ -59,16 +60,16 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
         })
 
 
-        if (client) {
-            const passwordMatch = await bcrypt.compare(mdp, client.mdp_hash,);  
+    if (client) { // si on a trouvé le client, alors on compare le mdp rentré avec celui stocké en BDD en hash: 
+        const passwordMatch = await bcrypt.compare(mdp, client.mdp_hash,);  
 
-            if(!passwordMatch) {
-                return res.status(401).json({ message: "identifiants invalides" })
-            }
+        if(!passwordMatch) {
+            return res.status(401).json({ message: "identifiants invalides" })
+        }
 
-            if (!SECRET_KEY) { // on verifie que la secret_key est bien définie pour eviter une erreur typeSecript
-                throw new Error ("le clé secrete SECRET_KEY n'est pas définie dans les variables d'environnement")
-            }
+        if (!SECRET_KEY) { // on verifie que la secret_key est bien définie pour eviter une erreur typeSecript
+            throw new Error ("le clé secrete SECRET_KEY n'est pas définie dans les variables d'environnement")
+        }
 
 
 
@@ -113,7 +114,6 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
 
 
 // Code pour la création d'une session lors de la connexion d'un user :----------------//
-
         const session = await prisma.session.create ({
             data: {
                 token: token,
@@ -127,9 +127,8 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
 
 
 // Code pour la réponse en cas de succès de l'appel API : -------------------------//
-
-console.log("client en back ", client)
-return res.status(200).json({ message: "Connexion client réussie", user: client })
+    console.log("client en back ", client)
+    return res.status(200).json({ message: "Connexion client réussie", user: client })
 
         }
 
@@ -137,16 +136,14 @@ return res.status(200).json({ message: "Connexion client réussie", user: client
 
 
 
-
-
 // Code pour la connexion de l'admin : "si ce n'est pas un client qui essaie de se connecter , alors c'est peut-être l'admin" ----------------------------------------//
-
-        else { const admin = await prisma.admin.findUnique({
+        else {const admin = await prisma.admin.findUnique({
                 where: { mail: email }
             })
+
         
         if(admin) {
-        
+            // on compare le mdp rentré par l'admin avec celui stocké en bdd :
             const passwordMatch = await bcrypt.compare(mdp, admin.mdp_hash); 
     
             if(!passwordMatch) {
@@ -166,7 +163,6 @@ return res.status(200).json({ message: "Connexion client réussie", user: client
                 SECRET_KEY, 
                 { expiresIn: "7d" }
             ); 
-
 
 
  
@@ -205,20 +201,17 @@ return res.status(200).json({ message: "Connexion admin réussie", user: admin }
 
 
 
-
-
-
 // Code si ce n'est ni l'Admin ni le client : ----------------------------------------//
         } else {
             return res.status(404).json({ message: "Utilisateur non trouvé ! "})
         }
-
     }
 
 
-} catch(error) {
-    console.error("erreur lors de la connexion Admin")
-    return res.status(500).json({ message: "Erreur interne du serveur"})
-}   
 
+// Code en cas d'erreur lors dun login : --------------------------------------------//
+    } catch(error) {
+        console.error("erreur lors de la connexion Admin")
+        return res.status(500).json({ message: "Erreur interne du serveur"})
+    }   
 }

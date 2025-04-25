@@ -73,6 +73,7 @@ export default async function newProduct(req:NextApiRequest, res:NextApiResponse
 
 
 
+
 // Code pour verifier l'authentification de l'admin et la provenance de la requete : // 
 
       try {
@@ -102,7 +103,7 @@ export default async function newProduct(req:NextApiRequest, res:NextApiResponse
 
         
 
-//Les différentes validation pour la secu : 
+// Code pour les différentes validation pour la secu : 
         if(!authToken && !csrfToken && !csrfTokenClient ) {
           return res.status(401).json({ message: "Token(s) mmanquant(s)" })
         }
@@ -123,7 +124,7 @@ export default async function newProduct(req:NextApiRequest, res:NextApiResponse
 
 
   
-// Si authToken valide et la requete aussi (CSRF), alors on crée un nouveau produit : //    
+// Si authToken est valide et la requete aussi (CSRF), alors on crée un nouveau produit : //    
         let newProduct; 
 
         if(decoded && csrfToken) {
@@ -141,7 +142,7 @@ export default async function newProduct(req:NextApiRequest, res:NextApiResponse
 
         }
 
-        return res.status(200).json({ message: "nouveau produit bien ajouté", newProduct })
+        return res.status(200).json({ message: "nouveau produit bien ajouté" })
 
 
 

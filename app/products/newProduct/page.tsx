@@ -38,21 +38,31 @@ export const productSchema = z.object({
 
 export default function createProduct() {
 
+// Création des states avec la méthode useRef : ---------------------------------//
 const nomRef = useRef<HTMLInputElement>(null); 
 const descriptionRef = useRef<HTMLTextAreaElement>(null); 
 const prixRef = useRef<HTMLInputElement>(null); 
 const imageRef = useRef<HTMLInputElement>(null)
 
+
+
+// Fonction pour la création d'un nouveau produit : ---------------------------//
 const handleSubmitNewProduct =  async(e: React.FormEvent) => {
     e.preventDefault(); 
 
     const form = e.currentTarget as HTMLFormElement // cette ligne nous permettra de reste le formulaire aores la validation
 
+
+// Récupération des données dans le form : --------------------------------- //
     const nom = nomRef.current?.value
     const description = descriptionRef.current?.value
     const prix = prixRef.current?.value
     const image = imageRef.current?.value
 
+
+
+
+// Code pour verifier le bon format des données : --------------------------//
     const result = productSchema.safeParse({
         nom, 
         description, 
@@ -73,13 +83,17 @@ const handleSubmitNewProduct =  async(e: React.FormEvent) => {
         console.log("Les données entrées sont correctes")
       }
 
+
+
+
+// Code pour l'appel API pour la création d'un nouveau produit en BDD : ------------//
     try {
         const response = await fetch ("/api/produits/createNewProduct", {
             method: "POST", 
             credentials: "include", // pour envoyer aussi les cookies onlyHTTP en back
             headers: {
                 'Content-Type': "application/json", 
-                "x-csrf-token": Cookies.get("csrfToken") || "", 
+                "x-csrf-token": Cookies.get("csrfToken") || "", // on envoie le cookie simple csrf pour comparer avec le tookie onlyHTTP csrf
             }, 
             body: JSON.stringify({
                 nom, 
@@ -94,9 +108,8 @@ const handleSubmitNewProduct =  async(e: React.FormEvent) => {
            }
       
         const data = await response.json();
-        console.log("nouveau produit ajouté : ", data.newProduct )
+        console.log("nouveau produit ajouté")
         alert("le nouveau produit a bien été ajouté"); 
-        
 
         form.reset() // on reset le formulaire
         return; 

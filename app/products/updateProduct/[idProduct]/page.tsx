@@ -52,8 +52,7 @@ export const productSchema = z.object({
 
 export default function updateProduit() {
 
-
-// Code pour state local et recup du paramètre dynamique dans l'URL : ----------------------//
+// Code pour le state local et la recup du paramètre dynamique dans l'URL : ----------------------//
 const params = useParams(); 
 let id = params?.idProduct; 
 
@@ -117,8 +116,8 @@ function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaEl
 
   let updatedValue; 
 
-  if (name ==="is_active") {   // ici on gère le cas du select
-    updatedValue = value === "true" ? true: false // ...pour transformer la string en boolean
+  if (name ==="is_active") {   // ici on gère le cas particulier du select...
+    updatedValue = value === "true" ? true: false // ...dans le but de transformer la string en boolean
   } else {
     updatedValue = value
   }
@@ -133,11 +132,15 @@ function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaEl
 
 
 
-// Code pour la soumission du form avec les modifs , appel API en methode PUT : ------//
+
+//// Code pour la soumission du form avec les modifs , appel API en methode PUT : ////
 async function handleSubmitUpdateProduct() {
 
-  if(!produit) return; 
+if(!produit) return; 
 
+
+
+// On verifie les formats des données : -----------------------------------------//
   const result = productSchema.safeParse({
     nom: produit.nom, 
     description: produit.description, 
@@ -160,18 +163,15 @@ async function handleSubmitUpdateProduct() {
     }; 
 
  
+  
+  // Code pour l'appel API en méthode PUT pour modifier les données du produit : //
     try {
-
-      console.log("produit que l'on va envoyer en back : ", produit)
-      console.log("id qui va nous servirpour url ", id )
-
-
       const response = await fetch (`/api/produits/updateOneProduct/${id}`, {
         method: "PUT", 
-        credentials: "include", 
+        credentials: "include", // envoi des cookies onlyHTTP
         headers: {
           'Content-Type': "application/json", 
-          "x-csrf-token": Cookies.get("csrfToken") || "", 
+          "x-csrf-token": Cookies.get("csrfToken") || "",  // envoi du cookie simple csrf
         }, 
         body: JSON.stringify({produit})
       });
@@ -181,28 +181,14 @@ async function handleSubmitUpdateProduct() {
        }
   
         const data = await response.json();
-       
         alert("le produit a bien été modifié"); 
-    
-
-       setProduit({
-        id_produit: 0, 
-        nom: "", 
-        description: "", 
-        prix: 0, 
-        image: "", 
-        is_active: false})// on reset le formulaire
 
       return; 
-
 
     } catch(error) {
       console.error("Erreur lors de la modification du produit", error); 
         alert("Echec lors de la modification du produit")
     }
-
-
-
 }
 
 

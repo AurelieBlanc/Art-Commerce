@@ -10,31 +10,40 @@ import Link from 'next/link';
 
 
 
-// Code pour retourner composant Nav: -----------------------------------------//
+// Code pour retourner le composant Nav: -----------------------------------------//
 export default function Nav() {
   return (
     <div
         className="bg-[url('/fond/fondArtCommerceRose.png')] bg-cover bg-center w-full h-[60px] flex items-center justify-center">
             <ul
                 className="flex gap-5 font-sedgwick text-slate-800 text-[26px]">
+
+
+                    {/* Icone Home :  */}
                     <li>
                         <Link href ="/"
-                              className=""
-                        >
-                        <IoHome />
+                              className="">
+                              <IoHome />
                         </Link>
                     </li>
-                    <li>
-                        <FaShoppingBasket />
-                    </li>
+
+
+                    {/* Icone Login :  */}
                     <li>
                         <Link href ="/loginAndRegister"
-                              className=""
-                        >
-                        <FaUserCircle />
+                              className="">
+                              <FaUserCircle />
                         </Link>
-
                     </li>
+
+
+                     {/* Icone Panier :  */}
+                     <li>
+                        <FaShoppingBasket />
+                    </li>
+
+
+                    {/* Icone Like :  */}
                     <li>
                         <FaHeart />
                     </li>
