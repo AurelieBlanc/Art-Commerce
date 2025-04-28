@@ -1,18 +1,50 @@
 // Code pour les imports : --------------------------------------------------//
+"use client"
+import useStore from "@/stores/useStore";
 import { FaUserCircle } from "react-icons/fa"; // import de l'icone user <FaUserCircle />
 import { FaHeart } from "react-icons/fa"; // import de l'icone coeur <FaHeart />
 import { FaShoppingBasket } from "react-icons/fa"; // import de l'icone panier <FaShoppingBasket />
 import { IoHome } from "react-icons/io5"; // import de l'icone home , accueil <IoHome />
 import { BiSolidLogInCircle } from "react-icons/bi"; // import de l'icone login, <BiSolidLogInCircle />
+import { RiLogoutCircleFill } from "react-icons/ri"; // import de l'icone Logout <RiLogoutCircleFill />
+
+
 
 import Link from 'next/link';
 
 
-// AMELIORATION UX : IL FAUDRA IMPORTER LE USESTORE POUR CONDITIONNER OU PAS L AFFICHAGE DANS LA BARRE DE NAV DU LOGO DASHBOARD ADMIN  OU USER : pas possible d'y acceder si le user n'est pas connecté 
+
+
 
 
 // Code pour retourner le composant Nav: -----------------------------------------//
 export default function Nav() {
+
+const { isAuthenticated, setAuthenticated } = useStore(); 
+
+async function logout() {
+
+    try {
+        const response = await fetch ("/api/auth/logout", {
+            method: "POST", 
+            credentials: "include", 
+        })
+
+        if(!response.ok) {
+            throw new Error("erreur Appel API pour la deconnexion")
+        }
+
+        const data = await response.json(); 
+        console.log("message du back ", data.message, data.isAuthenticated); 
+        setAuthenticated(data.isAuthenticated); 
+
+    } catch (error) {
+        console.error("la déconnexion a échoué", error)
+    }
+
+}
+
+
   return (
     <div
         className="bg-[url('/fond/fondArtCommerceRose.png')] bg-cover bg-center w-full h-[60px] flex items-center justify-center">
@@ -39,12 +71,16 @@ export default function Nav() {
 
 
                     {/* Icone Dashboard Client ou Admin  :  */}
-                    <li>
+                    
+                    { isAuthenticated &&
+                        <li>
                         <Link href ="/dashboard"
                               className="">
                               <FaUserCircle />
                         </Link>
                     </li>
+                    }
+                    
 
 
                      {/* Icone Panier :  */}
@@ -57,6 +93,17 @@ export default function Nav() {
                     <li>
                         <FaHeart />
                     </li>
+
+
+                    {/* Icone Logout :  */}
+                    { isAuthenticated &&
+                    <li>
+                        <RiLogoutCircleFill
+                            className="text-red-600"
+                            onClick={logout} />
+                    </li>
+                    }
+                    
 
             </ul>
         
