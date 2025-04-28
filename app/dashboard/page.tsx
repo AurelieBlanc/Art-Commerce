@@ -97,7 +97,14 @@ const [ infosClient, setInfosClient ] = useState<InfosClient>({
     telephone: ""
 });  // state local 
 
-const [ infosAdmin, setInfosAdmin ] = useState();  // state local 
+
+const [ infosAdmin, setInfosAdmin ] = useState<InfosAdmin>({
+    id_admin: 0, 
+    mail: "", 
+    role: "", 
+    prenom: "", 
+    nom: "", 
+});  // state local 
 
 
 
@@ -139,7 +146,8 @@ useEffect(() => {
             }
 
             const data = await response.json()
-            setInfosAdmin(data); 
+            setInfosAdmin(data.infosAdmin);
+            console.log("quels sont les retours pour l'admin", data.infosAdmin)
 
         } catch(error) {
             console.error("la récupération des données de l'admin a échoué", error)
@@ -151,6 +159,9 @@ useEffect(() => {
 
 }, [])
 
+
+
+// fonction pour gérer les changements de states dans les inputs du formulaire : //
 function handleChangeClient(event: React.ChangeEvent<HTMLInputElement>) {
 
     const { name } = event.target; 
@@ -163,6 +174,10 @@ function handleChangeClient(event: React.ChangeEvent<HTMLInputElement>) {
 }
 
 
+
+
+
+// fonction pour soumettre le formulaire update Client : --------------//
 async function handleSubmitClient(event: React.FormEvent<HTMLFormElement>) {
     event?.preventDefault()
 
@@ -224,12 +239,39 @@ try {
 }
 
  
-
+// Ici on gerera l'affichage en fonction de quel rôle est authentifié : //
 if ( role === "admin" && isAuthenticated === true) {
     return (
         <div
-            className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-center bg-cover">
-            PAGE DASHBOARD ADMIN ici
+            className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-center bg-cover flex flex-col items-center">
+            <h2
+                className="font-boogaloo text-2xl mt-5">
+                    Infos de l'admin id n° {infosAdmin.id_admin} :
+            </h2>
+
+            <p
+                className="mt-6 font-boogaloo text-xl">
+                Prénom, nom: 
+            </p>
+            <p
+                className="mt-1 font-rubik bg-white w-[240px] text-center rounded-lg">
+                {infosAdmin.prenom} {infosAdmin.nom} 
+            </p>
+
+            <p
+                className="mt-4 font-boogaloo text-xl">
+                Email : 
+            </p>
+            <p
+                className="mt-1 font-rubik bg-white w-[240px] text-center rounded-lg mb-6">
+                {infosAdmin.mail}
+            </p>
+
+            <button
+                className="bg-slate-700 text-white w-[240px] font-boogaloo p-3 rounded-md mb-8 border border-black shadow-2xl">
+                Gestion des statuts de commandes et des sessions clients
+
+            </button>
         
         </div>
       )

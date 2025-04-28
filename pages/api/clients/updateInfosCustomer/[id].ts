@@ -100,6 +100,7 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
           }; 
 
 
+          
 
 // Code pour verifier l'authentification de l'admin et la provenance de la requete : // 
                 
