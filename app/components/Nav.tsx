@@ -98,9 +98,11 @@ async function logout() {
                     {/* Icone Logout :  */}
                     { isAuthenticated &&
                     <li>
+                        <button>
                         <RiLogoutCircleFill
                             className="text-red-600"
                             onClick={logout} />
+                        </button>
                     </li>
                     }
                     
