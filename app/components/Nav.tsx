@@ -22,6 +22,9 @@ export default function Nav() {
 
 const { isAuthenticated, setAuthenticated } = useStore(); 
 
+
+
+// Fonction pour déconnecter le user avec un appel API en back, méthode POST : // 
 async function logout() {
 
     try {
@@ -34,8 +37,8 @@ async function logout() {
             throw new Error("erreur Appel API pour la deconnexion")
         }
 
+// on recuperera la réponse avec le statut isAuthenticated, que l'on mettra à jour dans le store générale, pour que non seulement tous les cookies d'authentification et CSRF soient expirés, mais aussi pour que le store global reflète la deconnexion notammement dans la barre de nav (disparition des icones compte et deconnexion) : //
         const data = await response.json(); 
-        console.log("message du back ", data.message, data.isAuthenticated); 
         setAuthenticated(data.isAuthenticated); 
 
     } catch (error) {
@@ -44,7 +47,7 @@ async function logout() {
 
 }
 
-
+// Code pour retourner le JSX ; certains logos sont affichés de manière conditionnelle : //
   return (
     <div
         className="bg-[url('/fond/fondArtCommerceRose.png')] bg-cover bg-center w-full h-[60px] flex items-center justify-center">

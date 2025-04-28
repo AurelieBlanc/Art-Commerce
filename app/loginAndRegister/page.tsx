@@ -118,8 +118,8 @@ const { setAuthenticated, role } = useStore();
        }
   
        const data = await response.json();
-       console.log( "message:", data.message, data, data.isAuthenticated );
-       console.log("les retours pour l'auth sont : ", data.isAuthenticated, data.user.role); // A EFFACER une fois que test fini 
+       console.log( "message:", data.message, data.isAuthenticated );
+       
 
        let id 
 
@@ -128,8 +128,6 @@ const { setAuthenticated, role } = useStore();
        } else if (data.user.role === "client") {
         id = data.user.id_client
        }
-
-       console.log("id admin ou client : ", id)
 
        setAuthenticated({
         isAuthenticated: true , 

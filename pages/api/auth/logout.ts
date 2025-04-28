@@ -4,8 +4,11 @@ import  jwt from "jsonwebtoken";
 import * as cookie from "cookie"; 
 
 
+
 const SECRET_KEY = process.env.JWT_SECRET; 
 const ENV = process.env.NODE_ENV; 
+
+
 
 
 
@@ -16,14 +19,12 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
 
 
-// Code pour verifier le authToken pour etre sur que la requete provient bien d'un client ou de l'admin du site : //
-    
+// Code pour verifier le authToken pour etre sur que la requete provient bien d'un client ou de l'admin du site : //   
     try {
 
     const cookies = cookie.parse(req.headers.cookie || ""); 
 
     const authToken = cookies.authToken;
-    const csrfToken = cookies.csrfToken; 
 
 
     if(!authToken) {
@@ -36,6 +37,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
     const decoded = jwt.verify(authToken, SECRET_KEY); 
 
+// Si on a bien un authToken valide, alors on va écraser tous les cookies authToken et csrfToken onlyHTTP et csrfToken classique en modifiant leur durée à 0 : //
     if(decoded) {
 
          res.setHeader("Set-Cookie", [
@@ -64,16 +66,17 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
         }
 
+
+
+
+// On va retourner une réponse avec un statut isAuthenticated à false pour mettre à jour le state global en front : //
     return res.status(200).json({ message: "user ou admin déconnecté", isAuthenticated : false });
 
+
+
+// Code pour attraper une erreur : -------------------------------------//
     } catch(error) {
         console.error("Erreur lors de la vérif de la déconnexion du client ou de l'admin", error); 
         return res.status(500).json({ message: "erreur serveur" })
     }
-
-
-
-
-
-
 }

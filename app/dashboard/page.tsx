@@ -111,7 +111,6 @@ const [ infosAdmin, setInfosAdmin ] = useState<InfosAdmin>({
 
 // Code pour recupérer au montage de la page soit les infos de l'admin, soit celles du client : 
 useEffect(() => {
-    console.log (isAuthenticated, role, id); 
 
     async function getInfos () {
 
@@ -147,7 +146,7 @@ useEffect(() => {
 
             const data = await response.json()
             setInfosAdmin(data.infosAdmin);
-            console.log("quels sont les retours pour l'admin", data.infosAdmin)
+            
 
         } catch(error) {
             console.error("la récupération des données de l'admin a échoué", error)
@@ -208,8 +207,8 @@ async function handleSubmitClient(event: React.FormEvent<HTMLFormElement>) {
         }
 
 
-// Appel APi pour modifier les données du client : ----------------------------//
 
+// Appel APi pour modifier les données du client : ----------------------------//
 try {
     const id = infosClient.id_client; 
 
