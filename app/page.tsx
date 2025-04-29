@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import useStore from "@/stores/useStore";
 import Link from "next/link";
 import Cookies from "js-cookie";
+import { getPanier, savePanier, addPanier } from "@/utils/panierCookie";
 import { IoMdAddCircle } from "react-icons/io"; // icone pour ajouter un produit <IoMdAddCircle /> 
 import { FaPencilAlt } from "react-icons/fa"; // icone pour modifier un produit <FaPencilAlt />
 import { MdDeleteForever } from "react-icons/md"; //icone pour supprimer un produit <MdDeleteForever />
@@ -108,6 +109,21 @@ export default function Home() {
       console.error("Erreur lors de la suppression du produit", error); 
       alert ("Echec lors de la suppression du produit")
     }
+  }
+
+
+  function addBasket(id: number) {
+    const basket = getPanier(); 
+
+    if (Array.isArray(basket) && basket.length === 0) {
+     savePanier(basket)
+    }
+
+    const stringId = id.toString(); 
+
+    addPanier(stringId); 
+
+    alert("Element bien ajouté au panier !")
   }
 
 
@@ -235,8 +251,9 @@ export default function Home() {
                     </div>
       
                     <button
+                      onClick={() => addBasket(produit.id_produit)}
                       className=" bg-slate-800 text-white w-[150px] h-[40px] rounded-sm font-boogaloo">
-                        Ajouter au panier
+                      Ajouter au panier
       
                     </button>
                     </div>

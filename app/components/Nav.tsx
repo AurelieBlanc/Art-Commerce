@@ -88,7 +88,11 @@ async function logout() {
 
                      {/* Icone Panier :  */}
                      <li>
+                        <Link
+                            className=""
+                            href="/panier">
                         <FaShoppingBasket />
+                        </Link>
                     </li>
 
 

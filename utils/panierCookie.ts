@@ -12,6 +12,7 @@ export interface Panier {
 
 
 // Code pour les différentes fonctions permettant de manipuler le cookie du panier : 
+// Fonction pour récupérer le cookie du panier : //
 export function getPanier(): Panier[] {
     const panier = Cookies.get(PANIER_COOKIE_NAME); 
     return panier ? JSON.parse(panier): []
@@ -19,7 +20,7 @@ export function getPanier(): Panier[] {
 
 
 
-// Fonction pour sauver le panier : -------------------------------------//
+// Fonction pour créer le panier et le sauvegarder : -------------------------------------//
 export function savePanier(panier: Panier[]) {
     Cookies.set(PANIER_COOKIE_NAME, JSON.stringify(panier), {expires: 7})
 }

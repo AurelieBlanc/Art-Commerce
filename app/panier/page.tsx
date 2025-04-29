@@ -1,0 +1,203 @@
+//Code pour les imports : 
+"use client"
+import { getPanier, removeFromPanier, deletePanier } from "@/utils/panierCookie"
+import { useState, useEffect } from "react"; 
+import { RiDeleteBin2Fill } from "react-icons/ri"; // icone pour delete le produit : <RiDeleteBin2Fill />
+import { IoIosWarning } from "react-icons/io"; // icone warning <IoIosWarning />
+
+
+
+
+
+
+
+interface ProduitsPanier {
+    id_produit: number, 
+    nom: string, 
+    prix: number
+}
+
+
+
+
+export default function page() {
+
+const [ produitsPanier, setProduitsPanier ] = useState<ProduitsPanier[]>([]); 
+
+const [ totalPrix, setTotalPrix ] = useState(0); 
+
+
+// Code pour recuperer les produits dans le cookie pour implementer le panier : //
+useEffect (() => {
+
+    const panier = getPanier(); 
+    let idsPanier: string[] = []; 
+
+    panier.map((elem) =>{ 
+        idsPanier.push(elem.id); 
+    })
+
+    
+// Appel API en methode GET dans lequel on envoie en paramètre les id des produits à recupérer : //
+    async function getProducts () {
+        try {
+            const response = await fetch(`/api/panier/getArticles?ids=${idsPanier.join(",")}`, {
+                method: "GET", 
+            })
+
+        const data = await response.json(); 
+        console.log("retour des datas du back : ", data) // A EFFACER une fois que ce sera correctement implémenté
+        if(Array.isArray(data)) {
+            setProduitsPanier(data); 
+        }
+        
+
+        } catch(error) {
+            console.error("La construction du panier a échoué ", error)
+        }
+    }
+
+   getProducts(); 
+
+}, [])
+
+function deleteProduct(id: number) {
+    const idString = id.toString(); 
+    removeFromPanier(idString);
+
+    const panier = getPanier(); 
+    let idsPanier: string[] = []; 
+
+    console.log("panier", panier)
+
+    setProduitsPanier ((prevState) => {
+
+        if(!prevState) {
+            return []; 
+        } else {
+            return prevState.filter (elem => elem.id_produit !== id)
+        }  
+    })   
+}
+
+function deleteAllPanier() {
+    deletePanier()
+
+    setProduitsPanier([])
+    alert("La totalité de votre panier a été supprimé")
+}
+
+useEffect(() => {
+    
+    console.log("construction du produit pabier", produitsPanier)
+
+}, [produitsPanier])
+
+
+useEffect(() => {
+    function totalPanier() {
+        let tablePrix = 0;
+        produitsPanier?.map((produit)=> {
+             
+            const prixProduit = Number(produit.prix); 
+            console.log(prixProduit); 
+            tablePrix = prixProduit + tablePrix; // tablePrix += prixProduit
+            
+        })
+
+        setTotalPrix(tablePrix); 
+        console.log(totalPrix); 
+    }
+
+    totalPanier(); 
+
+}, [produitsPanier])
+
+
+  return (
+    <div
+        className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center flex flex-col justify-center items-center">
+            <h2
+                className="font-boogaloo text-2xl mt-6 mb-2">
+                Récapitulatif du panier : 
+            </h2>
+
+            {produitsPanier?.map((elem) =>{
+                return (
+                    <div
+                    key = {elem.id_produit}
+                    className="produitPrix flex font-rubik mt-2">
+
+                    {/* Champ nom du produit :  */}
+                    <div
+                        className="produit">
+                        <p>
+                            {elem.nom} :
+                        </p>
+                    </div>
+
+                    {/* Champ prix du produit : */}
+                    <div
+                        className="prix ml-5">
+                        <p>
+                            {elem.prix} €
+                        </p>
+                    </div>
+
+                    {/* Champ delete produit : */}
+                    <div
+                        className="prix ml-3 text-red-600 text-xl">
+                        <p>
+                            <RiDeleteBin2Fill 
+                                className=""
+                                onClick={() => deleteProduct(elem.id_produit)}/>
+
+                        </p>
+                    </div>
+
+                    </div> )
+            })} 
+
+            
+
+            <div
+                className="totalProduits font-bold flex font-rubik mt-2">
+
+                <div
+                    className="produit">
+                    <p>
+                        Total Produits
+                    </p>
+                </div>
+
+                <div
+                    className="prix ml-10">
+                    <p>
+                        {totalPrix} €
+                    </p>
+                </div>
+                
+            </div>
+
+            <button
+                className="mt-8 font-boogaloo text-lg w-[180px] h-[46px] bg-slate-700 text-white rounded-md shadow-lg">
+                Valider mon panier
+            </button>
+
+            <button
+                onClick={deleteAllPanier}
+                className="mt-6 font-boogaloo text-lg w-[180px] h-[46px] bg-red-700 text-white rounded-md shadow-lg">
+                    <IoIosWarning
+                        className="inline-block relative bottom-1 mr-1" />
+                    Effacer tout mon panier
+            </button>
+
+            <p
+                className="text-sm mt-2 mb-2">
+                *Frais de ports calculés à la prochaine étape
+            </p>
+
+
+    </div>
+  )
+}
