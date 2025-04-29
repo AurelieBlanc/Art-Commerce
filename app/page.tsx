@@ -140,7 +140,8 @@ export default function Home() {
                         <Image
                          src={produit.image}
                         width={250}
-                        height={100}
+                        height={0}
+                        layout="intrinsic"
                         alt={produit.description}
                         />
                     </div>
@@ -200,7 +201,7 @@ export default function Home() {
   } else {
     return (
       <div
-        className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center h-full flex justify-center gap-10">
+        className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center h-full flex justify-center gap-6 flex-wrap">
   
                 {produits.map((produit) => (
                   <div
@@ -212,7 +213,8 @@ export default function Home() {
                         <Image
                          src={produit.image}
                         width={250}
-                        height={100}
+                        height={0}
+                        layout="intrinsic"
                         alt={produit.description}
                         />
                     </div>
