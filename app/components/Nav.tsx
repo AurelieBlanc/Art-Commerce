@@ -50,9 +50,9 @@ async function logout() {
 // Code pour retourner le JSX ; certains logos sont affichés de manière conditionnelle : //
   return (
     <div
-        className="bg-[url('/fond/fondArtCommerceRose.png')] bg-cover bg-center w-full h-[60px] flex items-center justify-center">
+        className="bg-[url('/fond/fondArtCommerceTurT.png')] bg-cover bg-center w-full h-[60px] flex items-center justify-center">
             <ul
-                className="flex gap-5 font-sedgwick text-slate-800 text-[26px]">
+                className="flex gap-5 font-sedgwick text-slate-800 text-[26px] relative top-2">
 
 
                     {/* Icone Home :  */}

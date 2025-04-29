@@ -57,7 +57,7 @@ useEffect(() => {
             
             <div>
                 <Image
-                    src="vecto/ArtCommerce.svg"
+                    src="vecto/LogoArtCommerce.svg"
                     alt="logo de Art Commerce"
                     width={400}
                     height={400}

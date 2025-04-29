@@ -12,7 +12,7 @@ import { AiFillInstagram } from "react-icons/ai"; // import icone instagram <AiF
 export default function Footer() {
   return (
     <div
-        className="bg-[url('/fond/fondArtCommerceRose.png')] bg-cover bg-center w-full h-[120px] flex justify-center items-center text-center">
+        className="bg-[url('/fond/fondArtCommerceTurT.png')] bg-cover bg-center w-full h-[120px] flex justify-center items-center text-center">
             <ul
                 className="font-boogaloo flex flex-col text-slate-800 pt-3 gap-2">
                     <li>Qui Sommes-nous ?</li>
