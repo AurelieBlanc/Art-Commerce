@@ -125,7 +125,7 @@ model Commande {
   ville_livraison String
    
   id_client Int 
-  id_admin Int?  // pas obligatoire, on ne renseignera peut-etre meme pas me champ
+  id_admin Int?  // pas obligatoire, on ne renseignera peut-etre meme pas le champ
 
   client Client @relation(fields: [id_client], references: [id_client])
   admin Admin? @relation(fields: [id_admin], references: [id_admin])
