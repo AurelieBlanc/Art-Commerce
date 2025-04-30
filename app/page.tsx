@@ -156,8 +156,8 @@ export default function Home() {
                         <Image
                          src={produit.image}
                         width={250}
-                        height={0}
-                        layout="intrinsic"
+                        height={250}
+                        // style={{ height: "auto", width: "250px"}}
                         alt={produit.description}
                         />
                     </div>

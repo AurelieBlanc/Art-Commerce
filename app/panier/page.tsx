@@ -1,4 +1,4 @@
-//Code pour les imports : 
+//Code pour les imports ----------------------------------------------------------- : 
 "use client"
 import { getPanier, removeFromPanier, deletePanier } from "@/utils/panierCookie"
 import { useState, useEffect } from "react"; 
@@ -27,7 +27,8 @@ const [ produitsPanier, setProduitsPanier ] = useState<ProduitsPanier[]>([]);
 const [ totalPrix, setTotalPrix ] = useState(0); 
 
 
-// Code pour recuperer les produits dans le cookie pour implementer le panier : //
+
+// Code pour recuperer les produits dans le cookie pour implementer le panier : ------- //
 useEffect (() => {
 
     const panier = getPanier(); 
@@ -36,6 +37,7 @@ useEffect (() => {
     panier.map((elem) =>{ 
         idsPanier.push(elem.id); 
     })
+
 
     
 // Appel API en methode GET dans lequel on envoie en paramètre les id des produits à recupérer : //
@@ -46,7 +48,7 @@ useEffect (() => {
             })
 
         const data = await response.json(); 
-        console.log("retour des datas du back : ", data) // A EFFACER une fois que ce sera correctement implémenté
+       
         if(Array.isArray(data)) {
             setProduitsPanier(data); 
         }
@@ -61,14 +63,16 @@ useEffect (() => {
 
 }, [])
 
+
+
+
+// Fonction pour gérer la suppression d'un produit dans le panier : --------------- //
 function deleteProduct(id: number) {
     const idString = id.toString(); 
     removeFromPanier(idString);
 
     const panier = getPanier(); 
     let idsPanier: string[] = []; 
-
-    console.log("panier", panier)
 
     setProduitsPanier ((prevState) => {
 
@@ -80,6 +84,9 @@ function deleteProduct(id: number) {
     })   
 }
 
+
+
+// Fonction pour supprimer TOUT le panier : -----------------------------------------//
 function deleteAllPanier() {
     deletePanier()
 
@@ -87,31 +94,29 @@ function deleteAllPanier() {
     alert("La totalité de votre panier a été supprimé")
 }
 
-useEffect(() => {
-    
-    console.log("construction du produit pabier", produitsPanier)
-
-}, [produitsPanier])
 
 
+
+// UseFfect pour calculer le total des prdouits à chaque fois que le state produitsPanier est modifié : //
 useEffect(() => {
     function totalPanier() {
         let tablePrix = 0;
         produitsPanier?.map((produit)=> {
              
             const prixProduit = Number(produit.prix); 
-            console.log(prixProduit); 
             tablePrix = prixProduit + tablePrix; // tablePrix += prixProduit
             
         })
 
         setTotalPrix(tablePrix); 
-        console.log(totalPrix); 
     }
 
     totalPanier(); 
 
 }, [produitsPanier])
+
+
+
 
 
   return (
