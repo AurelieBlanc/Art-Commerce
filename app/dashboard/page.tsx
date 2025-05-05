@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import useStore from "@/stores/useStore";
 import { z } from "zod"; 
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation"; 
+
 
 
 
@@ -82,7 +84,9 @@ export const updateSchema = z.object({
 
 export default function page() {
 
-// Code pour définir les states : 
+// Code pour définir les states et outils: 
+const router = useRouter(); 
+
 const { isAuthenticated, role, id } = useStore();  // state global
 
 const [ infosClient, setInfosClient ] = useState<InfosClient>({ 
@@ -235,6 +239,22 @@ try {
     alert ("Echec lors de la modif des données ")
 }
 
+}
+
+
+// Code qui s'enclenche une fois que l'user appuie sur le bouton "Retour vers la commande en cours" : //
+function backBasket() {
+
+    if(!isAuthenticated) {
+        alert("Vous devez d'abord vous authentifier afin de pouvoir accéder à votre récap de panier"); 
+        return router.push ("/loginAndRegister")
+    } 
+
+    if(role === "client") {
+        return router.push("/commande/recap"); 
+    } else {
+        return alert("Vous devez avoir un role client pour accéder au récap de panier")
+    }
 }
 
  
@@ -408,9 +428,17 @@ if ( role === "admin" && isAuthenticated === true) {
                          />
                     
                     <button
-                        className="font-boogaloo w-[160px] h-[75px] mx-auto text-center bg-slate-800 text-white text-xl rounded-md mb-10">
+                        className="font-boogaloo w-[160px] h-[75px] mx-auto text-center bg-slate-800 text-white text-xl rounded-md mb-6">
                         Valider les modifications
                     </button>
+
+                    
+                    <button
+                        onClick={backBasket}
+                        className="font-boogaloo w-[160px] h-[75px] mx-auto text-center bg-red-800 text-white text-xl rounded-md mb-10">
+                        Revenir vers la commande en cours
+                    </button>
+                   
 
                     </form>
 
