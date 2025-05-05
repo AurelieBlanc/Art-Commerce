@@ -4,9 +4,8 @@ import { getPanier, removeFromPanier, deletePanier } from "@/utils/panierCookie"
 import { useState, useEffect } from "react"; 
 import { RiDeleteBin2Fill } from "react-icons/ri"; // icone pour delete le produit : <RiDeleteBin2Fill />
 import { IoIosWarning } from "react-icons/io"; // icone warning <IoIosWarning />
-
-
-
+import useStore from "@/stores/useStore";
+import { useRouter } from "next/navigation";
 
 
 
@@ -26,7 +25,9 @@ const [ produitsPanier, setProduitsPanier ] = useState<ProduitsPanier[]>([]);
 
 const [ totalPrix, setTotalPrix ] = useState(0); 
 
+const { isAuthenticated, role, id } = useStore(); 
 
+const router = useRouter(); 
 
 // Code pour recuperer les produits dans le cookie pour implementer le panier : ------- //
 useEffect (() => {
@@ -117,6 +118,26 @@ useEffect(() => {
 
 
 
+// Code qui s'enclenche une fois que l'user appuie sur le bouton "Valider mon panier" : //
+function validBasket() {
+
+    if(totalPrix === 0) {
+        alert("Vous devez d'abord ajouter des produits à votre panier avant de continuer"); 
+        return router.push("/"); 
+    }
+
+    if(!isAuthenticated) {
+        alert("Vous devez d'abord vous authentifier afin de pouvoir accéder à votre récap de panier"); 
+        return router.push ("/loginAndRegister")
+    } 
+
+    if(role === "client") {
+        return router.push("/commande/recap"); 
+    } else {
+        return alert("Vous devez avoir un role client pour accéder au récap de panier")
+    }
+}
+
 
 
   return (
@@ -143,7 +164,7 @@ useEffect(() => {
 
                     {/* Champ prix du produit : */}
                     <div
-                        className="prix ml-5">
+                        className="prix ml-3">
                         <p>
                             {elem.prix} €
                         </p>
@@ -163,7 +184,9 @@ useEffect(() => {
                     </div> )
             })} 
 
-            
+            <div
+                className="border-black border-b mt-2 w-[200px] mx-auto ">
+            </div>
 
             <div
                 className="totalProduits font-bold flex font-rubik mt-2">
@@ -176,7 +199,7 @@ useEffect(() => {
                 </div>
 
                 <div
-                    className="prix ml-10">
+                    className="prix ml-3">
                     <p>
                         {totalPrix} €
                     </p>
@@ -185,6 +208,7 @@ useEffect(() => {
             </div>
 
             <button
+                onClick={validBasket}
                 className="mt-8 font-boogaloo text-lg w-[180px] h-[46px] bg-slate-700 text-white rounded-md shadow-lg">
                 Valider mon panier
             </button>

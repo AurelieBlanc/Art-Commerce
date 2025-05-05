@@ -222,7 +222,7 @@ export default function Home() {
                 {produits.map((produit) => (
                   <div
                     key = {produit.id_produit}
-                    className="divProduct w-[300px] h-[500px] border border-black m-10 bg-white flex flex-col justify-center items-center font-rubik rounded-md">
+                    className="divProduct w-[300px] h-[500px] border border-black m-10 bg-black text-white flex flex-col justify-center items-center font-rubik rounded-md">
                     
                     <div
                       className="imageProduct ">
@@ -252,7 +252,7 @@ export default function Home() {
       
                     <button
                       onClick={() => addBasket(produit.id_produit)}
-                      className=" bg-slate-800 text-white w-[150px] h-[40px] rounded-sm font-boogaloo">
+                      className=" bg-slate-500 text-white border border-black shadow-2xl w-[150px] h-[40px] rounded-lg font-boogaloo">
                       Ajouter au panier
       
                     </button>
