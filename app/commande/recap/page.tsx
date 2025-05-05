@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"; 
 import useStore from "@/stores/useStore";
 import { getPanier } from "../../../utils/panierCookie"; 
-
+import Link from "next/link";
 
 
 interface ProduitsCommande {
@@ -45,12 +45,12 @@ export default function page() {
     id_client: 0, 
     mail:"",
     role:"", 
-    prenom: "", 
-    nom: "", 
-    adresse_livraison: "", 
-    cp_livraison: "", 
-    ville_livraison: "", 
-    telephone: "", 
+    prenom:"", 
+    nom:"", 
+    adresse_livraison:"", 
+    cp_livraison:"", 
+    ville_livraison:"", 
+    telephone:"", 
     }); 
 
   const { id, role, isAuthenticated } = useStore(); 
@@ -151,9 +151,7 @@ export default function page() {
     console.log("qu y a til dans data", data.infosClient)
       console.log("data.infosClient", data.infosClient.nom); 
 
-    setClient(data); 
-
-    
+    setClient(data.infosClient); 
 
     } catch (error) {
     console.error("faillite dans la recupération des infos du client")
@@ -172,6 +170,10 @@ export default function page() {
   }, [client, totalCommande])
 
 
+
+  function validOrder() {
+
+  }
 
 
 
@@ -268,16 +270,122 @@ if(loadingPage) {
 
 
         <h2
-          className="font-boogaloo text-2xl mt-10 mb-2">
-          Récapitulatif des infos du client : 
+          className="font-boogaloo text-2xl mt-10 mb-6 text-center">
+          Récapitulatif des infos du client pour la livraison : 
         </h2>
+        <div
+          className="font-rubik flex flex-col items-center">
 
-        <p>
-          {client.nom}
-        </p>
-        <p>
-          {client.prenom}
-        </p>
+            <div
+              className="flex">
+
+             {/* Champ prénom:  */}
+            <p
+              className="font-bold">
+              Prénom: 
+            </p>
+            <p
+              className="ml-4">
+              {client.prenom}
+            </p>
+            </div>
+
+            {/* Champ nom:  */}
+            <div
+              className="flex">
+            <p
+              className="font-bold">
+              Nom: 
+            </p>
+            <p
+              className="ml-4">
+              {client.nom}
+            </p>
+            </div>
+
+            {/* Champ email:  */}
+            <div
+              className="flex">
+            <p
+              className="font-bold">
+              Mail : 
+            </p>
+            <p
+              className="ml-4">
+              {client.mail}
+            </p>
+            </div>
+
+            {/* Champ adresse de livraison:  */}
+            <div
+              className="flex">
+            <p
+              className="font-bold">
+              Adresse de livraison : 
+            </p>
+            <p
+              className="ml-4">
+              {client.adresse_livraison}
+            </p>
+            </div>
+
+            {/* Champ Code Postal:  */}
+            <div
+              className="flex">
+            <p
+              className="font-bold">
+              Code Postal : 
+            </p>
+            <p
+              className="ml-4">
+              {client.cp_livraison}
+            </p>
+            </div>
+
+            {/* Champ Ville de livraison:  */}
+            <div
+              className="flex">
+            <p
+              className="font-bold">
+              Ville de Livraison : 
+            </p>
+            <p
+              className="ml-4">
+              {client.ville_livraison}
+            </p>
+            </div>
+
+            {/* Champ Téléphone :  */}
+            <div
+              className="flex">
+            <p
+              className="font-bold">
+              Téléphone : 
+            </p>
+            <p
+              className="ml-4">
+              {client.telephone}
+            </p>
+            </div>
+
+            <Link
+                href="/dashboard">
+                <button
+                  className="mt-6 w-[180px] font-boogaloo bg-slate-700 text-white text-lg rounded-lg shadow-2xl border border-black">
+                  Modifier les infos de livraison
+                </button>
+            </Link>
+
+           
+                <button
+                  onClick={validOrder}
+                  className="mb-10 mt-6 w-[180px] font-boogaloo bg-red-700 text-white text-lg rounded-lg shadow-2xl border border-black">
+                  Valider la commande et l'adresse de livraison
+                </button>
+            
+            
+        </div>
+        
     </div>
   )
 
