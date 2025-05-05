@@ -85,7 +85,7 @@ export default async function updateProduct(req:NextApiRequest, res:NextApiRespo
           
                 
         try {
-// Recup des cookies OnlyHTTP seulement :
+// Recup des cookies OnlyHTTP seulement : //
         const cookies = cookie.parse(req.headers.cookie || "" ); // là on recup les cookies onlyHTTP seulement car on est coté serveur
                 
         const authToken = cookies.authToken // cookie onlyHTTP 
@@ -101,7 +101,7 @@ export default async function updateProduct(req:NextApiRequest, res:NextApiRespo
           
                   
           
-//Recup du cookie envoyé par le header de la requete:
+//Recup du cookie envoyé par le header de la requete: //
         const csrfTokenClient = req.headers["x-csrf-token"]; 
           
         if(!csrfTokenClient) {
@@ -110,7 +110,7 @@ export default async function updateProduct(req:NextApiRequest, res:NextApiRespo
           
                   
           
-// Code pour faire les différentes validation pour la secu : 
+// Code pour faire les différentes validation pour la secu : //
         if(!authToken && !csrfToken && !csrfTokenClient ) {
             return res.status(401).json({ message: "Token(s) mmanquant(s)" })
         }

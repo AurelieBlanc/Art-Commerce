@@ -3,7 +3,11 @@
 import { useEffect, useState } from "react"; 
 import useStore from "@/stores/useStore";
 import { getPanier } from "../../../utils/panierCookie"; 
+import Cookies from "js-cookie";
 import Link from "next/link";
+import { useRouter } from "next/navigation"; 
+
+
 
 
 interface ProduitsCommande {
@@ -30,7 +34,10 @@ interface Client {
 
 export default function page() {
 
-// ici on aura le code pour nos différents states, locaux et globaux :  //
+// ici on aura le code pour nos différents states, locaux et globaux et nos outils :  //
+
+  const router = useRouter(); 
+
   const [ loadingPage, setLoadingPage ] = useState<boolean>(false); 
 
   const [ produitsCommande, setProduitsCommande ] = useState<ProduitsCommande[]>([]); 
@@ -146,10 +153,11 @@ export default function page() {
         method: "GET"
       })
 
-    const data = await response.json(); 
+      if(!response.ok) {
+        throw new Error("Création de client non aboutie")
+       }
 
-    console.log("qu y a til dans data", data.infosClient)
-      console.log("data.infosClient", data.infosClient.nom); 
+    const data = await response.json(); 
 
     setClient(data.infosClient); 
 
@@ -171,7 +179,39 @@ export default function page() {
 
 
 
-  function validOrder() {
+  async function validOrder() {
+
+    const idsProduits: number[] = []; 
+    produitsCommande.map((produit) =>
+    idsProduits.push(produit.id_produit))
+
+    try {
+      const response = await fetch("/api/commandes/createOrder", {
+        method: "POST", 
+        credentials: "include", 
+        headers: {
+          "Content-Type": "application/json", 
+          "x-csrf-token": Cookies.get("csrfToken") || "", 
+        }, 
+        body: JSON.stringify({
+          idClient: id, 
+          idsProduits, 
+          }), 
+        
+      })
+
+      if(!response.ok) {
+          alert("erreur dans la validation de commande"); 
+          return; 
+       }
+       
+      const data = await response.json(); 
+
+      router.push(`/commande/${data.idCommande}/validation`) // GROSSE VERIF A FAIRE UNE FOIS QUE JAURAI EU LE RETOUR DU BACK  !!!!!!
+
+    } catch(error) {
+      console.error("erreur lors de la validation du récap de commande: ", error)
+    }
 
   }
 
@@ -371,7 +411,7 @@ if(loadingPage) {
             <Link
                 href="/dashboard">
                 <button
-                  className="mt-6 w-[180px] font-boogaloo bg-slate-700 text-white text-lg rounded-lg shadow-2xl border border-black">
+                  className="mt-6 w-[180px] p-2 font-boogaloo bg-slate-700 text-white text-lg rounded-lg shadow-2xl border border-black">
                   Modifier les infos de livraison
                 </button>
             </Link>
@@ -379,8 +419,8 @@ if(loadingPage) {
            
                 <button
                   onClick={validOrder}
-                  className="mb-10 mt-6 w-[180px] font-boogaloo bg-red-700 text-white text-lg rounded-lg shadow-2xl border border-black">
-                  Valider la commande et l'adresse de livraison
+                  className="mb-10 mt-6 w-[180px] p-2 font-boogaloo bg-red-700 text-white text-lg rounded-lg shadow-2xl border border-black">
+                  Valider la commande et les infos de livraison
                 </button>
             
             
