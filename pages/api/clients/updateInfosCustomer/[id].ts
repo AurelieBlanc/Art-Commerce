@@ -69,8 +69,7 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
     const { id } = req.query; 
     const { infosClient } = req.body; 
 
-    console.log("recupéés en front : ", id, infosClient)
-
+    
 
 
 
