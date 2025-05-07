@@ -91,10 +91,73 @@ export default function page() {
 
   return (
     <div
-      className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center">
+      className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center flex flex-col items-center">
+
+        <h2
+          className="font-boogaloo text-2xl text-slate-800 mt-6">
+          Validation de la commande avant paiement:
+        </h2>
 
 
-        <p> Ici on a récupéré la commande n° {idCommande} </p>
+        <h3
+          className="font-boogaloo text-xl text-slate-800 mt-4 ">
+          Récap Montant Total de la Commande: 
+        </h3>
+        <p
+          className="font-rubik mb-4 text-xl text-red-600 font-semibold">
+            {commande.total} € TTC
+        </p>
+
+        <h3
+          className="font-boogaloo text-xl text-slate-800 mb-2">
+          Récap Adresse de la commande : 
+        </h3>
+
+        <div
+          className="flex mb-1 text-red-600 font-medium">
+          <p
+            className="font-rubik mr-1">
+            {client.prenom} 
+          </p>
+          <p
+            className="font-rubik">
+            {client.nom} 
+          </p>
+        </div>
+
+          <p
+            className="font-rubik mb-1 mr-1 text-red-600 font-medium">
+            {client.adresse_livraison} 
+          </p>
+
+          <div
+          className="flex mb-1 text-red-600 font-medium">
+          <p
+            className="font-rubik mr-1">
+            {client.cp_livraison} 
+          </p>
+          <p
+            className="font-rubik">
+            {client.ville_livraison} 
+          </p>
+        </div>
+
+          <p
+            className="font-rubik mb-6 mr-1 text-red-600 font-medium">
+            {client.telephone} 
+          </p>
+
+
+
+
+        <button
+          className="bg-slate-700 text-white font-boogaloo text-xl w-[200px] h-[50px] rounded-md shadow-2xl mb-6">
+            Passer au paiement
+        </button>
+
+
+
+
 
 
     </div>
