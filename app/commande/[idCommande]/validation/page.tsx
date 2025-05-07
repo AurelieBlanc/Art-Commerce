@@ -14,6 +14,18 @@ interface Commande {
     id_client:  number
 }
 
+interface Client {
+    id_client: number, 
+    mail: string, 
+    role: string, 
+    prenom: string, 
+    nom: string, 
+    adresse_livraison: string, 
+    cp_livraison: string, 
+    ville_livraison: string, 
+    telephone: string
+}
+
 
 
 
@@ -27,6 +39,19 @@ export default function page() {
     cp_livraison:"",
     ville_livraison:"",
     id_client:0
+}); 
+
+
+  const [ client, setClient ] = useState<Client>({
+  id_client:0,
+  mail:"", 
+  role:"", 
+  prenom:"", 
+  nom:"",  
+  adresse_livraison:"",
+  cp_livraison:"",
+  ville_livraison:"",
+  telephone:""
 }); 
 
 
@@ -50,8 +75,9 @@ export default function page() {
 
          const data = await response.json(); 
          console.log("voila ce qu'on récupère du back en datas : ", data); 
-         
-         setCommande(data); 
+
+         setCommande(data.order); 
+         setClient(data.customer); 
 
 
       } catch (error) {

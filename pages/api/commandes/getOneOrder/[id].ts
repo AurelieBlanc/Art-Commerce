@@ -9,6 +9,14 @@ const SECRET_KEY = process.env.JWT_SECRET;
 
 
 
+interface JwtPayload {
+    id: number, 
+    email: string, 
+    role: string, 
+    iat: number, 
+    exp: number
+}
+
 
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
@@ -34,7 +42,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         }; 
 
 
-        const decoded = jwt.verify(authToken, SECRET_KEY);
+        const decoded = jwt.verify(authToken, SECRET_KEY) as JwtPayload; 
         
         console.log("comment est foutu l'objet decoded pour qu'on puisse le typer ? ", decoded)
 
@@ -42,10 +50,24 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
             return res.status(403).json({ message: "authToken invalide" })
         }
 
+        const order = await prisma.commande.findUnique({
+            where : { id_commande: Number(id)} 
+        }); 
+
+        console.log("qu'a ton recupéré dans order ? ", order); 
+
+        if(decoded.id !== order?.id_client) {
+            return res.status(403).json({ message: "accès interdit"})
+        }
+
+        const customer = await prisma.client.findUnique({
+            where: { id_client: Number(decoded.id)}
+        }); 
+
+        console.log("qu'est ce qu'on recupère dans customer", customer); 
+
+        return res.status(200).json({ message: "Données bien recup en back", order, customer})
         
-
-
-
 
     } catch (error) {
         console.error("erreur lors de la récupération de la validation de commande")
