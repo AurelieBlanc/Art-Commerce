@@ -13,7 +13,7 @@ const SECRET_KEY = process.env.JWT_SECRET;
 
 
 
-export default async function handle(req:NextApiRequest, res:NextApiResponse) {
+export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     if(req.method !== "POST") {
         return res.status(405).json({ message: "requête HTTP non autorisée "})
     }
@@ -145,12 +145,9 @@ export default async function handle(req:NextApiRequest, res:NextApiResponse) {
 
             console.log("retour en console de la commande finaliésée", finalOrder)
 
+// FAIRE LE RETOUR AVEC L ID COMMANDE PUIS RENVOI SUR LA PROCHAINE PAGE AVEC L ID COMMANDE DANS L URL 
 
-
-
-
-
-
+            return res.status(200).json({ message: "validation de la commande éffectuée", idCommande: finalOrder.id_commande})
 
 
     } catch (error) {

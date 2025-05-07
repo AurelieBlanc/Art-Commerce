@@ -86,6 +86,11 @@ export default function page() {
           method:"GET",
         })
 
+        if(!response.ok) {
+          throw new Error("Récupération des produits non aboutie")
+         }
+
+
         const data = await response.json(); 
 
         if(Array.isArray(data)) {
@@ -142,8 +147,9 @@ export default function page() {
 // Code pour calculer le montant total de la commande : //
     setTotalCommande(totalProduits + ports); 
 
-   
   }, [ports])
+
+
 
   useEffect (() => {
 
@@ -154,7 +160,7 @@ export default function page() {
       })
 
       if(!response.ok) {
-        throw new Error("Création de client non aboutie")
+        throw new Error("Récupération du client non aboutie")
        }
 
     const data = await response.json(); 
@@ -206,6 +212,8 @@ export default function page() {
        }
        
       const data = await response.json(); 
+
+      console.log("idCommande : ", data.idCommande)
 
       router.push(`/commande/${data.idCommande}/validation`) // GROSSE VERIF A FAIRE UNE FOIS QUE JAURAI EU LE RETOUR DU BACK  !!!!!!
 
