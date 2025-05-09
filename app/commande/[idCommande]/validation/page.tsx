@@ -2,6 +2,18 @@
 "use client"
 import { useParams } from "next/navigation"; 
 import { useEffect, useState } from "react"; 
+import { loadStripe } from "@stripe/stripe-js"; 
+import useStore from "@/stores/useStore";
+import Cookies from "js-cookie"; 
+
+
+if(!process.env.NEXT_PUBLIC_STRIPE_PUBLISABLE_KEY) {
+  throw new Error ("La clé publique Stripe est manquante !"); 
+}
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISABLE_KEY)
+
+
 
 
 
@@ -31,6 +43,8 @@ interface Client {
 
 
 export default function page() {
+
+  const { isAuthenticated, role } = useStore(); 
 
   const [ commande, setCommande ] = useState<Commande>({
     id_commande:0,
@@ -87,6 +101,39 @@ export default function page() {
     } 
     getOrder(); 
   }, [])
+
+  async function orderPayment () {
+    const email = client.mail; 
+    const amount = commande.total; 
+
+    if(!isAuthenticated && role !== "client") {
+      alert("connectes toi à ton compte pour pouvoir régler ta commande.")
+      
+      return; 
+    }
+
+    const response = await fetch ("/api/payment/stripe", {
+      method: "POST", 
+      credentials: "include", 
+      headers: {
+        "Content-Type": "application/json", 
+        "x-csrf-token": Cookies.get("csrfToken") || "",
+      }, 
+      body: JSON.stringify({amount, email})
+    }); 
+
+    const data = await response.json(); 
+
+// CETTE PARTIE LA SERA A EXPLIQUER ::: //
+    const stripe = await stripePromise; 
+
+    if(stripe && data.id) {
+      stripe.redirectToCheckout({ sessionId: data.id})
+    } else {
+      alert("Erreur lors de la redirection vers le paiement")
+    }
+
+  }
 
 
   return (
@@ -147,17 +194,11 @@ export default function page() {
             {client.telephone} 
           </p>
 
-
-
-
         <button
+          onClick={orderPayment}
           className="bg-slate-700 text-white font-boogaloo text-xl w-[200px] h-[50px] rounded-md shadow-2xl mb-6">
             Passer au paiement
         </button>
-
-
-
-
 
 
     </div>
