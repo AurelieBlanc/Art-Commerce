@@ -26,14 +26,14 @@ export default function page() {
 
 
             <div
-              className="flex items-center ">
+              className="flex items-center mt-6 ">
               <IoIosArrowDroprightCircle
-                className="inline-block text-2xl relative top-3" />
+                className="inline-block text-2xl" />
               <Link
                 className=""
                 href="/">
               <p
-                className="font-rubik font-bold mt-6 underline text-slate-800 ml-1">
+                className="font-rubik font-bold underline text-slate-800 ml-1">
                 Retourner à la page d'accueil 
               </p>
               </Link>
@@ -41,14 +41,14 @@ export default function page() {
            
 
             <div
-              className="flex items-center mb-10">
+              className="flex items-center mb-14 mt-6">
               <IoIosArrowDroprightCircle
-                className="inline-block text-2xl relative top-3" />
+                className="inline-block text-2xl " />
               <Link
                 className=""
                 href="/gestion">
               <p
-                className="font-rubik font-bold mt-6 underline text-slate-800 ml-1">
+                className="font-rubik font-bold underline text-slate-800 ml-1">
                 Aller sur la page Récap de commandes 
               </p>
               </Link>
