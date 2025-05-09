@@ -76,19 +76,20 @@ async function logout() {
                     </li>
 
 
-                    {/* Icone Dashboard Client ou Admin  :  */}
+                    {/* Icone Dashboard Client ou Admin et gestion :  */}
                     
-                    { isAuthenticated &&
+                    { isAuthenticated && (
+                        <>
                         <li>
                         <Link href ="/dashboard"
                               className="">
                               <FaUserCircle />
                         </Link>
                     </li>
-                    }
+                    
 
 
-                    {/* Icone Clipboard :  */}
+                    
                      <li>
                         <Link
                             className=""
@@ -96,6 +97,8 @@ async function logout() {
                         <FaClipboardList />
                         </Link>
                     </li>
+                    </>
+                    )}
                     
 
                      {/* Icone Panier :  */}
