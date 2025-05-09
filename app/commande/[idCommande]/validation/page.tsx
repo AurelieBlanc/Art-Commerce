@@ -114,7 +114,7 @@ export default function page() {
 
     if(!isAuthenticated && role !== "client") {
       alert("connectes toi à ton compte pour pouvoir régler ta commande.")
-      return router.push ("/dashboard"); 
+      return router.push ("/loginAndRegister"); 
     }
 
     const response = await fetch ("/api/payment/stripe", {

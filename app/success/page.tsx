@@ -1,4 +1,11 @@
-import Image from "next/image"
+// Code pour les imports : --------------------------------------------------- //
+import Image from "next/image";
+import Link from "next/link";
+import { IoIosArrowDroprightCircle } from "react-icons/io"; // icone fleche : <IoIosArrowDroprightCircle />
+
+
+
+
 
 export default function page() {
   return (
@@ -10,23 +17,43 @@ export default function page() {
             </h2>
             
             <Image
-            className=""
-            src="/vecto/LogoArtCommerce.svg"
-            alt="logo de Art commerce"
-            width={300}
-            height={300}
+              className=""
+              src="/vecto/LogoArtCommerce.svg"
+              alt="logo de Art commerce"
+              width={300}
+              height={300}
             />
 
 
-            <p
-            className="font-rubik text-lg mt-6">
-             Retourner à la page d'accueil 
-            </p>
+            <div
+              className="flex items-center ">
+              <IoIosArrowDroprightCircle
+                className="inline-block text-2xl relative top-3" />
+              <Link
+                className=""
+                href="/">
+              <p
+                className="font-rubik font-bold mt-6 underline text-slate-800 ml-1">
+                Retourner à la page d'accueil 
+              </p>
+              </Link>
+            </div>
+           
 
-            <p
-            className="font-rubik text-lg mt-6 mb-10">
-             Consulter votre page de commandes  
-            </p>
+            <div
+              className="flex items-center mb-10">
+              <IoIosArrowDroprightCircle
+                className="inline-block text-2xl relative top-3" />
+              <Link
+                className=""
+                href="/gestion">
+              <p
+                className="font-rubik font-bold mt-6 underline text-slate-800 ml-1">
+                Aller sur la page Récap de commandes 
+              </p>
+              </Link>
+            </div>
+           
 
     </div>
   )

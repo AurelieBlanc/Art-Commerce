@@ -187,6 +187,11 @@ export default function page() {
 
   async function validOrder() {
 
+    if(!isAuthenticated && role !== "client") {
+      alert("Vous devez etre connecté pour continuer vers la finalisation de la commande")
+      return router.push("/loginAndRegister"); 
+    }
+
     const idsProduits: number[] = []; 
     produitsCommande.map((produit) =>
     idsProduits.push(produit.id_produit))

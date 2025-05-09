@@ -7,6 +7,9 @@ import { FaShoppingBasket } from "react-icons/fa"; // import de l'icone panier <
 import { IoHome } from "react-icons/io5"; // import de l'icone home , accueil <IoHome />
 import { BiSolidLogInCircle } from "react-icons/bi"; // import de l'icone login, <BiSolidLogInCircle />
 import { RiLogoutCircleFill } from "react-icons/ri"; // import de l'icone Logout <RiLogoutCircleFill />
+import { HiOutlineClipboardList } from "react-icons/hi"; // import de l'icone Clipboard pour acceder soit au recap de commande, soit au tableau de bord admin en finction de qui est authentifié : <HiOutlineClipboardList />
+import { FaClipboardList } from "react-icons/fa";
+
 
 
 
@@ -83,8 +86,17 @@ async function logout() {
                         </Link>
                     </li>
                     }
-                    
 
+
+                    {/* Icone Clipboard :  */}
+                     <li>
+                        <Link
+                            className=""
+                            href="/gestion">
+                        <FaClipboardList />
+                        </Link>
+                    </li>
+                    
 
                      {/* Icone Panier :  */}
                      <li>
