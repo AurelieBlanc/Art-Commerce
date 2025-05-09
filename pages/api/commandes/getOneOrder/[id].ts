@@ -24,7 +24,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         return res.status(405).json({ message: "requête HTTP non autorisée "})
     }
 
-    const { id} =  req.query; 
+    const { id } =  req.query; 
 
     try {
 // Recup du cookie onlyHTTP : -------------------------------------------- //
@@ -67,7 +67,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         console.log("qu'est ce qu'on recupère dans customer", customer); 
 
         return res.status(200).json({ message: "Données bien recup en back", order, customer})
-        
+
 
     } catch (error) {
         console.error("erreur lors de la récupération de la validation de commande")

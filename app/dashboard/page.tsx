@@ -432,15 +432,13 @@ if ( role === "admin" && isAuthenticated === true) {
                         Valider les modifications
                     </button>
 
-                    
-                    <button
+                    </form>
+
+                     <button
                         onClick={backBasket}
                         className="font-boogaloo w-[160px] h-[75px] mx-auto text-center bg-red-800 text-white text-xl rounded-md mb-10">
                         Revenir vers la commande en cours
                     </button>
-                   
-
-                    </form>
 
             </div>
         
