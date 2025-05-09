@@ -5,13 +5,14 @@ import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js"; 
 import useStore from "@/stores/useStore";
 import Cookies from "js-cookie"; 
+import { useRouter } from "next/navigation"; 
 
 
-if(!process.env.NEXT_PUBLIC_STRIPE_PUBLISABLE_KEY) {
+if(!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
   throw new Error ("La clé publique Stripe est manquante !"); 
 }
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISABLE_KEY)
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 
 
@@ -43,6 +44,8 @@ interface Client {
 
 
 export default function page() {
+
+  const router = useRouter(); 
 
   const { isAuthenticated, role } = useStore(); 
 
@@ -105,11 +108,13 @@ export default function page() {
   async function orderPayment () {
     const email = client.mail; 
     const amount = commande.total; 
+    const idCommande = commande.id_commande; 
+
+    console.log("verif des données envoyées en front : ", email, amount, idCommande)
 
     if(!isAuthenticated && role !== "client") {
       alert("connectes toi à ton compte pour pouvoir régler ta commande.")
-      
-      return; 
+      return router.push ("/dashboard"); 
     }
 
     const response = await fetch ("/api/payment/stripe", {
@@ -119,7 +124,7 @@ export default function page() {
         "Content-Type": "application/json", 
         "x-csrf-token": Cookies.get("csrfToken") || "",
       }, 
-      body: JSON.stringify({amount, email})
+      body: JSON.stringify({amount, email, idCommande})
     }); 
 
     const data = await response.json(); 
