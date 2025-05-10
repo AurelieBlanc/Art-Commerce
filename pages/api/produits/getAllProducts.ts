@@ -21,7 +21,11 @@ export default async function getProducts(req:NextApiRequest, res:NextApiRespons
 // Code pour récup tous les produits en BDD avec Prisma : -------------------- //
     try {
 
-        const produits = await prisma.produit.findMany(); 
+        const produits = await prisma.produit.findMany({
+            where : {
+                is_active: true, 
+            }
+        }); 
 
         return res.status(200).json(produits); 
 
