@@ -17,11 +17,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 
 
+
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     if(req.method !== "POST") {
         return res.status(405).json({ message: "requête HTTP non autorisée"})
     }
 
+
+// Code pour récupérer dans le corps de la requête, email, montant et id : ----- // 
     const { email, amount, idCommande } = req.body; 
 
      if(!email || !amount) {
@@ -29,7 +32,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         }
 
     try {
-
+// Code pour faire les vérifs de sécurité: authToken et csrfToken : //
         const cookies = cookie.parse(req.headers.cookie || ""); 
 
         const authToken = cookies.authToken // recup du cookie onlyHTTP
@@ -43,8 +46,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
             throw new Error ("pas de csrfToken")
         }
 
-
-        const csrfTokenClient = req.headers["x-csrf-token"]; 
+        const csrfTokenClient = req.headers["x-csrf-token"]; // Récup du cookie classique dans l'en-tête de la requête
 
         if(!csrfTokenClient) {
             throw new Error ("pas de csrfToken")
@@ -64,18 +66,17 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
              return res.status(403).json({ message: "CSRF invalide"})
         }
 
+
+// Une fois qu'on a passé et validé toutes les étapes de securité, alors on va chercher la commande avec son id ... //
         const order = await prisma.commande.findUnique ({
             where: { id_commande: Number(idCommande)}
         }); 
-
-       
 
         if(!order) {
             throw new Error ("la commande pour verification n'a pas été retrouvée en BDD")
         }
 
-         console.log("resultat de order.total et amount :" , Number(order.total), Number(amount)) // A EFFACER ENSUITE
-
+// ...pour procéder à une enième verif de securité : est ce que le montant de la commande en BDD est bien égale au montant récupéré dans la requête : //
         if (Number(order.total) !== Number(amount) ) {
             return res.status(400).json({ message: "Le montant envoyé ne correspond pas à la commande"})
         }
@@ -84,6 +85,8 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
             throw new Error("il manque l'URL publique dans les variables d'environnement")
         }
 
+
+// ...et si oui, alors on va créer une session de paiement Stripe : ------- //
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ["card"], 
             mode: "payment", 
@@ -100,11 +103,10 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                     quantity: 1,
                 }
             ], 
-            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success`,
+        // On renverra sur ces URL, en cas de succès ou d'échec :  --------- //
+            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success`, 
             cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`
         }); 
-
-        console.log("qu'est ce que donne session en console ?", session)
 
         return res.status(200).json({id: session.id})
 

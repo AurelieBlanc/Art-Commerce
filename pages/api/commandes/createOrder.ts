@@ -18,11 +18,14 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         return res.status(405).json({ message: "requête HTTP non autorisée "})
     }
 
+
+// Ici on recupère les infos qui nous intéressent dans le corps de la requête soit l'id Client et les ids de tous les produits : // 
     const { idClient, idsProduits } =  req.body; 
     
 
 
     try {
+// Code pour verif la sécurité : ---------------------------------------- //
 
 // Récup des cookies onlyHTTP seulement : //
         const cookies = cookie.parse(req.headers.cookie || ""); 
@@ -38,7 +41,9 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
             throw new Error ("pas de csrfToken")
             }               
               
-// récup du cookie envoyé par le header de la requête : //
+
+
+// Récup du cookie envoyé par le header de la requête : //
             const csrfTokenClient = req.headers["x-csrf-token"]; 
 
             if(!csrfTokenClient) {
@@ -46,7 +51,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
             }
 
 
-// Code pour les différentes validations pour la sécurité : //
+// Les différentes validations pour la sécurité : //
             if(!authToken && !csrfToken && !csrfTokenClient ) {
                 return res.status(401).json({ message: "Token(s) mmanquant(s)" })
             }
@@ -67,7 +72,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
             
 
-// si authToken valide et CSRF aussi, alors on va pouvoir aller chercher en BDD le client avec les infos suivantes, indispensables à la table commande : id_client, adresse_livraison, cp_livraison, ville_livraison, puis creer une commande avec une date_commande en NOW, un statut de commande par defaut type "EN ATTENTE DE PAIEMENT" , avec l'id_client lié... puis ensuite on va aller chercher en BDD les produits grace a idsProduits, et pour chaque produit , on va les lier avec l'id de la commande, et passer  is_active à false (pour qu ils n'apparaissent plus sur le site) puis une fois que ce sera fait, je rappelerai de nouveau la commande, pour renseigner le total ! 
+// si authToken valide et CSRF aussi, alors on va pouvoir aller chercher en BDD le client avec les infos suivantes, indispensables à la table commande : id_client, adresse_livraison, cp_livraison, ville_livraison, puis creer une commande avec une date_commande à l'instant T, un statut de commande par defaut type "EN ATTENTE DE PAIEMENT" , avec l'id_client lié... puis ensuite on va aller chercher en BDD les produits grace a idsProduits, et pour chaque produit , on va les lier avec l'id de la commande, et passer  is_active à false (pour qu ils n'apparaissent plus sur le site) puis une fois que ce sera fait, je rappelerai de nouveau la commande, pour renseigner le total ! 
 
             const customer = await prisma.client.findUnique({
                 where: { id_client : idClient }
@@ -91,9 +96,6 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                 }
             })
 
-            console.log("retour en console de newOrder: ", newOrder); 
-
-
             const products = await prisma.produit.findMany({
                 where: {
                     id_produit: {
@@ -102,7 +104,6 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                 }
             })
 
-            console.log("retour de products en console ", products); 
 
             const updatedProducts = await prisma.$transaction( // prisma transaction pour s'assurer que TOUS LES produits sont modifiés sinon l'opération stoppe
                 products.map((product) =>
@@ -115,8 +116,6 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                     })
                 )
             ); 
-
-            console.log("retour en console des produits transformés", updatedProducts); 
 
             let prixProduits = 0; 
 
@@ -134,7 +133,6 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
             let total = prixProduits + fdp; 
 
-            console.log("total de la Commande en terminal : ", total); 
 
             const finalOrder = await prisma.commande.update ({
                 where: { id_commande: newOrder.id_commande}, 
@@ -142,9 +140,6 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                     total: Number(total)
                 }
             })
-
-            console.log("retour en console de la commande finaliésée", finalOrder)
-
 
             return res.status(200).json({ message: "validation de la commande éffectuée", idCommande: finalOrder.id_commande})
 

@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation"; 
 
 
-if(!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+if(!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) { // on checke pour eviter des erreurs TS
   throw new Error ("La clé publique Stripe est manquante !"); 
 }
 
@@ -18,6 +18,9 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 
 
+
+
+// Code pour le typage : ---------------------------------------------------- //
 interface Commande {
     id_commande: number, 
     total: number, 
@@ -45,6 +48,7 @@ interface Client {
 
 export default function page() {
 
+// On importe les outils et les states , globaux et locaux : ---------- //
   const router = useRouter(); 
 
   const { isAuthenticated, role } = useStore(); 
@@ -71,12 +75,13 @@ export default function page() {
   telephone:""
 }); 
 
-
-  
   
   const params = useParams(); 
-  const idCommande = params?.idCommande; 
+  const idCommande = params?.idCommande; // on recupère l'id de la commande dans l'URL
 
+
+
+// Code pour recupérer les infos d'une commande précise selon son ID : ------- //
   useEffect(()=>{
 
     async function getOrder() {
@@ -91,7 +96,6 @@ export default function page() {
          }
 
          const data = await response.json(); 
-         console.log("voila ce qu'on récupère du back en datas : ", data); 
 
          setCommande(data.order); 
          setClient(data.customer); 
@@ -105,13 +109,20 @@ export default function page() {
     getOrder(); 
   }, [])
 
+
+
+
+// Code qui se déclenche quand l'user appuiera sur le bouton "Passer au Paiement" pour un appel API au BACK pour créer une session Stripe : //
   async function orderPayment () {
     const email = client.mail; 
     const amount = commande.total; 
     const idCommande = commande.id_commande; 
 
-    console.log("verif des données envoyées en front : ", email, amount, idCommande)
 
+
+
+
+// On verifiera que le client est bien connecté sinon on renverra à la page de connexion : //
     if(!isAuthenticated && role !== "client") {
       alert("connectes toi à ton compte pour pouvoir régler ta commande.")
       return router.push ("/loginAndRegister"); 
@@ -129,10 +140,10 @@ export default function page() {
 
     const data = await response.json(); 
 
-// CETTE PARTIE LA SERA A EXPLIQUER ::: //
+
     const stripe = await stripePromise; 
 
-    if(stripe && data.id) {
+    if(stripe && data.id) {  // si on a bien une sessions Stripe et un id, alors on va declencher la redirection vers la page de paiement : 
       stripe.redirectToCheckout({ sessionId: data.id})
     } else {
       alert("Erreur lors de la redirection vers le paiement")

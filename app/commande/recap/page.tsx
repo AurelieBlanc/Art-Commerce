@@ -1,4 +1,4 @@
-// Code pour les imports : ---------------------------------------------------//
+// Code pour les imports : ------------------------------------------------ //
 "use client"; 
 import { useEffect, useState } from "react"; 
 import useStore from "@/stores/useStore";
@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 
 
-
+// Code pour les typages : ----------------------------------------------- //
 interface ProduitsCommande {
   id_produit: number, 
   nom: string, 
@@ -96,8 +96,6 @@ export default function page() {
         if(Array.isArray(data)) {
           setProduitsCommande(data)
         }
-        console.log(data); // A EFFACER UNE FOIS QUE LA PAGE SERA FINIE
-
 
 
       } catch (error) {
@@ -107,28 +105,29 @@ export default function page() {
 
     getProducts(); 
 
-    
-
   }, []); 
 
 
 
+
+// Code pour calculer le montant des produits seuls à chaque fois que le state produitsCommande est modifié : //
   useEffect(() => {
 
-    // Code pour calculer le montant des produits seuls : //
     let totalPrix = 0; 
     produitsCommande.map((produit) => {
       totalPrix = totalPrix + Number(produit.prix)
       setTotalProduits(totalPrix)
     })
-
     
   }, [produitsCommande])
 
 
 
+
+
+// Code pour calculer les frais de ports une fois que le state totalProduits est modifié : //
   useEffect(() => {
-    // Code pour calculer les frais de ports : //
+    
     if(totalProduits < 150) {
       setPorts(20)
     } else if (totalProduits >= 150 && totalProduits < 300) {
@@ -137,20 +136,22 @@ export default function page() {
       setPorts(0)
     }
 
-    
   }, [totalProduits]); 
 
 
 
+
+// Code pour calculer le montant total de la commande, une fois que le state ports est modifié : //
   useEffect(() => {
 
-// Code pour calculer le montant total de la commande : //
     setTotalCommande(totalProduits + ports); 
 
   }, [ports])
 
 
 
+
+// Code pour récupérer les infos du client grâce à l'id qu'on récupère du state global : //
   useEffect (() => {
 
     async function getClient() {
@@ -169,22 +170,24 @@ export default function page() {
 
     } catch (error) {
     console.error("faillite dans la recupération des infos du client")
-    }
+      }
     }
 
     getClient(); 
  
-    
   }, [id])
 
 
 
+// Code pour mettre à jour la recharge de la page une fois que les states client et totalCommande ont été implémentés : //
   useEffect(() =>{
     setLoadingPage(true);
   }, [client, totalCommande])
 
 
 
+
+// Code pour valider et créer une commande en BDD, seulement si la personne est bien authentifiée : //
   async function validOrder() {
 
     if(!isAuthenticated && role !== "client") {
@@ -218,9 +221,7 @@ export default function page() {
        
       const data = await response.json(); 
 
-      console.log("idCommande : ", data.idCommande)
-
-      router.push(`/commande/${data.idCommande}/validation`) // GROSSE VERIF A FAIRE UNE FOIS QUE JAURAI EU LE RETOUR DU BACK  !!!!!!
+      router.push(`/commande/${data.idCommande}/validation`) 
 
     } catch(error) {
       console.error("erreur lors de la validation du récap de commande: ", error)

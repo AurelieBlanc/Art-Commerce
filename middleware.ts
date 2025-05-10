@@ -7,6 +7,9 @@ import { jwtVerify } from "jose"; // on importe jose pour vérifier le token car
 const SECRET_KEY = process.env.JWT_SECRET; 
 
 
+
+
+
 export default async function middleware(req: NextRequest) {
 
     console.log("MIDDLEWARE SECU BIEN EXECUTE"); 
@@ -22,7 +25,6 @@ export default async function middleware(req: NextRequest) {
 
       try {
 
-       
         if(!SECRET_KEY) {
             throw new Error("la secret Key n'est pas définie dans les variables d'env")
         }

@@ -45,7 +45,6 @@ try {
 // Code pour recuperer les infos du client selon son id : ----------------//
 
     const { id } = req.query // on recupere l'id du client dans la requete 
-    console.log("id client", id); 
 
     let infosClient; 
 
@@ -60,7 +59,7 @@ try {
     return res.status(200).json({ message: "infos clients bien recupérés", infosClient})
 
     
-
+// Code pour attraper une erreur si besoin : ---------------------------------- // 
     } catch(error) {
         console.error("Erreur lors de la recup des infos du client", error); 
         return res.status(500).json({ message: "Erreur serveur" })
