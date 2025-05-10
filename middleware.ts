@@ -9,7 +9,9 @@ const SECRET_KEY = process.env.JWT_SECRET;
 
 export default async function middleware(req: NextRequest) {
 
-    console.log("MIDDLEWARE ADMIN BIEN EXECUTE")
+    console.log("MIDDLEWARE SECU BIEN EXECUTE"); 
+
+    const { pathname } = req.nextUrl; 
 
     const authToken = req.cookies.get("authToken")?.value;
 
@@ -28,12 +30,21 @@ export default async function middleware(req: NextRequest) {
         const secret = new TextEncoder().encode(SECRET_KEY); // convertir la clé dans le bon format pour jose
         const { payload } = await jwtVerify (authToken, secret); // la constante payload renvoie un objet avec la propriété role (on peut donc verifier si c'est bien l'admin)
 
-
-        if(payload.role !== "admin") {
-            console.log("ce n'est pas l'admin")
+        if(pathname.startsWith("/commande")) {
+          if(payload.role !== "client") {
+            console.log("accès réfusé au non client")
             return NextResponse.redirect(new URL("/", req.url))
+          }
         }
 
+        if(pathname.startsWith("/products")) {
+          if(payload.role !== "admin") {
+            console.log("accès réfusé au non admin")
+            return NextResponse.redirect(new URL("/", req.url))
+          }
+        }
+
+      
         return NextResponse.next()
 
       } catch (error: any) {
@@ -46,6 +57,7 @@ export default async function middleware(req: NextRequest) {
 export const config = {
     matcher: [ 
         "/products/newProduct/:path*",
-        "/products/updateProduct/:path*", 
+        "/products/updateProduct/:path*",
+        "/commande/:path*"
      ] //path* : toutes les routes et sous routes de : products/newProduct 
 }
