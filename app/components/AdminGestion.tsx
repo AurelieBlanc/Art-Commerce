@@ -41,7 +41,10 @@ useEffect(() => {
         }
 
         const data = await response.json(); 
-        setCommandes(data)
+        console.log("retour de data en console : ", data); 
+        setCommandes(data); 
+
+
 
     } catch(error) {
         console.error("la récuperation des commandes a échoué : ", error)
@@ -60,7 +63,49 @@ useEffect(() => {
   return (
     <div
         className="mt-6">
-            ICI tableau
+            <table
+                className=" border-collapse">
+                    <thead
+                        className="">
+                            <tr
+                                className="">
+                                    <th 
+                                        className="border border-black">
+                                        ID Cde
+                                    </th>
+                                    <th 
+                                        className="border border-black">
+                                        Date
+                                    </th>
+                                    <th>Montant</th>
+                                    <th>Statut</th>
+                                    <th>ID Client</th>
+                                    <th>Adresse</th>
+                                    <th>Cp</th>
+                                    <th>Ville</th>
+                            </tr>
+                    </thead>
+                    <tbody
+                        className="">
+                            <tr
+                                className="">
+                                    <td>Bla</td>
+                                    <td>Bla</td>
+                                    <td>Bla</td>
+                                    <td>Bla</td>
+                                    <td>Bla</td>
+                                    <td>Bma</td>
+                                    <td>Bla</td>
+                                    <td>Bma</td>
+
+                            </tr>
+                    </tbody>
+
+                        
+                    
+
+            </table>
+            
     </div>
   )
 }

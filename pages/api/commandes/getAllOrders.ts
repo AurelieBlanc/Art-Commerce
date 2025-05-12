@@ -44,7 +44,6 @@ export default async function getAllOrders(req: NextApiRequest, res:NextApiRespo
         return res.status(403).json({ message: "authToken invalide"})
     }
 
-
     let orders; 
 
     if(decoded && decoded.role === "admin") {
