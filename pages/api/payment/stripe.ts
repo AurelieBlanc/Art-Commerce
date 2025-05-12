@@ -103,8 +103,9 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                     quantity: 1,
                 }
             ], 
+            metadata : { idCommande: idCommande.toString() }, // on envoie à Stripe l'id de la commande en question
         // On renverra sur ces URL, en cas de succès ou d'échec :  --------- //
-            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success`, 
+            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?idCommande=${idCommande}`, 
             cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`
         }); 
 
