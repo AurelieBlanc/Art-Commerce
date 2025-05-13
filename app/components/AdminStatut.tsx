@@ -85,12 +85,24 @@ return loading ?
                 Modification du statut de commande n° {updateId} :
             </h2>
 
-            <label htmlFor="">
+            <label htmlFor="statutCommande"
+              className="">
               Statut de commande:
             </label>
-            <p>
-              {statutCommande.statut}
-            </p>
+            <select
+              className=""
+              name="statut"
+              id="statutCommande"
+              // onChange={handleChange}
+              // value={}
+              >
+              <option value="EN ATTENTE DE PAIEMENT">EN ATTENTE DE PAIEMENT</option>
+              <option value="PAYEE, EN COURS DE PREPARATION">PAYEE, EN COURS DE PREPARATION</option>
+              <option value="EN COURS DE LIVRAISON">EN COURS DE LIVRAISON</option>
+              <option value="LIVREE">LIVREE</option>
+            </select>
+              {/* {statutCommande.statut} */}
+            
              
 
             
