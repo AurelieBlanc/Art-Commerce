@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs"
 import "dayjs/locale/fr";
 import { RiDeleteBin5Fill } from "react-icons/ri"; // icone poubelle pour supprimer la commande : <RiDeleteBin5Fill />
+import { FaPencilAlt } from "react-icons/fa"; // icone crayon pour modifier les statuts de commande : <FaPencilAlt />
+import AdminStatut from "./AdminStatut";
+import { useModalStore } from "@/stores/useStore";
+
 import Cookies  from "js-cookie"; 
 
 
@@ -24,12 +28,12 @@ interface Commande {
 
 export default function AdminGestion() {
 
-//Code pour les outils, states locaux : -------------------------------------- //
+//Code pour les outils, states locaux, et states globaux : ---------------------- //
 const [ commandes, setCommandes ] = useState<Commande[]>([]); 
+ 
+const [ updateId, setUpdateId ] = useState<number>(0); 
 
-
-
-
+const { isModalOpen, toggleModal} = useModalStore(); 
 
 
 // Code useEffect pour récupérer toutes les commandes : ----------------------- //
@@ -71,7 +75,7 @@ async function deleteOrder(id: number) {
         alert ("suppresion annulée !"); 
         return; 
     }
-    
+
     try {
 
         const response = await fetch (`/api/commandes/deleteOneOrder/${id}`, {
@@ -100,6 +104,13 @@ async function deleteOrder(id: number) {
     }
 }
 
+
+
+// Fonction updateOrder pour mettre à jour les statuts de commande : ------------ //
+async function updateOrder (id: number) {
+    setUpdateId(Number(id)); 
+    toggleModal(); 
+}
 
 
 
@@ -157,6 +168,12 @@ async function deleteOrder(id: number) {
                                      <td 
                                         className="border border-slate-900 font-boogaloo text-xl m-2 w-[180px] text-center">
                                         {commande.statut}
+                                            <button>
+                                            <FaPencilAlt 
+                                                className="text-teal-700 inline-block ml-2 mb-2"
+                                                onClick={() => updateOrder(commande.id_commande)}/>
+                                            </button>
+
                                     </td>
                                      <td 
                                         className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
@@ -185,6 +202,8 @@ async function deleteOrder(id: number) {
                     
 
             </table>
+
+            {isModalOpen && <AdminStatut updateId={updateId}/> }
             
     </div>
   )

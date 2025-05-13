@@ -2,7 +2,7 @@
 "use client"
 import Image from "next/image";
 import { useEffect, useState } from "react"; 
-import useStore from "@/stores/useStore";
+import { useStore } from "@/stores/useStore";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { getPanier, savePanier, addPanier } from "@/utils/panierCookie";

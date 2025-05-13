@@ -11,8 +11,13 @@ interface Store {
     setAuthenticated: (authData: { isAuthenticated: boolean; role: string; id: number}) => void; 
 }
 
+interface ModalStore {
+    isModalOpen: boolean
+    toggleModal: () => void
+}
 
-const useStore = create <Store>((set) => ({
+
+export const useStore = create <Store>((set) => ({
     isAuthenticated: false, 
     role: null, 
     id: null,  // valeur par défaut
@@ -26,4 +31,12 @@ const useStore = create <Store>((set) => ({
     }
 })); 
 
-export default useStore; 
+
+export const useModalStore = create<ModalStore>((set) => ({
+    isModalOpen: false, 
+    toggleModal: () => set((state) => ({ isModalOpen: !state.isModalOpen}))
+}));
+
+
+
+

@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useEffect } from "react"; 
 import Cookies from "js-cookie"; 
-import useStore from '@/stores/useStore';
+import { useStore } from '@/stores/useStore';
 
 
 

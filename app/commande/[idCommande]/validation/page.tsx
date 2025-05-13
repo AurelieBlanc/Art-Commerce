@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation"; 
 import { useEffect, useState } from "react"; 
 import { loadStripe } from "@stripe/stripe-js"; 
-import useStore from "@/stores/useStore";
+import { useStore } from "@/stores/useStore";
 import Cookies from "js-cookie"; 
 import { useRouter } from "next/navigation"; 
 

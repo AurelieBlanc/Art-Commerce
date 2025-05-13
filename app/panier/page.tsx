@@ -4,7 +4,7 @@ import { getPanier, removeFromPanier, deletePanier } from "@/utils/panierCookie"
 import { useState, useEffect } from "react"; 
 import { RiDeleteBin2Fill } from "react-icons/ri"; // icone pour delete le produit : <RiDeleteBin2Fill />
 import { IoIosWarning } from "react-icons/io"; // icone warning <IoIosWarning />
-import useStore from "@/stores/useStore";
+import { useStore } from "@/stores/useStore";
 import { useRouter } from "next/navigation";
 
 

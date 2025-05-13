@@ -1,7 +1,7 @@
 // Code pour les imports : ------------------------------------------------ //
 "use client"; 
 import { useEffect, useState } from "react"; 
-import useStore from "@/stores/useStore";
+import { useStore } from "@/stores/useStore";
 import { getPanier } from "../../../utils/panierCookie"; 
 import Cookies from "js-cookie";
 import Link from "next/link";

@@ -1,6 +1,6 @@
 // Code pour les imports : --------------------------------------------------//
 "use client"
-import useStore from "@/stores/useStore";
+import { useStore } from "@/stores/useStore";
 import { FaUserCircle } from "react-icons/fa"; // import de l'icone user <FaUserCircle />
 import { FaHeart } from "react-icons/fa"; // import de l'icone coeur <FaHeart />
 import { FaShoppingBasket } from "react-icons/fa"; // import de l'icone panier <FaShoppingBasket />

@@ -2,7 +2,7 @@
 "use client" // composant éxécuté coté client
 import { useRef } from "react"; 
 import { z } from "zod"; 
-import useStore from "@/stores/useStore";
+import { useStore } from "@/stores/useStore";
 
 
 

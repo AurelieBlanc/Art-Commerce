@@ -1,6 +1,6 @@
 //Code pour les import : ----------------------------------------------------- //
 "use client"
-import useStore from "@/stores/useStore"; 
+import { useStore } from "@/stores/useStore"; 
 import AdminGestion from "../components/AdminGestion";
 
 

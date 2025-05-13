@@ -1,7 +1,7 @@
 //Code pour les imports : ----------------------------------------------//
 "use client"
 import { useEffect, useState } from "react"; 
-import useStore from "@/stores/useStore";
+import { useStore } from "@/stores/useStore";
 import { z } from "zod"; 
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation"; 
