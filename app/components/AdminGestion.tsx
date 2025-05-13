@@ -1,6 +1,9 @@
 //Code pour les imports : ---------------------------------------------------- //
 import { useEffect, useState } from "react"; 
 
+import dayjs from "dayjs"
+import "dayjs/locale/fr";
+
 
 interface Commande {
     id_commande: number, 
@@ -64,7 +67,7 @@ useEffect(() => {
     <div
         className="mt-6">
             <table
-                className="">
+                className="mb-10">
                     <thead
                         className="">
                             <tr
@@ -74,11 +77,11 @@ useEffect(() => {
                                         ID Commande :
                                     </th>
                                     <th 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px]">
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[160px]">
                                         Date :
                                     </th>
                                     <th 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px]">
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[180px]">
                                         Statut :
                                     </th>
                                     <th 
@@ -102,11 +105,11 @@ useEffect(() => {
                                         {commande.id_commande}
                                     </td>
                                      <td 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
-                                        {commande.date_commande}
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[160px] text-center">
+                                        {dayjs(commande.date_commande).locale("fr").format("dddd DD MMMM YYYY")}
                                     </td>
                                      <td 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[180px] text-center">
                                         {commande.statut}
                                     </td>
                                      <td 
