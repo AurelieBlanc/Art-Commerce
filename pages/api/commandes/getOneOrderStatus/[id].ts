@@ -10,6 +10,7 @@ const SECRET_KEY = process.env.JWT_SECRET;
 
 
 
+
 // Code pour le typage :  ----------------------------------------------- //
 interface JwtPayload {
     id: number, 
@@ -20,22 +21,23 @@ interface JwtPayload {
 }
 
 
-
-
-
-
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
+// Verification de la méthode : --------------------------------------------- //
     if(req.method !== "GET") {
         return res.status(405).json({ message: "requête HTTP non autorisée "})
     }
 
-// Ici on recupère l'id de la commande en question : --------- //
-    const { id } =  req.query; 
 
-    
+
+
+// Recupération de l'id de la commande concernée : --------------------------- //
+    const { id } = req.query; 
+
+
+
+
+// Récup du cookie onlyHTTP pour faire les verifs sécurité : -------------------- /
     try {
-// Recup du cookie onlyHTTP et verifs sécurité : ---------------------------------- //
-
         const cookies = cookie.parse(req.headers.cookie || ""); 
         const authToken = cookies.authToken; 
 
@@ -49,38 +51,24 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         }; 
 
         const decoded = jwt.verify(authToken, SECRET_KEY) as JwtPayload; 
-       
-       
+        
+        
         if(!decoded) {
             return res.status(403).json({ message: "authToken invalide" })
         }
 
-
 // Si les verifs sécurité sont un succès alors, on va chercher en BDD la commande grâce à son ID: //
-        const order = await prisma.commande.findUnique({
+        let order; 
+
+        if(decoded && decoded.role === "admin") {
+            order = await prisma.commande.findUnique({
             where : { id_commande: Number(id)} 
         }); 
-
-       
-
-
-
-// On verifie si l'id dans le authToken est bien le même que dans la commande cherchée en BDD, et si oui ... //
-        if(decoded.id !== order?.id_client) {
-            return res.status(403).json({ message: "accès interdit"})
         }
+        
+        return res.status(200).json({ order })
 
-
-
-// ....on va chercher aussi le customer corespondant en BDD : --------------------------- //
-        const customer = await prisma.client.findUnique({
-            where: { id_client: Number(decoded.id)}
-        }); 
-
-        return res.status(200).json({ message: "Données bien recup en back", order, customer})
-
-
-    } catch (error) {
+    } catch(error) {
         console.error("erreur lors de la récupération de commande")
         return res.status(500).json({ message: "Erreur interne du serveur"})
     }
