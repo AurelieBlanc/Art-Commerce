@@ -64,41 +64,63 @@ useEffect(() => {
     <div
         className="mt-6">
             <table
-                className=" border-collapse">
+                className="">
                     <thead
                         className="">
                             <tr
                                 className="">
                                     <th 
-                                        className="border border-black">
-                                        ID Cde
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px]">
+                                        ID Commande :
                                     </th>
                                     <th 
-                                        className="border border-black">
-                                        Date
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px]">
+                                        Date :
                                     </th>
-                                    <th>Montant</th>
-                                    <th>Statut</th>
-                                    <th>ID Client</th>
-                                    <th>Adresse</th>
-                                    <th>Cp</th>
-                                    <th>Ville</th>
+                                    <th 
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px]">
+                                        Statut :
+                                    </th>
+                                    <th 
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px]">
+                                        Montant :
+                                    </th>
+                                    <th 
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px]">
+                                        Id Client :
+                                    </th>
                             </tr>
                     </thead>
                     <tbody
                         className="">
-                            <tr
-                                className="">
-                                    <td>Bla</td>
-                                    <td>Bla</td>
-                                    <td>Bla</td>
-                                    <td>Bla</td>
-                                    <td>Bla</td>
-                                    <td>Bma</td>
-                                    <td>Bla</td>
-                                    <td>Bma</td>
 
+                            {commandes.map((commande) => (
+                                <tr
+                                className="">
+                                     <td 
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
+                                        {commande.id_commande}
+                                    </td>
+                                     <td 
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
+                                        {commande.date_commande}
+                                    </td>
+                                     <td 
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
+                                        {commande.statut}
+                                    </td>
+                                     <td 
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
+                                        {commande.total} €
+                                    </td>
+                                     <td 
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
+                                        {commande.id_client}
+                                    </td>
                             </tr>
+                            ))}
+
+
                     </tbody>
 
                         
