@@ -1,8 +1,10 @@
 //Code pour les imports : ---------------------------------------------------- //
 import { useEffect, useState } from "react"; 
-
 import dayjs from "dayjs"
 import "dayjs/locale/fr";
+import { RiDeleteBin5Fill } from "react-icons/ri"; // icone poubelle pour supprimer la commande : <RiDeleteBin5Fill />
+import Cookies  from "js-cookie"; 
+
 
 
 interface Commande {
@@ -44,7 +46,7 @@ useEffect(() => {
         }
 
         const data = await response.json(); 
-        console.log("retour de data en console : ", data); 
+    
         setCommandes(data); 
 
 
@@ -57,6 +59,46 @@ useEffect(() => {
   getOrders(); 
 
 }, [])
+
+
+
+// Fonction deleteOrder pour supprimer une commande en BDD : ------------------ //
+async function deleteOrder(id: number) {
+
+    const confirmation = confirm (`êtes vous sur de vouloir supprimer la commande n° ${id} ?`); 
+
+    if(!confirmation) {
+        alert ("suppresion annulée !"); 
+        return; 
+    }
+    
+    try {
+
+        const response = await fetch (`/api/commandes/deleteOneOrder/${id}`, {
+            method:"DELETE", 
+            credentials:"include", 
+            headers: {
+                'Content-Type': "application/json", 
+                "x-csrf-token": Cookies.get("csrfToken") || "", 
+            },         
+        })
+
+         if(!response.ok) {
+            throw new Error("réponse appel Commandes erreur")
+        }
+
+        const data = await response.json();
+        console.log(data)
+
+        const newOrdersTab = commandes.filter((elem: Commande) => elem.id_commande !== id ); 
+
+        setCommandes(newOrdersTab); 
+
+
+    } catch (error) {
+      console.error("la suupression de la commande a échoué : ", error)
+    }
+}
 
 
 
@@ -92,6 +134,10 @@ useEffect(() => {
                                         className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px]">
                                         Id Client :
                                     </th>
+                                    <th 
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px]">
+                                        à nettoyer ? 
+                                    </th>
                             </tr>
                     </thead>
                     <tbody
@@ -119,6 +165,15 @@ useEffect(() => {
                                      <td 
                                         className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
                                         {commande.id_client}
+                                    </td>
+                                     <td 
+                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
+                                       
+                                        <button
+                                            className="text-red-700 text-2xl"
+                                            onClick={()=> deleteOrder(commande.id_commande)}>
+                                            <RiDeleteBin5Fill />
+                                        </button>
                                     </td>
                             </tr>
                             ))}
