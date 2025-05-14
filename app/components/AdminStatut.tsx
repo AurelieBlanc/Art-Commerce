@@ -1,6 +1,6 @@
 //Code pour les imports : --------------------------------------------------- //
 import { IoMdCloseCircle } from "react-icons/io"; // icone pour close la modale : <IoMdCloseCircle />
-import { useModalStore } from "@/stores/useStore";
+import { useModalUpdateStore } from "@/stores/useStore";
 import { useEffect, useState } from "react"; 
 import Cookies from "js-cookie"; 
 
@@ -22,7 +22,7 @@ interface StatutCommande {
 export default function AdminStatut({ updateId } : { updateId: number}) {
 
 // Code pour les states locaux ou globaux, et outils : --------------------- //
-const { toggleModal } = useModalStore(); 
+const { toggleUpdateModal } = useModalUpdateStore(); 
 
 const [ loading, setLoading ] = useState(false); 
 
@@ -68,7 +68,7 @@ useEffect(() => {
 
 // Code , fonction pour fermer la modale : ---------------------------------- //
 function closeModal () {
-  toggleModal(); 
+  toggleUpdateModal(); 
 }
 
 
@@ -107,7 +107,7 @@ async function handleSubmitUpdate(event: React.FormEvent<HTMLFormElement>) {
 
     const data = await response.json(); 
     alert("le statut a bien été mis à jour"); 
-    toggleModal(); 
+    toggleUpdateModal(); 
 
   } catch(error) {
     console.error("Erreur lors de la modification du produit", error); 

@@ -5,9 +5,10 @@ import "dayjs/locale/fr";
 import { RiDeleteBin5Fill } from "react-icons/ri"; // icone poubelle pour supprimer la commande : <RiDeleteBin5Fill />
 import { FaPencilAlt } from "react-icons/fa"; // icone crayon pour modifier les statuts de commande : <FaPencilAlt />
 import AdminStatut from "./AdminStatut";
-import { useModalStore } from "@/stores/useStore";
+import { useModalUpdateStore, useModalClientStore } from "@/stores/useStore";
 
 import Cookies  from "js-cookie"; 
+import AdminClient from "./AdminClient";
 
 
 
@@ -35,7 +36,14 @@ const [ commandes, setCommandes ] = useState<Commande[]>([]);
  
 const [ updateId, setUpdateId ] = useState<number>(0); 
 
-const { isModalOpen, toggleModal} = useModalStore(); 
+const [ clientId, setClientId ] = useState<number>(0); 
+
+const { isModalUpdateOpen, toggleUpdateModal} = useModalUpdateStore(); 
+
+const { isModalClientOpen, toggleClientModal } = useModalClientStore(); 
+
+
+
 
 
 // Code useEffect pour récupérer toutes les commandes : ----------------------- //
@@ -65,7 +73,7 @@ const { isModalOpen, toggleModal} = useModalStore();
 
   getOrders(); 
 
-}, [isModalOpen]) // ce useEffect se déclenche quand le composant se monte(comportement normal) + quand isModalOpen change
+}, [isModalUpdateOpen]) // ce useEffect se déclenche quand le composant se monte(comportement normal) + quand isModalOpen change
 
 
 
@@ -112,7 +120,14 @@ const { isModalOpen, toggleModal} = useModalStore();
 // Fonction updateOrder pour ouvrir la modale qui mettra à jour les statuts de commande : ------------ //
 async function updateOrder (id: number) {
     setUpdateId(Number(id)); 
-    toggleModal(); 
+    toggleUpdateModal(); 
+}
+
+
+// Fonction pour ouvrir la modale, avec toutes les infos clients avec son id : // 
+async function openInfosClient(id: number) {
+    setClientId(id); 
+    toggleClientModal(); 
 }
 
 
@@ -185,7 +200,11 @@ async function updateOrder (id: number) {
                                     </td>
                                      <td 
                                         className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
-                                        {commande.id_client}
+                                            <button
+                                                className=""
+                                                onClick={() => openInfosClient(commande.id_client)}>
+                                            {commande.id_client}
+                                            </button>
                                     </td>
                                      <td 
                                         className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
@@ -207,7 +226,9 @@ async function updateOrder (id: number) {
 
             </table>
 
-            {isModalOpen && <AdminStatut updateId={updateId}/> }
+            {isModalUpdateOpen && <AdminStatut updateId={updateId}/> }
+
+            {isModalClientOpen && <AdminClient clientId={clientId}/> }
             
     </div>
   )

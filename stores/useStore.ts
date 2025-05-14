@@ -1,8 +1,8 @@
-// Code pour les imports : -----------------------------------------------------//
+// Code pour les imports : ---------------------------------------------------- //
 import { create } from "zustand"; 
 
 
-
+// Code pour les typages : ---------------------------------------------------- //
 interface Store {
     isAuthenticated: boolean; 
     role: string | null; 
@@ -11,12 +11,19 @@ interface Store {
     setAuthenticated: (authData: { isAuthenticated: boolean; role: string; id: number}) => void; 
 }
 
-interface ModalStore {
-    isModalOpen: boolean
-    toggleModal: () => void
+interface ModalUpdateStore {
+    isModalUpdateOpen: boolean
+    toggleUpdateModal: () => void
+}
+
+interface ModalClientStore {
+    isModalClientOpen : boolean
+    toggleClientModal : () => void
 }
 
 
+
+// Code pour la gestion des states : ------------------------------------------ //
 export const useStore = create <Store>((set) => ({
     isAuthenticated: false, 
     role: null, 
@@ -32,11 +39,18 @@ export const useStore = create <Store>((set) => ({
 })); 
 
 
-export const useModalStore = create<ModalStore>((set) => ({
-    isModalOpen: false, 
-    toggleModal: () => set((state) => ({ isModalOpen: !state.isModalOpen}))
+export const useModalUpdateStore = create<ModalUpdateStore>((set) => ({
+    isModalUpdateOpen: false, 
+    toggleUpdateModal: () => set((state) => ({ isModalUpdateOpen: !state.isModalUpdateOpen}))
 }));
 
 
+export const useModalClientStore = create<ModalClientStore>((set) => ({
+    isModalClientOpen: false, 
+    toggleClientModal: () => set((state) => ({ isModalClientOpen: !state.isModalClientOpen}))
+}))
 
 
+
+
+ 
