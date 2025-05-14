@@ -7,6 +7,10 @@ import jwt from "jsonwebtoken";
 const prisma = new PrismaClient(); 
 const SECRET_KEY = process.env.JWT_SECRET; 
 
+
+
+
+// Code pour les typages : -------------------------------------------------- //
 interface JwtPayload {
     id: number, 
     email: string, 
@@ -15,7 +19,10 @@ interface JwtPayload {
 
 
 
+
 export default async function handle ( req:NextApiRequest, res:NextApiResponse ) {
+
+// Code pour verif la bonne méthode : ---------------------------------------- //
     if(req.method !== "DELETE") {
         return res.status(405).json({ message: "requête HTTP non autorisée "})
     }
@@ -68,7 +75,7 @@ export default async function handle ( req:NextApiRequest, res:NextApiResponse )
 
         let deletedOrder; 
 
-    // ici, on va appeler Prisma pour supprimer une commande : 
+// une fois toutes les verifs de sécu faites, on va pouvoir appeler Prisma pour supprimer une commande : //
         if(csrfToken && decoded && decoded.role === "admin") {
             deletedOrder = await prisma.commande.delete({
                 where: {id_commande: Number(id)}

@@ -55,7 +55,6 @@ useEffect(() => {
 
     setLoading(true); 
 
-
     } catch(error) {
       console.error("la récupération de la commande ne s'est pas déroulée correctement")
     }
@@ -74,22 +73,24 @@ function closeModal () {
 
 
 
+
+// Code pour modifier la valeur dans le select avec la nouvelle valeur choisie : //
 function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
   const value = event.target.value; 
   setStatutCommande( prev => ({
     ...prev, 
     statut: value
   })); 
-
-  console.log(statutCommande); 
+ 
 }
 
+
+
+// Code pour soumettre le nouveau state statutCommande en back : ---------------- //
 async function handleSubmitUpdate(event: React.FormEvent<HTMLFormElement>) {
   event.preventDefault(); 
-  console.log("quel statut va t'on envoyer en back ?", statutCommande); 
 
   try {
-
     const response = await fetch (`/api/commandes/updateOneOrder/${updateId}`, {
       method: "PATCH", 
       credentials: "include", 
@@ -105,7 +106,6 @@ async function handleSubmitUpdate(event: React.FormEvent<HTMLFormElement>) {
     }
 
     const data = await response.json(); 
-    console.log("qu'y a t'il en retour ? ", data)
     alert("le statut a bien été mis à jour"); 
     toggleModal(); 
 
@@ -117,7 +117,7 @@ async function handleSubmitUpdate(event: React.FormEvent<HTMLFormElement>) {
 }
 
 
-
+// Code pour retourner le composant : ----------------------------------- //
 return loading ? 
    (
     <div
@@ -171,7 +171,8 @@ return loading ?
     </div>
 
     ) : (
-      <div>
+      <div
+        className="font-bold font-boogaloo text-2xl">
         EN COURS DE CHARGEMENT ....
       </div>
     )

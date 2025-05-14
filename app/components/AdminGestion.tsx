@@ -11,6 +11,8 @@ import Cookies  from "js-cookie";
 
 
 
+
+// Code pour les typages : ---------------------------------------------------- //
 interface Commande {
     id_commande: number, 
     date_commande: string,
@@ -37,9 +39,9 @@ const { isModalOpen, toggleModal} = useModalStore();
 
 
 // Code useEffect pour récupérer toutes les commandes : ----------------------- //
-useEffect(() => {
-  async function getOrders() {
-    try {
+    useEffect(() => {
+        async function getOrders() {
+        try {
         const response = await fetch ("/api/commandes/getAllOrders", {
             method: "GET", 
             credentials: "include"
@@ -52,10 +54,9 @@ useEffect(() => {
         const data = await response.json(); 
     
         setCommandes(
-            data.sort((a:Commande, b:Commande) => a.id_commande - b.id_commande)
+            // ici on procède à un tri du tableau pour que les id soient classés en odre croissant : (on reprend les regles de la fonction sort : si a - b donne: un nombre negatif : a est trié AVANT b, zéro : l'ordre reste inchangé ; un nombre positif :a est trié APRES b)
+            data.sort((a:Commande, b:Commande) => a.id_commande - b.id_commande) 
         ); 
-
-
 
     } catch(error) {
         console.error("la récuperation des commandes a échoué : ", error)
@@ -64,13 +65,14 @@ useEffect(() => {
 
   getOrders(); 
 
-}, [isModalOpen])
+}, [isModalOpen]) // ce useEffect se déclenche quand le composant se monte(comportement normal) + quand isModalOpen change
 
 
 
 // Fonction deleteOrder pour supprimer une commande en BDD : ------------------ //
-async function deleteOrder(id: number) {
+    async function deleteOrder(id: number) {
 
+    // on s'assure que notre admin est bien ok pour supprimer la commande sur laquelle il a cliqué : //
     const confirmation = confirm (`êtes vous sur de vouloir supprimer la commande n° ${id} ?`); 
 
     if(!confirmation) {
@@ -79,7 +81,6 @@ async function deleteOrder(id: number) {
     }
 
     try {
-
         const response = await fetch (`/api/commandes/deleteOneOrder/${id}`, {
             method:"DELETE", 
             credentials:"include", 
@@ -94,15 +95,15 @@ async function deleteOrder(id: number) {
         }
 
         const data = await response.json();
-        console.log(data)
-
+        
+        // on filtre le nouveau tableau en enlevant la commande supprimée et on remet à jour notre state setCommandes : //
         const newOrdersTab = commandes.filter((elem: Commande) => elem.id_commande !== id ); 
 
         setCommandes(newOrdersTab); 
 
 
     } catch (error) {
-      console.error("la suupression de la commande a échoué : ", error)
+      console.error("la suupression de la commande a échouée : ", error)
     }
 }
 

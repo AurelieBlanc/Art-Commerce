@@ -8,6 +8,9 @@ const prisma = new PrismaClient();
 const SECRET_KEY = process.env.JWT_SECRET; 
 
 
+
+
+// Code pour les typages : ------------------------------------------------- //
 interface JwtPayload {
     id: number, 
     email: string, 
@@ -20,8 +23,6 @@ export default async function getAllOrders(req: NextApiRequest, res:NextApiRespo
     if(req.method !== "GET") {
         return res.status(405).json({ message: "requête HTTP non autorisée"})
     }
-
-
 
     try {
 
@@ -44,6 +45,7 @@ export default async function getAllOrders(req: NextApiRequest, res:NextApiRespo
         return res.status(403).json({ message: "authToken invalide"})
     }
 
+// Si les verifs sécu ont été validées, alors on peut aller chercher en BDD toutes les commandes : //
     let orders; 
 
     if(decoded && decoded.role === "admin") {

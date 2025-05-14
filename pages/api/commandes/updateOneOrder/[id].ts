@@ -9,6 +9,7 @@ const SECRET_KEY = process.env.JWT_SECRET;
 
 
 
+
 // Code pour le typage :  ----------------------------------------------- //
 interface JwtPayload {
     id: number, 
@@ -17,6 +18,8 @@ interface JwtPayload {
     iat: number, 
     exp: number
 }
+
+
 
 
 
@@ -32,9 +35,8 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
 // Ici on recupère l'id de la commande en question : ----------------------- //
     const { id } =  req.query; 
-    console.log("id ?", id)
     const { statutCommande } = req.body; 
-    console.log("statutCommande ?", statutCommande)
+   
 
 
 // Code pour les verifs de securité : authntification de l'admin et provenance de la requête ? //
@@ -61,13 +63,12 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
 
 
-// Dans un deuxième temps, on procède aux différentes validations : --------- //     
+// Dans un deuxième temps, on procède aux différentes validations : ------------- //     
         if(!SECRET_KEY) {
             throw new Error ("la clé sécrète n'est pas correctement définie")
         }
 
         const decoded = jwt.verify(authToken, SECRET_KEY) as JwtPayload; 
-        console.log('decoded ?', decoded )
         
         if(!decoded) {
             return res.status(403).json({ message: "authToken invalide"})
@@ -78,7 +79,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         }     
 
 
-// si authToken et csrf validés, alors on créé un nouveau produit : ------------- //
+// si authToken et csrf validés, alors on modifie le statut de la commande : ------------- //
         let updatedOrder; 
 
         if (decoded && csrfToken && decoded.role === "admin") {
