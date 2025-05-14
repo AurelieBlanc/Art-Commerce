@@ -51,7 +51,9 @@ useEffect(() => {
 
         const data = await response.json(); 
     
-        setCommandes(data); 
+        setCommandes(
+            data.sort((a:Commande, b:Commande) => a.id_commande - b.id_commande)
+        ); 
 
 
 
@@ -62,7 +64,7 @@ useEffect(() => {
 
   getOrders(); 
 
-}, [])
+}, [isModalOpen])
 
 
 
@@ -106,11 +108,12 @@ async function deleteOrder(id: number) {
 
 
 
-// Fonction updateOrder pour mettre à jour les statuts de commande : ------------ //
+// Fonction updateOrder pour ouvrir la modale qui mettra à jour les statuts de commande : ------------ //
 async function updateOrder (id: number) {
     setUpdateId(Number(id)); 
     toggleModal(); 
 }
+
 
 
 

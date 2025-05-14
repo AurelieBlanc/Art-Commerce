@@ -21,14 +21,76 @@ interface JwtPayload {
 
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
-    if(req.method !== "GET") {
+
+// Code pour verifier que la methode est bien respectée : -------------------- //
+    if(req.method !== "PATCH") {
         return res.status(405).json({ message: "requête HTTP non autorisée "})
     }
 
-// Ici on recupère l'id de la commande en question : --------- //
+
+
+
+// Ici on recupère l'id de la commande en question : ----------------------- //
     const { id } =  req.query; 
-    
+    console.log("id ?", id)
+    const { statutCommande } = req.body; 
+    console.log("statutCommande ?", statutCommande)
+
+
+// Code pour les verifs de securité : authntification de l'admin et provenance de la requête ? //
+// Recupération des données dans un premier temps : ----------------------- //
     try {
+        const cookies = cookie.parse(req.headers.cookie || "" ); // là on recup les cookies onlyHTTP seulement car on est coté serveur
+                        
+        const authToken = cookies.authToken // récup cookie onlyHTTP authToken
+        const csrfToken = cookies.csrfToken // récup cookie onlyHTTP csrfToken
+
+        if(!authToken) {
+        throw new Error ("pas de authToken")
+        }
+
+        if(!csrfToken) {
+        throw new Error ("pas de csrfToken")
+        }  
+
+        const csrfTokenClient = req.headers["x-csrf-token"]; // Recup cookie envoyé en en-tête csrfToken
+          
+        if(!csrfTokenClient) {
+            throw new Error ("pas de csrfTokenClient dans le header")
+        }
+
+
+
+// Dans un deuxième temps, on procède aux différentes validations : --------- //     
+        if(!SECRET_KEY) {
+            throw new Error ("la clé sécrète n'est pas correctement définie")
+        }
+
+        const decoded = jwt.verify(authToken, SECRET_KEY) as JwtPayload; 
+        console.log('decoded ?', decoded )
+        
+        if(!decoded) {
+            return res.status(403).json({ message: "authToken invalide"})
+        }
+
+        if(csrfToken !== csrfTokenClient ) {
+            return res.status(403).json({ message: "CSRF invalide"})
+        }     
+
+
+// si authToken et csrf validés, alors on créé un nouveau produit : ------------- //
+        let updatedOrder; 
+
+        if (decoded && csrfToken && decoded.role === "admin") {
+            updatedOrder = await prisma.commande.update({
+                where: { id_commande: Number(id)}, 
+                data: {
+                    statut: statutCommande.statut
+                }
+            })
+        }
+
+        return res.status(200).json({ message: "modifification de statut de commande réussie", updatedOrder})
 
     } catch (error) {
          console.error("erreur lors de la modification de commande")
