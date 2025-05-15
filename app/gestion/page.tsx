@@ -2,7 +2,7 @@
 "use client"
 import { useStore } from "@/stores/useStore"; 
 import AdminGestion from "../components/AdminGestion";
-
+import ClientGestion from "../components/ClientGestion";
 
 
 
@@ -31,8 +31,7 @@ export default function page() {
 
       <div
         className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center">
-          PAGE AVEC STATUS de COMMANDES + suivi client // 
-          // CREER un composant ClientGestion 
+          <ClientGestion />
       </div>
 
       )
