@@ -201,7 +201,7 @@ async function openInfosClient(id: number) {
                                      <td 
                                         className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
                                             <button
-                                                className=""
+                                                className="w-[37px] h-[30px] bg-slate-800 text-white rounded-md shadow-xl border border-white"
                                                 onClick={() => openInfosClient(commande.id_client)}>
                                             {commande.id_client}
                                             </button>

@@ -31,7 +31,8 @@ export default function page() {
 
       <div
         className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center">
-          PAGE AVEC STATUS de COMMANDES + suivi client
+          PAGE AVEC STATUS de COMMANDES + suivi client // 
+          // CREER un composant ClientGestion 
       </div>
 
       )
