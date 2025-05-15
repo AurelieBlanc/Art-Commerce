@@ -46,6 +46,12 @@ export default async function middleware(req: NextRequest) {
           }
         }
 
+         if(pathname.startsWith("/gestion")) {
+          if(payload.role !== "admin" && payload.role !== "client") {
+            console.log("accès réfusé")
+            return NextResponse.redirect(new URL("/", req.url))
+          }
+        }
       
         return NextResponse.next()
 
@@ -60,6 +66,7 @@ export const config = {
     matcher: [ 
         "/products/newProduct/:path*",
         "/products/updateProduct/:path*",
-        "/commande/:path*"
+        "/commande/:path*", 
+        "/gestion"
      ] //path* : toutes les routes et sous routes de : products/newProduct 
 }
