@@ -3,7 +3,7 @@
 import { useRef } from "react"; 
 import { z } from "zod"; 
 import { useStore } from "@/stores/useStore";
-
+import Link from "next/link";
 
 
 
@@ -104,7 +104,7 @@ const { setAuthenticated, role } = useStore();
       
 // Code pour l'appel API pour se connecter : ---------------------------------------------------//    
     try {
-      const response = await fetch ("api/auth/login", {
+      const response = await fetch ("/api/auth/login", {
         method: "POST", 
         headers: {
           'Content-Type': "application/json"
@@ -308,10 +308,13 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
                             Valider 
                         </button>
 
+                        <Link
+                          href="/forgotPassword">
                         <p
                           className="underline font-rubik">
                             mot de passe oublié
                         </p>
+                        </Link>
                 
                 </form>
 
