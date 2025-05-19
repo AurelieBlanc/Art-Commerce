@@ -56,28 +56,34 @@ try {
         body: JSON.stringify({ email })
     }); 
 
+    if(!response.ok) {
+        throw new Error("Erreur lors de l'envoi de l'email de réinitialisation")
+    }
+
+    const data = await response.json(); 
+    console.log("email envoyé à cette adresse : ", data.email); 
     
-} catch(error) {
+    alert (`Un  email de réinitialisation a été envoyé à votre adresse : ${email}`); 
+
+    
+    } catch(error) {
     console.error("Erreur serveur: ", error); 
     alert ("Erreur lors de l'envoi de l'email de réinitialisation du mot de passe")
+    }
 }
 
 
 
-}
 
-
-
-
-
+//Code pour retourner le composant JSX : ------------------------------ //
   return (
     <div
         className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center flex justify-center">
         <div
             className="w-[30%]">
                 <h2
-                    className="font-boogaloo text-2xl text-slate-800 mt-8 text-center">
-                    Rentrez votre adresse email ici pour pouvoir recevoir un lien pour réinitialiser votre mot de passe :   
+                    className="font-boogaloo text-2xl text-slate-800 mt-8 text-center w-[60%] mx-auto">
+                    Renseignez ici votre adresse mail pour pouvoir recevoir un lien afin de réinitialiser votre mot de passe :   
                 </h2>
                 <form
                     className="flex flex-col justify-center items-center"
