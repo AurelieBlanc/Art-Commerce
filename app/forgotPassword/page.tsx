@@ -1,9 +1,9 @@
 // Code pour les imports : ------------------------------------------------- //
 "use client"
 
-import { useState, useRef } from "react"; 
+import { useRef } from "react"; 
 import { z } from "zod"; 
-import Link from "next/link";
+
 
 
 
@@ -17,7 +17,7 @@ export const emailSchema = z.object({
 
 
 export default function page() {
-// Code pour gérer la logique du Form : -------------------------------- //
+// Code pour récup l'email avec useRef (alternative au state) : -------- //
 const emailRef = useRef<HTMLInputElement>(null)
 
 
@@ -61,7 +61,6 @@ try {
     }
 
     const data = await response.json(); 
-    console.log("email envoyé à cette adresse : ", data.email); 
     
     alert (`Un  email de réinitialisation a été envoyé à votre adresse : ${email}`); 
 

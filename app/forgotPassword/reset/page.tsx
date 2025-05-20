@@ -4,7 +4,7 @@
 import { useSearchParams, useRouter } from "next/navigation"; 
 import { z } from "zod"; 
 import { useState, useEffect } from "react"; 
-import { FaTiktok } from "react-icons/fa";
+
 
 
 // Code pour les typages : ------------------------------------------------ //
@@ -24,7 +24,15 @@ export const passwordSchema = z.object({
     .regex(/[A-Z]/, { message: "le mot de passe doit contenir au moins une lettre majuscule"})
     .regex(/[0-9]/, { message: "le mot de passe doit contenir au moins un chiffre"})
     .regex(/[^a-zA-Z0-9]/, { message: "le mot de passe doit contenir au moins un caractère spécial"}), 
-}); 
+    confirmPassword: z.string()
+    .min(5, { message: "le mot de passe doit contenir au moins 5 caractères"}) 
+    .regex(/[a-z]/, { message: "le mot de passe doit contenir au moins une lettre minuscule"})
+    .regex(/[A-Z]/, { message: "le mot de passe doit contenir au moins une lettre majuscule"})
+    .regex(/[0-9]/, { message: "le mot de passe doit contenir au moins un chiffre"})
+    .regex(/[^a-zA-Z0-9]/, { message: "le mot de passe doit contenir au moins un caractère spécial"}), 
+}).refine((data) => data.password === data.confirmPassword, {
+    message: "Les mots de passe ne correspondent pas",
+})
 
 
 
@@ -57,7 +65,7 @@ export default function page() {
             router.push("/loginAndRegister")
         }
     } else {
-        return router.push("loginAndRegister"); 
+        return router.push("/loginAndRegister"); 
     }
         
     }, [token]); 
@@ -89,10 +97,13 @@ async function submitNewPassword (event: React.FormEvent<HTMLFormElement> ) {
     }
 
 
+
 // Ensuite on va vérifier le format du password : ------------------------------------- //
     const result = passwordSchema.safeParse({
-        password: formPassword.password
+        password: formPassword.password, 
+        confirmPassword: formPassword.confirmPassword
     })
+
 
     if(!result.success) { 
         const errorMessages = result.error.errors.map( err => err.message ).join("\n")
@@ -101,6 +112,7 @@ async function submitNewPassword (event: React.FormEvent<HTMLFormElement> ) {
     } else {
         alert("le nouveau mot de passe est correct")
     }
+
 
 
 // Maintenant qu'on a procédé aux différentes vérifs, on va pouvoir faire l'appel API : //
@@ -129,12 +141,14 @@ async function submitNewPassword (event: React.FormEvent<HTMLFormElement> ) {
 
         alert ("Le mot de passe a été modifié avec succès"); 
 
+
+// si response.ok alors on vide le formulaire et on renvoie sur la page d'accueil : //
         setFormPassword ({
             password: "", 
             confirmPassword: ""
         })
 
-    
+        router.push("/")
 
 
     } catch(error) {
@@ -172,6 +186,7 @@ async function submitNewPassword (event: React.FormEvent<HTMLFormElement> ) {
                     name="password"
                     onChange={handleChange}
                     value={formPassword.password} 
+                    required
                     />
 
                 <label htmlFor="confirmPassword"
@@ -183,7 +198,8 @@ async function submitNewPassword (event: React.FormEvent<HTMLFormElement> ) {
                     id="confirmPassword"
                     name="confirmPassword"
                     onChange={handleChange}
-                    value={formPassword.confirmPassword} />
+                    value={formPassword.confirmPassword} 
+                    required/>
                 <button
                     className="mt-6 w-[250px] h-[60px] bg-slate-800 text-white font-boogaloo text-xl mb-10 rounded-lg shadow-xl">
                     Valider le nouveau mot de passe     

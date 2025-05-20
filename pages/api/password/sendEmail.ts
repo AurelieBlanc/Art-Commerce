@@ -9,6 +9,9 @@ const prisma = new PrismaClient();
 const SECRET_KEY = process.env.JWT_SECRET; 
 
 
+
+
+
 // Code pour valider le schema du mail : ---------------------------- //
 export const emailSchema = z.object({
     email: z.string().email({ message: "Email invalide"}), 
@@ -46,7 +49,7 @@ export default async function handle(req:NextApiRequest, res:NextApiResponse) {
 
 
 
-// Code pour aller chercher l'user en fonction de son email; on va se servir de la constante user que ce soit pour un client ou l'admin, ce sera plus simple ensuite : //
+// Code pour aller chercher l'user en fonction de son email; on va se servir de la constante user que ce soit pour un client ou l'admin, ca simplifiera le code ensuite : //
     try {
         let user = null; 
 
@@ -86,6 +89,7 @@ export default async function handle(req:NextApiRequest, res:NextApiResponse) {
 
 
 
+
 // On configure nodemailer : -------------------------------------------------- //
         const transporter = nodemailer.createTransport({
             service: "gmail", 
@@ -107,6 +111,9 @@ export default async function handle(req:NextApiRequest, res:NextApiResponse) {
         return res.status(200).json({ message: "email de réinitialisation bien envoyé", email: user.mail})
 
 
+
+        
+// Bloc catch pour attraper une erreur si besoin : ---------------------- //
     } catch (error) {
         console.error(error); 
         return res.status(500).json({ message : "Erreur lors de l'envoi de l'email de réinitialisation"})
