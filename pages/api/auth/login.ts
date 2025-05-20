@@ -112,8 +112,16 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
 
 
 
+// on va effacer les sessions précédentes de cet user avant d'en recreer une valide : ------------------------- //
 
-// Code pour la création d'une session lors de la connexion d'un user :----------------//
+            await prisma.session.deleteMany({
+                where: { id_client: client.id_client}
+            })
+        
+
+
+
+// Code pour la création d'une nouvelle session :----------------//
         const session = await prisma.session.create ({
             data: {
                 token: token,
@@ -122,7 +130,6 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
                 id_client: client.id_client,
             }
         })
-
 
 
 

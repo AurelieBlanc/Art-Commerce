@@ -36,6 +36,8 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     }
 
     const decoded = jwt.verify(authToken, SECRET_KEY); 
+    console.log("decoded :", decoded); 
+    
 
 // Si on a bien un authToken valide, alors on va écraser tous les cookies authToken et csrfToken onlyHTTP et csrfToken classique en modifiant leur durée à 0 : //
     if(decoded) {
@@ -65,6 +67,8 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                     ]); 
 
         }
+
+
 
 
 
