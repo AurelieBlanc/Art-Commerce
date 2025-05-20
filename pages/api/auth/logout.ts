@@ -2,11 +2,23 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import  jwt from "jsonwebtoken";
 import * as cookie from "cookie"; 
-
+import { PrismaClient } from "@prisma/client"; 
 
 
 const SECRET_KEY = process.env.JWT_SECRET; 
 const ENV = process.env.NODE_ENV; 
+const prisma = new PrismaClient(); 
+
+
+
+
+// Code pour les typages : ---------------------------------------------- //
+interface JwtPayload {
+    id: number, 
+    email: string, 
+    role: string
+}
+
 
 
 
@@ -35,9 +47,9 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         throw new Error ("la clé sécrète n'est pas correctement définie")
     }
 
-    const decoded = jwt.verify(authToken, SECRET_KEY); 
+    const decoded = jwt.verify(authToken, SECRET_KEY) as JwtPayload; 
     console.log("decoded :", decoded); 
-    
+
 
 // Si on a bien un authToken valide, alors on va écraser tous les cookies authToken et csrfToken onlyHTTP et csrfToken classique en modifiant leur durée à 0 : //
     if(decoded) {
@@ -67,6 +79,15 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                     ]); 
 
         }
+
+
+
+// Ici, si c'est un client, on va effacer sa session en cours : -------------- //
+    if(decoded.role === "client") {
+        const deletedClient = await prisma.session.deleteMany({
+            where: { id_client: decoded.id }
+        })
+    }
 
 
 

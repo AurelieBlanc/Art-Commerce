@@ -6,7 +6,7 @@ import { RiDeleteBin5Fill } from "react-icons/ri"; // icone poubelle pour suppri
 import { FaPencilAlt } from "react-icons/fa"; // icone crayon pour modifier les statuts de commande : <FaPencilAlt />
 import AdminStatut from "./AdminStatut";
 import { useModalUpdateStore, useModalClientStore } from "@/stores/useStore";
-
+import Link from "next/link";
 import Cookies  from "js-cookie"; 
 import AdminClient from "./AdminClient";
 
@@ -137,9 +137,13 @@ async function openInfosClient(id: number) {
 // Code pour le retour composant : ------------------------------------------ // 
   return (
     <div
-        className="mt-6">
+        className="mt-8 flex flex-col items-center">
+            <h2
+                className="font-boogaloo text-3xl text-slate-800 mb-5">
+                Gestion des Commandes :     
+            </h2>
             <table
-                className="mb-10">
+                className="mb-8">
                     <thead
                         className="">
                             <tr
@@ -221,15 +225,29 @@ async function openInfosClient(id: number) {
 
                     </tbody>
 
-                        
-                    
-
             </table>
 
             {isModalUpdateOpen && <AdminStatut updateId={updateId}/> }
 
             {isModalClientOpen && <AdminClient clientId={clientId}/> }
             
+
+            <div    
+                className="">
+                    <h2
+                        className="font-boogaloo text-3xl text-slate-800 mb-10">
+                        Pour la gestion des Connexions Clients : clique 
+                        <Link
+                            className="underline ml-2"
+                            href="/sessions">
+                                <span>
+                                    ici
+                                </span>
+                        </Link>
+                         
+                    </h2>
+
+            </div>
     </div>
   )
 }

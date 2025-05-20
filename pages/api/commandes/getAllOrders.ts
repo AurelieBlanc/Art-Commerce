@@ -56,7 +56,7 @@ export default async function getAllOrders(req: NextApiRequest, res:NextApiRespo
 
 
     } catch (error) {
-        console.error("erreur lors de la création d'un nouveau produit")
+        console.error("erreur lors de la création d'un nouveau produit", error)
         return res.status(500).json({ message: "Erreur interne du serveur"})
     }
 
