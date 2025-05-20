@@ -43,7 +43,23 @@ useEffect(() => {
             }
 
             const data = await response.json();
-            console.log("comment est gaulé les retours de données en front pour savoir comment setter mes states : ", data)
+            // console.log("comment est gaulé les retours de données en front pour savoir comment setter mes states : ", data); 
+
+            setSessionsClients (
+                data.map((elem: any) => ({
+                    id_client: elem.clients.id_client,  
+                    prenom: elem.clients.prenom, 
+                    nom: elem.clients.prenom, 
+                    mail: elem.clients.mail, 
+                    id_session: elem.sessions.id_sessions, 
+                    date_connexion : elem.sessions.date_connexion, 
+                    token: elem.sessions.token,
+                }))
+
+            ); 
+
+            console.log(sessionsClients); 
+    
 
         } catch(error) {
 
