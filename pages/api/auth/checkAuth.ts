@@ -48,6 +48,22 @@ try {
 
 // Code pour vérifier que l'on a bien un objet decoded (sinon ca veut dire que notre authToken n'est pas bon ou expiré) : //
     const decoded = jwt.verify(authToken, SECRET_KEY) as JwtPayload; 
+
+
+
+
+// Si c'est un client, on va checker qu'il a bien une session en cours (ce qui veut dire qu il est bien connecté, et sinon et bien on le déconnecte) : //
+
+    if(decoded.role === "client") {
+        const session = await prisma.session.findMany({
+            where: { id_client: decoded.id }
+        }); 
+
+        if(!session) {
+            return res.status(401).json({ message: "Session expirée, veuillez vous réconnecter" }); 
+        }
+    }
+
     
     if(decoded) {
     const csrfToken = await tokens.secret(); // on génere un code csrf

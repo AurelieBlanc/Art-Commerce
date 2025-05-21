@@ -32,7 +32,9 @@ useEffect(() => {
           throw new Error ("reponse Auth erreur")
         }
         const data = await response.json();
-        
+        alert(data.message); 
+
+
         setAuthenticated ({
          isAuthenticated: data.isAuthenticated, 
          role: data.role, 

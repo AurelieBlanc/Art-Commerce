@@ -48,11 +48,11 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     if(!csrfToken) {   // verif pour eviter erreur TS
         return res.status(401).json({ message: "Token csrf manquant" })
     }
-
+   
     if(!csrfTokenClient) {   // verif pour eviter erreur TS
         return res.status(401).json({ message: "Token CsrfClient manquant" })
     }
-
+    
     if(!SECRET_KEY) {
         throw new Error ("la clé sécrète n'est pas correctement définie")
     }
@@ -60,7 +60,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
 
 
-// si les tokens csrf ne correspondent pas, on return : ------------------------------ //
+// Si les tokens csrf ne correspondent pas, on return : ------------------------------ //
         if(csrfToken !== csrfTokenClient ) {
             return res.status(403).json({ message: "CSRF invalide"})
         }

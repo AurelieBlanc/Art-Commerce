@@ -8,7 +8,7 @@ import { IoHome } from "react-icons/io5"; // import de l'icone home , accueil <I
 import { BiSolidLogInCircle } from "react-icons/bi"; // import de l'icone login, <BiSolidLogInCircle />
 import { RiLogoutCircleFill } from "react-icons/ri"; // import de l'icone Logout <RiLogoutCircleFill />
 import { FaClipboardList } from "react-icons/fa"; // import de l'icone clipboard : <FaClipboardList />
-
+import Cookies  from "js-cookie"; 
 
 
 
@@ -34,6 +34,9 @@ async function logout() {
         const response = await fetch ("/api/auth/logout", {
             method: "POST", 
             credentials: "include", 
+            headers: {
+                "x-csrf-token": Cookies.get("csrfToken") || "", 
+            }
         })
 
         if(!response.ok) {
