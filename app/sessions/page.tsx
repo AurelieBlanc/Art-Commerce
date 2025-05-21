@@ -1,6 +1,15 @@
 // Code pour les imports : ---------------------------------------------- //
 "use client" 
+
 import { useEffect, useState } from"react"; 
+import { IoRadioButtonOn } from "react-icons/io5";
+ // icone button <IoRadioButtonOn />
+import dayjs from "dayjs"; 
+import "dayjs/locale/fr"; 
+
+
+
+
 
 
 
@@ -8,13 +17,15 @@ import { useEffect, useState } from"react";
 
 // Code pour les typages : ----------------------------------------------- //
 interface SessionClient {
-    id_client: number,  
-    prenom: string, 
-    nom: string, 
-    mail: string
-    id_session: number, 
-    date_connexion : string, 
-    token: string,
+    id_client: number;  
+    id_session: number; 
+    date_connexion : string; 
+    token: string; 
+    client: {
+        prenom: string, 
+        nom: string, 
+        mail: string
+    }
     }
 
 
@@ -23,7 +34,7 @@ export default function page() {
 // Code pour les states locaux : --------------------------------------------- //
 const [ sessionsClients, setSessionsClients ] = useState<SessionClient[]>([])
 
-
+const [ loading, setLoading ] = useState<boolean>(false); 
 
 
 
@@ -43,26 +54,26 @@ useEffect(() => {
             }
 
             const data = await response.json();
-            // console.log("comment est gaulé les retours de données en front pour savoir comment setter mes states : ", data); 
+            console.log("comment est gaulé les retours de données en front pour savoir comment setter mes states : ", data); 
 
-            setSessionsClients (
-                data.map((elem: any) => ({
-                    id_client: elem.clients.id_client,  
-                    prenom: elem.clients.prenom, 
-                    nom: elem.clients.prenom, 
-                    mail: elem.clients.mail, 
-                    id_session: elem.sessions.id_sessions, 
-                    date_connexion : elem.sessions.date_connexion, 
-                    token: elem.sessions.token,
+            setSessionsClients(
+                data.sessionsClients.map((elem: SessionClient) => ({
+                    id_client: elem.id_client, 
+                    client: {
+                        prenom: elem.client.prenom, 
+                        nom: elem.client.nom, 
+                        mail: elem.client.mail, 
+                    }, 
+                    id_session: elem.id_session, 
+                    date_connexion : elem.date_connexion, 
+                    token: elem.token,
                 }))
-
             ); 
 
-            console.log(sessionsClients); 
+            setLoading(true)
     
-
         } catch(error) {
-
+            console.error("la récupération des sessions a échoué : ", error)
         }
     }; 
 
@@ -80,6 +91,90 @@ useEffect(() => {
             className="font-boogaloo text-3xl text-slate-800 mt-6">
             Clients Connectés : 
         </h2>
+
+
+        {loading && (
+            <table
+                className="mt-4 mb-10">
+                    <thead
+                        className="">
+                            <tr
+                                className="">
+                                <th
+                                    className="font-boogaloo border border-slate-800 text-slate-800 p-2">
+                                    Id_Session:
+                                </th>
+                                <th
+                                    className="font-boogaloo border border-slate-800 text-slate-800 p-2">
+                                    Id_Client:
+                                </th>
+                                <th
+                                    className="font-boogaloo border border-slate-800 text-slate-800 p-2">
+                                    Prénom:
+                                </th>
+                                <th
+                                    className="font-boogaloo border border-slate-800 text-slate-800 p-2">
+                                    Nom:
+                                </th>
+                                <th
+                                    className="font-boogaloo border border-slate-800 text-slate-800 p-2">
+                                    Mail:
+                                </th>
+                                <th
+                                    className="font-boogaloo border border-slate-800 text-slate-800 p-2">
+                                    Date de connexion:
+                                </th>
+                                <th
+                                    className="font-boogaloo border border-slate-800 text-slate-800 p-2">
+                                    Déconnexion ?
+                                </th>
+
+                            </tr>
+                    </thead>
+                    <tbody>
+            
+            {sessionsClients.map((elem) => (
+                <tr key={elem.id_session}
+                    className="">
+                    <td
+                        className="border border-slate-800 font-rubik text-center p-2">
+                        {elem.id_session}
+                    </td>
+                    <td
+                        className="border border-slate-800 font-rubik text-center p-2">
+                        {elem.id_client}
+                    </td>
+                    <td
+                        className="border border-slate-800 font-rubik text-center p-2">
+                        {elem.client.prenom}
+                    </td>
+                    <td
+                        className="border border-slate-800 font-rubik text-center p-2">
+                        {elem.client.nom}
+                    </td>
+                    <td
+                        className="border border-slate-800 font-rubik text-center p-2">
+                        {elem.client.mail}
+                    </td>
+                    <td
+                        className="border border-slate-800 font-rubik text-center p-2">
+                        {dayjs(elem.date_connexion).locale("fr").format("dddd DD MMMM YYYY à HH:mm")}
+                    </td>
+                    <td
+                        className="border border-slate-800 font-rubik text-center p-2">
+                        <button
+                            className="">
+                        <IoRadioButtonOn 
+                            className="text-3xl text-red-800 font-bold text-center"/>
+                        </button>
+                    </td>
+                </tr>
+            ))}  
+
+                    </tbody>
+            </table>
+        )}
+         
 
         
         
