@@ -28,12 +28,14 @@ useEffect(() => {
           }
         }); 
    
-        if(!response.ok) {
-          throw new Error ("reponse Auth erreur")
-        }
+       
         const data = await response.json();
-        alert(data.message); 
 
+         if(!response.ok) {
+          alert(data.message); 
+          return; 
+        }
+        
 
         setAuthenticated ({
          isAuthenticated: data.isAuthenticated, 

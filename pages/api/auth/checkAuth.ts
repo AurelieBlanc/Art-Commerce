@@ -51,7 +51,6 @@ try {
 
 
 
-
 // Si c'est un client, on va checker qu'il a bien une session en cours (ce qui veut dire qu il est bien connecté, et sinon et bien on le déconnecte) : //
 
     if(decoded.role === "client") {
@@ -59,7 +58,8 @@ try {
             where: { id_client: decoded.id }
         }); 
 
-        if(!session) {
+
+        if(session.length === 0) {
             return res.status(401).json({ message: "Session expirée, veuillez vous réconnecter" }); 
         }
     }

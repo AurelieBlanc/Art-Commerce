@@ -105,11 +105,12 @@ useEffect(() => {
 
             const data = await response.json(); 
 
-            let refreshSessionsClients = sessionsClients.filter(elem => {
-                elem.id_session !== id
-            })
+            const refreshSessionsClients = sessionsClients.filter(elem => 
+                elem.id_session !== id); 
 
             setSessionsClients(refreshSessionsClients);
+    
+            alert(data.message); 
 
         } catch(error) {
             console.error("la suppression de la session a échouée :", error)
