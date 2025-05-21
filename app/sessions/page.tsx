@@ -6,8 +6,7 @@ import { IoRadioButtonOn } from "react-icons/io5";
  // icone button <IoRadioButtonOn />
 import dayjs from "dayjs"; 
 import "dayjs/locale/fr"; 
-
-
+import Cookies from "js-cookie";
 
 
 
@@ -78,7 +77,7 @@ useEffect(() => {
 
     getClientsSessions(); 
     
-}, [])
+}, [sessionsClients])
 
 
 // Code pour que l'admin puisse déconnecter le client (appel API pour déconnecter la session) : ------------------ //
@@ -91,7 +90,26 @@ useEffect(() => {
         }
 
         try {
-            
+            const response = await fetch (`/api/sessions/deleteOneSession/${id}`, {
+                method: "DELETE", 
+                credentials: "include", 
+                headers: {
+                    // "Content-Type": "application/json", 
+                    "x-csrf-token": Cookies.get("csrfToken") || "", 
+                }, 
+            })
+
+            if(!response.ok) {
+                throw new Error ("reponse retour suppression session erreur")
+            }
+
+            const data = await response.json(); 
+
+            let refreshSessionsClients = sessionsClients.filter(elem => {
+                elem.id_session !== id
+            })
+
+            setSessionsClients(refreshSessionsClients);
 
         } catch(error) {
             console.error("la suppression de la session a échouée :", error)

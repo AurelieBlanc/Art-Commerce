@@ -10,6 +10,8 @@ const tokens = new Tokens();
 const ENV = process.env.NODE_ENV; 
 const SECRET_KEY = process.env.JWT_SECRET; 
 
+
+// Code pour les typages : ------------------------------------------------------ //
 interface JwtPayload {
     id: number, 
     email: string, 
@@ -21,6 +23,7 @@ interface JwtPayload {
 
 
 export default async function handler (req: NextApiRequest, res: NextApiResponse) {
+// Code pour verifier si la methode HTTP de la requête est la bonne : ------------- //
     if(req.method !== "POST") {
         return res.status(405).json({ message: "requete HTTP non autorisée "})
     }

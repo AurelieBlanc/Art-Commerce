@@ -93,7 +93,7 @@ const { isModalClientOpen, toggleClientModal } = useModalClientStore();
             method:"DELETE", 
             credentials:"include", 
             headers: {
-                'Content-Type': "application/json", 
+                // 'Content-Type': "application/json", 
                 "x-csrf-token": Cookies.get("csrfToken") || "", 
             },         
         })
