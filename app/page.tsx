@@ -9,7 +9,9 @@ import { getPanier, savePanier, addPanier } from "@/utils/panierCookie";
 import { IoMdAddCircle } from "react-icons/io"; // icone pour ajouter un produit <IoMdAddCircle /> 
 import { FaPencilAlt } from "react-icons/fa"; // icone pour modifier un produit <FaPencilAlt />
 import { MdDeleteForever } from "react-icons/md"; //icone pour supprimer un produit <MdDeleteForever />
- 
+import { FcLike } from "react-icons/fc"; // icone coeur > like : <FcLike />
+
+
 
 
 
@@ -127,6 +129,12 @@ export default function Home() {
   }
 
 
+// Code pour ajouter un produit dans la page "produits likés" : ---------- //
+function addLike(id: number) {
+
+}
+
+
 
   if ( role === "admin") {
     return (
@@ -150,7 +158,7 @@ export default function Home() {
                   <div
                     key = {produit.id_produit}
                     className="divProduct w-[300px] h-[500px] border border-black m-10 bg-white flex flex-col justify-center items-center font-rubik rounded-md">
-                    
+
                     <div
                       className="imageProduct ">
                         <Image
@@ -220,9 +228,18 @@ export default function Home() {
         className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center h-full flex justify-center gap-6 flex-wrap">
   
                 {produits.map((produit) => (
+                  
+                      
+
                   <div
                     key = {produit.id_produit}
-                    className="divProduct w-[300px] h-[500px] border border-black m-10 bg-black text-white flex flex-col justify-center items-center font-rubik rounded-md">
+                    className="divProduct w-[300px] h-[500px] border border-black m-10 bg-slate-950 text-white flex flex-col justify-center items-center font-rubik rounded-md">
+
+                      <button
+                        onClick = {(() => addLike(produit.id_produit))}>
+                      <FcLike 
+                        className="text-3xl relative left-[110px] bottom-4"/>
+                      </button>
                     
                     <div
                       className="imageProduct ">
@@ -257,6 +274,7 @@ export default function Home() {
       
                     </button>
                     </div>
+                    
                 ))}
           
       </div>
