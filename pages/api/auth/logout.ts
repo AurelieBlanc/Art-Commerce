@@ -31,24 +31,46 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
 
 
-// Code pour verifier le authToken pour etre sur que la requete provient bien d'un client ou de l'admin du site : //   
+// Code pour verifier le authToken pour etre sur que la requete provient bien d'un client ou de l'admin du site + la bonne provenance de la requête : //   
     try {
 
     const cookies = cookie.parse(req.headers.cookie || ""); 
 
-    const authToken = cookies.authToken;
+    const authToken = cookies.authToken; // cookie onlyHTTP
+    const csrfToken = cookies.csrfToken;  // cookie onlyHttp
 
+    const csrfTokenClient = req.headers["x-csrf-token"] // cookie coté client
 
     if(!authToken) {
         return res.status(401).json({ message: "Token Auth manquant" })
+    }
+
+    if(!csrfToken) {   // verif pour eviter erreur TS
+        return res.status(401).json({ message: "Token csrf manquant" })
+    }
+
+    if(!csrfTokenClient) {   // verif pour eviter erreur TS
+        return res.status(401).json({ message: "Token CsrfClient manquant" })
     }
 
     if(!SECRET_KEY) {
         throw new Error ("la clé sécrète n'est pas correctement définie")
     }
 
+
+
+
+// si les tokens csrf ne correspondent pas, on return : ------------------------------ //
+        if(csrfToken !== csrfTokenClient ) {
+            return res.status(403).json({ message: "CSRF invalide"})
+        }
+
+
+
+
+// là on va vérfier le authToken, si on a un objet decoded bien valide : ------------- //        
     const decoded = jwt.verify(authToken, SECRET_KEY) as JwtPayload; 
-    console.log("decoded :", decoded); 
+     
 
 
 // Si on a bien un authToken valide, alors on va écraser tous les cookies authToken et csrfToken onlyHTTP et csrfToken classique en modifiant leur durée à 0 : //

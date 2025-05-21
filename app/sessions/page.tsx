@@ -20,7 +20,7 @@ interface SessionClient {
     id_client: number;  
     id_session: number; 
     date_connexion : string; 
-    token: string; 
+    // token: string; 
     client: {
         prenom: string, 
         nom: string, 
@@ -54,8 +54,7 @@ useEffect(() => {
             }
 
             const data = await response.json();
-            console.log("comment est gaulé les retours de données en front pour savoir comment setter mes states : ", data); 
-
+            
             setSessionsClients(
                 data.sessionsClients.map((elem: SessionClient) => ({
                     id_client: elem.id_client, 
@@ -66,7 +65,7 @@ useEffect(() => {
                     }, 
                     id_session: elem.id_session, 
                     date_connexion : elem.date_connexion, 
-                    token: elem.token,
+                    // token: elem.token,
                 }))
             ); 
 
@@ -80,6 +79,24 @@ useEffect(() => {
     getClientsSessions(); 
     
 }, [])
+
+
+// Code pour que l'admin puisse déconnecter le client (appel API pour déconnecter la session) : ------------------ //
+    async function logoutCustomer(id: number) {
+        const confirmLogout = confirm(`Etes vous sur de déconnecter le client de la session numéro ${id} ?`)
+
+        if(!confirmLogout) {
+            alert("Ok, operation annulée"); 
+            return; 
+        }
+
+        try {
+            
+
+        } catch(error) {
+            console.error("la suppression de la session a échouée :", error)
+        }
+    }
 
 
 
@@ -164,8 +181,9 @@ useEffect(() => {
                         className="border border-slate-800 font-rubik text-center p-2">
                         <button
                             className="">
-                        <IoRadioButtonOn 
-                            className="text-3xl text-red-800 font-bold text-center"/>
+                            <IoRadioButtonOn 
+                            className="text-3xl text-red-800 font-bold text-center"
+                            onClick={() => logoutCustomer(elem.id_session)}/>
                         </button>
                     </td>
                 </tr>

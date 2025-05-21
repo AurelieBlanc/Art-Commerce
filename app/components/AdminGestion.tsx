@@ -111,7 +111,7 @@ const { isModalClientOpen, toggleClientModal } = useModalClientStore();
 
 
     } catch (error) {
-      console.error("la suupression de la commande a échouée : ", error)
+      console.error("la supression de la commande a échouée : ", error)
     }
 }
 

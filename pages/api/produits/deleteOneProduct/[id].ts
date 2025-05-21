@@ -36,7 +36,7 @@ export default async function deleteProduct( req:NextApiRequest, res:NextApiResp
             throw new Error ("pas de authToken")
         }
   
-          if(!csrfToken) {   // verif pour eviter erreur TS
+        if(!csrfToken) {   // verif pour eviter erreur TS
             throw new Error ("pas de csrfToken")
         }
         
