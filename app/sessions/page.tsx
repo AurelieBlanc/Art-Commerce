@@ -77,7 +77,7 @@ useEffect(() => {
 
     getClientsSessions(); 
     
-}, [sessionsClients])
+}, [])
 
 
 // Code pour que l'admin puisse déconnecter le client (appel API pour déconnecter la session) : ------------------ //
