@@ -8,7 +8,7 @@ export default function page() {
 // Code pour retourner le composant JSX : ------------------------------------ //
   return (
     <div
-        className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center">
+        className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center text-slate-800">
          
         <h2
             className="font-boogaloo text-3xl pt-10 text-center mb-10 lg:w-[40%] md:w-[60%] w-[80%] mx-auto">
