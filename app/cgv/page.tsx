@@ -2,7 +2,7 @@
 import Link from "next/link"
 
 
-export default function page() {
+export default function Page() {
 
 
 // Code pour retourner le composant JSX : ------------------------------------ //
