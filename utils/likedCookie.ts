@@ -63,6 +63,6 @@ export function removeFromLikedList(id: string) {
 
 
 //Fonction pour supprimer la liste des produits likés dans son intégralité : //
-export function deleteLikedListId() {
+export function deleteLikedList() {
     Cookies.remove(PRODUITS_LIKES_NAME); 
 }

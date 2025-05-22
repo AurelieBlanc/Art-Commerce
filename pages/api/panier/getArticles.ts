@@ -9,6 +9,7 @@ const prisma = new PrismaClient();
 
 
 export default async function getProducts(req:NextApiRequest, res:NextApiResponse) {
+// Code pour verifier la bonne méthode HTTP : ------------------------------ //
     if(req.method !== "GET") {
         return res.status(405).json({ message: "requête HTTP non autorisée "})
     }

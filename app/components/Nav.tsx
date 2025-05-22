@@ -116,7 +116,11 @@ async function logout() {
 
                     {/* Icone Like :  */}
                     <li>
+                        <Link
+                            className=""
+                            href="/favoris">
                         <FaHeart />
+                        </Link>
                     </li>
 
 
