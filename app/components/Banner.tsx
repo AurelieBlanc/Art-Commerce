@@ -32,7 +32,7 @@ useEffect(() => {
         const data = await response.json();
 
          if(!response.ok) {
-          alert(data.message); 
+          console.log(data.message); 
           return; 
         }
         
