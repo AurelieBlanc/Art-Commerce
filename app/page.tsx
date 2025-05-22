@@ -10,7 +10,7 @@ import { IoMdAddCircle } from "react-icons/io"; // icone pour ajouter un produit
 import { FaPencilAlt } from "react-icons/fa"; // icone pour modifier un produit <FaPencilAlt />
 import { MdDeleteForever } from "react-icons/md"; //icone pour supprimer un produit <MdDeleteForever />
 import { FcLike } from "react-icons/fc"; // icone coeur > like : <FcLike />
-
+import { addLikedId } from "@/utils/likedCookie";
 
 
 
@@ -39,6 +39,7 @@ export default function Home() {
 
   const { role } = useStore(); // state global
   const [produits, setProduits ] = useState<Produits[]>([]);  // state local
+
 
 
 
@@ -115,11 +116,6 @@ export default function Home() {
 
 
   function addBasket(id: number) {
-    const basket = getPanier(); 
-
-    if (Array.isArray(basket) && basket.length === 0) {
-     savePanier(basket)
-    }
 
     const stringId = id.toString(); 
 
@@ -129,10 +125,19 @@ export default function Home() {
   }
 
 
-// Code pour ajouter un produit dans la page "produits likés" : ---------- //
-function addLike(id: number) {
 
-}
+
+
+// Code pour ajouter un produit dans la page "produits likés" : ---------- //
+    function addLike(id: number) {
+
+        const idString = id.toString(); 
+
+        addLikedId(idString); 
+        
+        alert("Produit bien ajouté à votre liste de favoris"); 
+        return; 
+    }
 
 
 
@@ -212,11 +217,7 @@ function addLike(id: number) {
 
                     </div>
                 ))}
-
-            
-
-
-          
+ 
       </div>
     );
    

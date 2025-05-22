@@ -29,7 +29,7 @@ export function savePanier(panier: Panier[]) {
 
 // Fonction pour ajouter un produit au panier : ------------------------ //
 export function addPanier(id: string) {
-    const panier = getPanier();  // là on aura le panier retourné grâce à la fonction getPanier(); 
+    const panier = getPanier();  // là on aura le panier retourné grâce à la fonction getPanier() , il y'aura soit un tableau avec des ids, soit dans tous les cas, un tableau vide. 
 
     const existingItem = panier.find(elem => elem.id === id)
 
@@ -38,7 +38,7 @@ export function addPanier(id: string) {
     } else {
         panier.push({id})
     }
-    savePanier(panier); 
+    savePanier(panier); // on ecrasera le panier précédent
 }
 
 

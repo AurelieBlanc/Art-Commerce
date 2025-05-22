@@ -29,7 +29,7 @@ export function saveLikedListId(likedList: Liked[]) {
 // Fonction pour récupérer le cookie (et son contenu) de la liste produits likés : //
 export function getLikedListId(): Liked[] {
     const likedList = Cookies.get(PRODUITS_LIKES_NAME); 
-    return likedList ? JSON.parse(likedList): []  // on retournera soit un tableau des ids des produits likés, soit un tableau vide 
+    return likedList ? JSON.parse(likedList): []  // on retournera soit un tableau des ids des produits likés, soit un tableau vide (tableau vide pour éviter les erreurs)
 }
 
 
