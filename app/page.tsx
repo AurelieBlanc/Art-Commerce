@@ -140,14 +140,14 @@ export default function Home() {
     }
 
 
-
+// Retour du composant JSX pour le rôle ADMIN : ------------------------ //
   if ( role === "admin") {
     return (
       <div
-        className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center h-full flex justify-center gap-6 flex-wrap">
+        className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center h-full">
 
             <div
-                className="addProduct block m-5">
+                className="addProduct block p-2">
                   
                   <Link
                     className=""
@@ -157,12 +157,18 @@ export default function Home() {
                     className="text-5xl block text-slate-500 " /> 
                   </Link>
             </div>
+
+             <div
+              className="containerProducts w-[80%] lg:w-[60%] mx-auto pt-4 pb-10">
+
+                <div
+                  className="flex justify-center flex-wrap gap-1">
             
   
                 {produits.map((produit) => (
                   <div
                     key = {produit.id_produit}
-                    className="divProduct w-[300px] h-[500px] border border-black m-10 bg-white flex flex-col justify-center items-center font-rubik rounded-md">
+                    className="divProduct w-[300px] h-[540px] border-2 border-white bg-blue-500 bg-opacity-10 flex flex-col justify-center items-center font-rubik rounded-md">
 
                     <div
                       className="imageProduct ">
@@ -176,7 +182,7 @@ export default function Home() {
                     </div>
       
                     <div
-                      className="nomProduct ">
+                      className="nomProduct font-boogaloo text-xl mt-1">
                         <p>{produit.nom}</p>
                     </div>
       
@@ -186,12 +192,12 @@ export default function Home() {
                     </div>
       
                     <div
-                      className="prixProduct ">
+                      className="prixProduct font-boogaloo text-xl">
                         <p>{produit.prix} €</p>
                     </div>
       
                     <button
-                      className=" bg-slate-800 text-white w-[150px] h-[40px] rounded-sm font-boogaloo">
+                      className=" bg-slate-950 text-white w-[150px] h-[40px] rounded-lg font-boogaloo border-2 border-slate-400 shadow-xl mt-2 ">
                         Ajouter au panier
       
                     </button>
@@ -208,7 +214,7 @@ export default function Home() {
                         
                         <button>
                         <MdDeleteForever 
-                          className="text-red-600"
+                          className="text-red-600 text-3xl"
                           onClick={() => deleteProduct(produit.id_produit)} />
                         </button>
 
@@ -217,29 +223,36 @@ export default function Home() {
 
                     </div>
                 ))}
- 
+
+              </div>
+              </div>
       </div>
     );
    
   
-
+// Retour du composant JSX pour un rôle CLIENT : --------------------------------- //
   } else {
     return (
       <div
-        className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center h-full flex justify-center gap-6 flex-wrap">
-  
-                {produits.map((produit) => (
-                  
-                      
+        className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center h-full ">
 
+            <div
+              className="containerProducts w-[80%] lg:w-[60%] mx-auto pt-10 pb-10">
+
+                <div
+                  className="flex justify-center flex-wrap gap-1">
+
+                
+                {produits.map((produit) => (
+                   
                   <div
                     key = {produit.id_produit}
-                    className="divProduct w-[300px] h-[500px] border border-black m-10 bg-slate-950 text-white flex flex-col justify-center items-center font-rubik rounded-md">
+                    className="divProduct w-[300px] h-[520px] border-2 border-white bg-blue-600 bg-opacity-10 text-slate-950 flex flex-col justify-center items-center font-rubik rounded-md">
 
                       <button
                         onClick = {(() => addLike(produit.id_produit))}>
                       <FcLike 
-                        className="text-3xl relative left-[110px] bottom-4"/>
+                        className="text-2xl relative left-[111px] bottom-1"/>
                       </button>
                     
                     <div
@@ -254,7 +267,7 @@ export default function Home() {
                     </div>
       
                     <div
-                      className="nomProduct ">
+                      className="nomProduct font-boogaloo text-xl mt-1">
                         <p>{produit.nom}</p>
                     </div>
       
@@ -264,19 +277,21 @@ export default function Home() {
                     </div>
       
                     <div
-                      className="prixProduct ">
+                      className="prixProduct font-boogaloo text-xl ">
                         <p>{produit.prix} €</p>
                     </div>
       
                     <button
                       onClick={() => addBasket(produit.id_produit)}
-                      className=" bg-slate-500 text-white border border-black shadow-2xl w-[150px] h-[40px] rounded-lg font-boogaloo">
+                      className=" bg-slate-950 text-white border-2 border-slate-400 shadow-xl w-[150px] h-[40px] rounded-lg font-boogaloo mt-2">
                       Ajouter au panier
       
                     </button>
                     </div>
                     
                 ))}
+                    </div>
+                </div>
           
       </div>
     );
