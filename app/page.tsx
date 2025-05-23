@@ -154,7 +154,7 @@ export default function Home() {
                     href="/products/newProduct">
 
                     <IoMdAddCircle
-                    className="text-5xl block text-slate-500 " /> 
+                      className="text-5xl block text-slate-800 " /> 
                   </Link>
             </div>
 

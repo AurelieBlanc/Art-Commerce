@@ -8,6 +8,9 @@ import { IoHome } from "react-icons/io5"; // import de l'icone home , accueil <I
 import { BiSolidLogInCircle } from "react-icons/bi"; // import de l'icone login, <BiSolidLogInCircle />
 import { RiLogoutCircleFill } from "react-icons/ri"; // import de l'icone Logout <RiLogoutCircleFill />
 import { FaClipboardList } from "react-icons/fa"; // import de l'icone clipboard : <FaClipboardList />
+import { ImEyeBlocked } from "react-icons/im"; // import de l'icone oeil barré, pour les produits rendus inactifs non vendus : <ImEyeBlocked />
+
+
 import Cookies  from "js-cookie"; 
 
 
@@ -23,7 +26,7 @@ import Link from 'next/link';
 // Code pour retourner le composant Nav: -----------------------------------------//
 export default function Nav() {
 
-const { isAuthenticated, setAuthenticated } = useStore(); 
+const { isAuthenticated, role, setAuthenticated } = useStore(); 
 
 
 
@@ -100,8 +103,23 @@ async function logout() {
                         <FaClipboardList />
                         </Link>
                     </li>
+
+                     
                     </>
                     )}
+
+                    {isAuthenticated && role === "admin" && (
+                        <>
+                    <li>
+                        <Link
+                            className=""
+                            href="/inactif">
+                        <ImEyeBlocked />
+                        </Link>
+                        
+                    </li>
+                    </>
+                     )}
                     
 
                      {/* Icone Panier :  */}

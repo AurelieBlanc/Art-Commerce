@@ -59,6 +59,13 @@ export default async function middleware(req: NextRequest) {
             return NextResponse.redirect(new URL("/", req.url))
           }
         }
+
+        if(pathname.startsWith("/inactif")) {
+          if(payload.role !== "admin") {
+            console.log("accès réfusé")
+            return NextResponse.redirect(new URL("/", req.url))
+          }
+        }
       
         return NextResponse.next()
 
@@ -75,6 +82,7 @@ export const config = {
         "/products/updateProduct/:path*",
         "/commande/:path*", 
         "/gestion", 
-        "/sessions"
+        "/sessions", 
+        "/inactif"
      ] //path* : toutes les routes et sous routes de : products/newProduct 
 }
