@@ -239,7 +239,7 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
      }
 
      const data = await response.json();
-     console.log( "messsage:", data.message ); 
+     
 
      alert("Vous etes bien enregistré ! Vous pouvez vous connecter maintenant!");
 

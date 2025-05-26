@@ -37,9 +37,10 @@ export const formContactSchema = z.object({
 
   telephone: z
   .string()
-  .min(8, {message: "Le numéro de téléphone est incomplet"})
-  .regex(/^[+]?[\d\s\-().]{7,20}$/, {message: "Le numero de téléphone est invalide"})
-  .optional(), 
+  .optional()
+  .refine(
+    (val) => !val ||  (val.length >= 8 && /^[+]?[\d\s\-().]{7,20}$/.test(val)),
+    { message: "Le numéro de téléphone est invalide ou incomplet"}), 
 
   message: z
   .string()
@@ -102,7 +103,34 @@ async function submitMessageForm (event: React.FormEvent) {
     alert("les données entrées sont correctes")
   }
 
+  
+
+// appel API en methode POST , avec les données du form envoyées en body : //
   try {
+
+    const response = await fetch("/api/contact/sendMessage", {
+      method: "POST", 
+      headers: {
+        "Content-Type" : "application/json"
+      }, 
+      body: JSON.stringify({
+        prenom, 
+        nom, 
+        email, 
+        telephone, 
+        message
+      })
+    })
+
+    if(!response.ok) {
+      throw new Error("La réponse à l'appel API n'a pas aboutie")
+    }
+
+    const data = await response.json(); 
+    alert("Votre message a bien été distribué, merci !"); 
+    form.reset(); 
+    return; 
+
 
   } catch(error) {
     console.error("Erreur lors de la soumission du form : ", error); 
