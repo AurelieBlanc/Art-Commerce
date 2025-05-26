@@ -21,6 +21,35 @@ interface formData {
 
 
 
+// Code pour les schémas de validation ZOD : --------------------------- //
+export const formContactSchema = z.object({
+  nom: z
+  .string()
+  .min(2, {message: "le nom doit contenir au moins 2 caractères"})
+  .regex( /^[a-zA-ZÀ-ÖØ-öø-ÿ'’ -]+$/, {message: "le nom contient des caractères invalides" }), 
+
+  prenom: z
+  .string()
+  .min(2, {message: "le prénom doit contenir au moins 2 caractères"})
+  .regex( /^[a-zA-ZÀ-ÖØ-öø-ÿ'’ -]+$/, {message: "le prénom contient des caractères invalides" }), 
+
+  email: z.string().email("Email invalide"), 
+
+  telephone: z
+  .string()
+  .min(8, {message: "Le numéro de téléphone est incomplet"})
+  .regex(/^[+]?[\d\s\-().]{7,20}$/, {message: "Le numero de téléphone est invalide"})
+  .optional(), 
+
+  message: z
+  .string()
+  .min(10, {message: "Le message est trop court"})
+  .max(300, "Message trop long")
+})
+
+
+
+
 
 export default function page() {
 // Code pour gérer les states avec useRef : ---------------------------- //
@@ -34,6 +63,54 @@ const messageRef= useRef<HTMLTextAreaElement>(null);
 
 
 
+// Code pour soumettre le formulaire : -------------------------------- //
+async function submitMessageForm (event: React.FormEvent) {
+  event?.preventDefault(); 
+
+
+// On recupère les données du form : //
+  const form = event.currentTarget as HTMLFormElement // cette ligne perettra de reset les champs du form apres la soumission de celui-ci 
+
+  const prenom = prenomRef.current?.value; 
+  const nom = nomRef.current?.value; 
+  const email = emailRef.current?.value; 
+  const telephone = telephoneRef.current?.value; 
+  const message = messageRef.current?.value; 
+
+
+
+// on va vérifier si les données respectent notre schéma de données avant de continuer dans la soumission du form : //
+
+  const result = formContactSchema.safeParse({
+    prenom, 
+    nom, 
+    email, 
+    telephone, 
+    message
+  })
+
+  if(!result.success) {
+    const errors = result.error.flatten().fieldErrors // result.error : erreur retournée par zod quand la validation échoue / .flatten() : méthode de Zod qui transforme l'objet d'erreurs complexe en une forme plus simple / .fieldErrors : c'est un objet où chaque clé est un champ
+
+    const messages = Object.entries(errors) // Object.entries convertit l'objet errors en tableau de paires clé valeur
+    .map(([field, errs ]) => errs?.join(', ')) // pour chaque entrée [field, errs], errs est un tableau de messages d'erreur, .join(', ') concatène tous les messages pour ce champ séparés par une virgule + espace
+    .filter(Boolean) // filtre le tableau pour garder uniquement les elements truthy (non vides)
+
+    alert("Erreurs dans le formulaire : \n- " + messages.join("\n- "))
+    return
+  } else {
+    alert("les données entrées sont correctes")
+  }
+
+  try {
+
+  } catch(error) {
+    console.error("Erreur lors de la soumission du form : ", error); 
+    alert("Echec lors de la soumission du message")
+  }
+
+}
+
 
 
 // Code pour retourner le composant JSX : ------------------------------ //
@@ -45,7 +122,8 @@ const messageRef= useRef<HTMLTextAreaElement>(null);
             Pour nous contacter, veuillez remplir ce formulaire : 
         </h2>
         <form
-          className="flex flex-col font-rubik text-slate-900 text-center lg:w-[40%] w-[80%]">
+          className="flex flex-col font-rubik text-slate-900 text-center lg:w-[40%] w-[80%]"
+          onSubmit={submitMessageForm}>
 
             {/* Champ Prénom:  */}
             <label htmlFor="prenom"
