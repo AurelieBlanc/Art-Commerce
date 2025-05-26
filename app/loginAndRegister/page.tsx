@@ -4,6 +4,9 @@ import { useRef } from "react";
 import { z } from "zod"; 
 import { useStore } from "@/stores/useStore";
 import Link from "next/link";
+import toast from "react-hot-toast"; 
+
+
 
 
 
@@ -95,10 +98,10 @@ const { setAuthenticated, role } = useStore();
       })
 
       if(!result.success) {
-        alert("le format du mail ou du mot de passe est invalide")
+        toast.error("le format du mail ou du mot de passe est invalide", {duration: 3000})
         return; 
       } else {
-        console.log("schéma de l'email et du mot de passe corrects")
+        toast.success("schéma de l'email et du mot de passe corrects", {duration : 3000})
       }
     
       
@@ -135,13 +138,15 @@ const { setAuthenticated, role } = useStore();
         id: Number(id)
     }); 
 
-       alert("Vous etes bien connecté !");
+       toast.success("Vous etes bien connecté !"); 
+
+      
        form.reset(); // on reset le formulaire pour le nettoyer: 
        return; 
        
     } catch (error) {
       console.error("Erreur serveur: ", error); 
-      alert ("Echec lors de la connexion , verifiez vos identifiants")
+      toast.error("Erreur de connexion, veuillez vérifier vos identifiants !")
     } 
   }
 
@@ -182,7 +187,7 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
 
 // verification de la bonne correspondance des mots de passe : ----------------------------------------//
   if(mdp !== mdpCheck){
-    alert("les mots de passe doivent se correspondre"); 
+    toast.error("les mots de passe doivent se correspondre", { duration: 3000 }); 
     return; 
   }
 
@@ -209,10 +214,10 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
         .map(([field, errs]) => errs?.join(', '))
         .filter(Boolean)
     
-      alert("Erreurs dans le formulaire:\n- " + messages.join("\n- "))
+      toast.error("Erreurs dans le formulaire:\n- " + messages.join("\n- "))
       return
     } else {
-      console.log("Les données entrées sont correctes")
+      toast.success("Les données entrées sont correctes")
     }
 
    
@@ -241,7 +246,7 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
      const data = await response.json();
      
 
-     alert("Vous etes bien enregistré ! Vous pouvez vous connecter maintenant!");
+     toast.success("Vous etes bien enregistré ! Vous pouvez vous connecter maintenant!");
 
     
      form.reset(); // ici on reset le formulaire
@@ -249,7 +254,7 @@ const handleSubmitRegister = async (e: React.FormEvent) => {
      
   } catch (error) {
     console.error("Erreur lors du register: ", error); 
-    alert ("Echec lors de l'enregistrement")
+    toast.error ("Echec lors de l'enregistrement")
   }
   
 }

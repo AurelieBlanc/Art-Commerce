@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation"; 
 import { z } from "zod"; 
 import Cookies from "js-cookie"; 
+import toast from "react-hot-toast";
 
 
 
@@ -134,7 +135,9 @@ function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaEl
 
 
 //// Code pour la soumission du form avec les modifs , appel API en methode PUT : ////
-async function handleSubmitUpdateProduct() {
+async function handleSubmitUpdateProduct(event: React.FormEvent<HTMLFormElement>) {
+
+  event.preventDefault(); 
 
 if(!produit) return; 
 
@@ -156,10 +159,10 @@ if(!produit) return;
       .map(([field, errs]) => errs?.join(', '))
       .filter(Boolean)
   
-    alert("Erreurs dans le formulaire:\n- " + messages.join("\n- "))
+    toast.error("Erreurs dans le formulaire:\n- " + messages.join("\n- "))
     return
     } else {
-    alert("Les données entrées sont correctes")
+    toast.success("Les données entrées sont correctes", { duration:  3000 })
     }; 
 
  
@@ -181,13 +184,13 @@ if(!produit) return;
        }
   
         const data = await response.json();
-        alert("le produit a bien été modifié"); 
+        toast.success("le produit a bien été modifié", { duration: 3000}); 
 
-      return; 
+      
 
     } catch(error) {
       console.error("Erreur lors de la modification du produit", error); 
-        alert("Echec lors de la modification du produit")
+      toast.error("Echec lors de la modification du produit")
     }
 }
 

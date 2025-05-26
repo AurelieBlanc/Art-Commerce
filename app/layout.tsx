@@ -5,7 +5,7 @@ import "./globals.css";
 import Banner from "./components/Banner";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
-
+import { Toaster } from "react-hot-toast"
 
 
 
@@ -51,6 +51,7 @@ export default function RootLayout({
         <Banner/>
         <Nav/>
 
+          <Toaster position="top-right" reverseOrder={false} toastOptions = {{ className: "mt-2"}} />
           <main>{children}</main>
 
         <Footer/>

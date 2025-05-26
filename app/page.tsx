@@ -11,7 +11,7 @@ import { FaPencilAlt } from "react-icons/fa"; // icone pour modifier un produit 
 import { MdDeleteForever } from "react-icons/md"; //icone pour supprimer un produit <MdDeleteForever />
 import { FcLike } from "react-icons/fc"; // icone coeur > like : <FcLike />
 import { addLikedId } from "@/utils/likedCookie";
-
+import toast from "react-hot-toast";
 
 
 
@@ -77,7 +77,7 @@ export default function Home() {
     const isConfirmed = confirm(`Etes vous sur de vouloir supprimer le produit suivant : ${id} ?` ); 
 
     if(!isConfirmed) {
-      alert ("annulation de la suppression du produit"); 
+      toast.error ("annulation de la suppression du produit"); 
       return; 
     }
 
@@ -106,7 +106,7 @@ export default function Home() {
        const result = produits.filter(elem => elem.id_produit !== idToDelete )
        setProduits(result); 
 
-       alert("le produit a bien été supprimé"); 
+       toast.success("le produit a bien été supprimé"); 
 
     } catch (error) {
       console.error("Erreur lors de la suppression du produit", error); 
@@ -121,7 +121,7 @@ export default function Home() {
 
     addPanier(stringId); 
 
-    alert("Element bien ajouté au panier !")
+    toast.success("Element bien ajouté au panier !")
   }
 
 
@@ -135,7 +135,7 @@ export default function Home() {
 
         addLikedId(idString); 
         
-        alert("Produit bien ajouté à votre liste de favoris"); 
+        toast.success("Produit bien ajouté à votre liste de favoris"); 
         return; 
     }
 
