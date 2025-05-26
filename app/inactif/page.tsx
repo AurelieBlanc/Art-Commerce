@@ -4,6 +4,9 @@
 import { useEffect, useState } from "react"; 
 import Image from "next/image";
 import Link from "next/link";
+import { IoLogoOctocat } from "react-icons/io"; // <IoLogoOctocat />
+
+
 
 
 
@@ -84,7 +87,9 @@ if(loading) {
         <div
             className="containerProducts mt-6 mb-6">
 
-                {produits.map((elem) => (
+                {produits && produits.length > 0 ? (
+                    
+                         produits.map((elem) => (
                     <div
                         className="w-[300px] h-[500px] bg-blue-600 bg-opacity-10 border-white border-2 flex flex-col justify-center items-center rounded-md">
 
@@ -130,7 +135,26 @@ if(loading) {
 
                      </div>
 
-                ))}
+                ))
+
+                ) : (
+                    <div
+                        className="font-boogaloo text-3xl ">
+                            <h2
+                                className="mt-8">
+                                PAS DE PRODUITS INACTIFS
+                            </h2> 
+                            <div
+                                className="">
+                                <IoLogoOctocat 
+
+                                size={300}
+                                    className="text-slate-700 mt-6"/>
+                            </div>
+                    </div>
+                )}
+                
+               
 
         </div>
 
