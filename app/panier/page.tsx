@@ -1,4 +1,4 @@
-//Code pour les imports ----------------------------------------------------------- : 
+//Code pour les imports : ---------------------------------------------------------- //
 "use client"
 import { getPanier, removeFromPanier, deletePanier } from "@/utils/panierCookie"
 import { useState, useEffect } from "react"; 
@@ -6,10 +6,13 @@ import { RiDeleteBin2Fill } from "react-icons/ri"; // icone pour delete le produ
 import { IoIosWarning } from "react-icons/io"; // icone warning <IoIosWarning />
 import { useStore } from "@/stores/useStore";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 
 
 
+
+// Code pour les typages : -------------------------------------------------------- //
 interface ProduitsPanier {
     id_produit: number, 
     nom: string, 
@@ -20,7 +23,7 @@ interface ProduitsPanier {
 
 
 export default function page() {
-
+// Code pour les states locaus et globaux + outils : ----------------------------- //
 const [ produitsPanier, setProduitsPanier ] = useState<ProduitsPanier[]>([]); 
 
 const [ totalPrix, setTotalPrix ] = useState(0); 
@@ -28,6 +31,8 @@ const [ totalPrix, setTotalPrix ] = useState(0);
 const { isAuthenticated, role, id } = useStore(); 
 
 const router = useRouter(); 
+
+
 
 // Code pour recuperer les produits dans le cookie pour implementer le panier : ------- //
 useEffect (() => {
@@ -92,7 +97,7 @@ function deleteAllPanier() {
     deletePanier()
 
     setProduitsPanier([])
-    alert("La totalité de votre panier a été supprimé")
+    toast.success("La totalité de votre panier a été supprimé", { duration: 3000})
 }
 
 
@@ -122,24 +127,24 @@ useEffect(() => {
 function validBasket() {
 
     if(totalPrix === 0) {
-        alert("Vous devez d'abord ajouter des produits à votre panier avant de continuer"); 
+        toast.error("Vous devez d'abord ajouter des produits à votre panier avant de continuer", { duration: 5000}); 
         return router.push("/"); 
     }
 
     if(!isAuthenticated) {
-        alert("Vous devez d'abord vous authentifier afin de pouvoir accéder à votre récap de panier"); 
+        toast.error("Vous devez d'abord vous authentifier afin de pouvoir accéder à votre récap de panier", { duration: 5000}); 
         return router.push ("/loginAndRegister")
     } 
 
     if(role === "client") {
         return router.push("/commande/recap"); 
     } else {
-        return alert("Vous devez avoir un role client pour accéder au récap de panier")
+        return toast.error("Vous devez avoir un role client pour accéder au récap de panier", { duration: 5000})
     }
 }
 
 
-
+// Code pour retourner le composant JSX : --------------------------------- //
   return (
     <div
         className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center flex flex-col justify-center items-center">

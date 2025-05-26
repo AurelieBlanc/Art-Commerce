@@ -101,7 +101,7 @@ const { setAuthenticated, role } = useStore();
         toast.error("le format du mail ou du mot de passe est invalide", {duration: 3000})
         return; 
       } else {
-        toast.success("schéma de l'email et du mot de passe corrects", {duration : 3000})
+        console.log("schéma de l'email et du mot de passe corrects")
       }
     
       

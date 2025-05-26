@@ -5,7 +5,7 @@ import { useStore } from "@/stores/useStore";
 import { z } from "zod"; 
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation"; 
-
+import toast from "react-hot-toast";
 
 
 
@@ -184,7 +184,8 @@ function handleChangeClient(event: React.ChangeEvent<HTMLInputElement>) {
 async function handleSubmitClient(event: React.FormEvent<HTMLFormElement>) {
     event?.preventDefault()
 
-    console.log("le nouvel objet clien est :", infosClient, infosClient.id_client); 
+
+
 
 // validation des formats de données : --------------------------------------------//
         const result = updateSchema.safeParse({
@@ -204,7 +205,7 @@ async function handleSubmitClient(event: React.FormEvent<HTMLFormElement>) {
             .map(([field, errs]) => errs?.join(', '))
             .filter(Boolean)
         
-          alert("Erreurs dans le formulaire:\n- " + messages.join("\n- "))
+          toast.error("Erreurs dans le formulaire:\n- " + messages.join("\n- "))
           return
         } else {
           console.log("Les données entrées sont correctes")
@@ -231,12 +232,12 @@ try {
     }
 
     const data = await response.json()
-    alert("vos informations ont bien été modifiées"); 
+    toast.success("vos informations ont bien été modifiées"); 
     return; 
 
 } catch(error) {
     console.error("Erreur lors de la modif des données: ", error); 
-    alert ("Echec lors de la modif des données ")
+    toast.error ("Echec lors de la modif des données ")
 }
 
 }
@@ -253,7 +254,7 @@ function backBasket() {
     if(role === "client") {
         return router.push("/commande/recap"); 
     } else {
-        return alert("Vous devez avoir un role client pour accéder au récap de panier")
+        return toast.error("Vous devez avoir un role client pour accéder au récap de panier")
     }
 }
 
