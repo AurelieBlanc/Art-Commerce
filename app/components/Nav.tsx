@@ -9,13 +9,8 @@ import { BiSolidLogInCircle } from "react-icons/bi"; // import de l'icone login,
 import { RiLogoutCircleFill } from "react-icons/ri"; // import de l'icone Logout <RiLogoutCircleFill />
 import { FaClipboardList } from "react-icons/fa"; // import de l'icone clipboard : <FaClipboardList />
 import { ImEyeBlocked } from "react-icons/im"; // import de l'icone oeil barré, pour les produits rendus inactifs non vendus : <ImEyeBlocked />
-
-
+import toast from "react-hot-toast";
 import Cookies  from "js-cookie"; 
-
-
-
-
 import Link from 'next/link';
 
 
@@ -49,6 +44,8 @@ async function logout() {
 // on recuperera la réponse avec le statut isAuthenticated, que l'on mettra à jour dans le store générale, pour que non seulement tous les cookies d'authentification et CSRF soient expirés, mais aussi pour que le store global reflète la deconnexion notammement dans la barre de nav (disparition des icones compte et deconnexion) : //
         const data = await response.json(); 
         setAuthenticated(data.isAuthenticated); 
+
+        toast.success("Vous etes bien deconnecté !", { duration: 4000})
 
     } catch (error) {
         console.error("la déconnexion a échoué", error)

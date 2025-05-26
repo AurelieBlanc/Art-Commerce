@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react"; 
 import { getLikedListId, removeFromLikedList, deleteLikedList } from "@/utils/likedCookie";
 import { addPanier } from "@/utils/panierCookie"; 
-
+import toast from "react-hot-toast";
 import { TiDelete } from "react-icons/ti"; // icone delete ronde, pour supprimer les produits de manière unitaire: <TiDelete />
 import { RiDeleteBin5Fill } from "react-icons/ri"; // icone poubelle, pour supprimer tous les produits d'un coup : <RiDeleteBin5Fill />
 
@@ -64,7 +64,6 @@ useEffect(() => {
         })
 
         const data = await response.json(); 
-        console.log("qu'a t'on en retour console datas ?", data)
 
         if(Array.isArray(data)) {
             setProduits(data)
@@ -93,7 +92,7 @@ useEffect(() => {
         const confirmMessage = confirm("Veux tu vraiment supprimer ce produit de ta liste de favoris ??"); 
 
         if(!confirmMessage) {
-            alert("Opération annulée !!!")
+            toast.error("Opération annulée !!!")
             return; 
         }
 
@@ -102,6 +101,8 @@ useEffect(() => {
         removeFromLikedList(stringId); 
 
         setProduits(produits.filter((elem) => elem.id_produit !== id)); 
+
+        toast.success("Produit bien supprimé")
 
     } 
 
@@ -113,11 +114,13 @@ useEffect(() => {
         const confirmMessage = confirm("Veux tu vraiment supprimer toute ta liste de produits likés ??"); 
 
         if(!confirmMessage) {
-            alert("Opération annulée !!!"); 
+            toast.error("Opération annulée !!!"); 
             return; 
         }
 
         deleteLikedList(); 
+
+        toast.success("Liste de produits likés supprimée")
 
         setProduits([]); 
    }
@@ -130,7 +133,7 @@ useEffect(() => {
 
         addPanier(idString); 
 
-        alert("produit liké bien ajouté à votre panier")
+        toast.success("produit liké bien ajouté à votre panier")
     }
 
 
@@ -142,14 +145,14 @@ useEffect(() => {
             className="mt-8 flex flex-col items-center gap-5">
                 <h2
                     className="font-boogaloo text-3xl text-slate-800">
-                    Tes produits likés: 
+                    Produits likés: 
                 </h2>
 
                 {loading && 
                     <>
                     {produits.map((item) => (
                     <div
-                        className="w-[350px] h-[500px] bg-slate-950 text-white font-boogaloo flex flex-col items-center justify-center rounded-lg "
+                        className="w-[350px] h-[600px] bg-slate-950 text-white font-boogaloo flex flex-col items-center justify-center rounded-lg "
 
                         key= {item.id_produit}>
                         
