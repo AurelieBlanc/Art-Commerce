@@ -3,7 +3,7 @@
 
 import { useRef } from "react"; 
 import { z } from "zod"; 
-
+import toast from "react-hot-toast";
 
 
 
@@ -97,10 +97,10 @@ async function submitMessageForm (event: React.FormEvent) {
     .map(([field, errs ]) => errs?.join(', ')) // pour chaque entrée [field, errs], errs est un tableau de messages d'erreur, .join(', ') concatène tous les messages pour ce champ séparés par une virgule + espace
     .filter(Boolean) // filtre le tableau pour garder uniquement les elements truthy (non vides)
 
-    alert("Erreurs dans le formulaire : \n- " + messages.join("\n- "))
+    toast.error("Erreurs dans le formulaire : \n- " + messages.join("\n- "), { duration: 4000 })
     return
   } else {
-    alert("les données entrées sont correctes")
+    console.log("les données entrées sont correctes")
   }
 
   
@@ -127,7 +127,7 @@ async function submitMessageForm (event: React.FormEvent) {
     }
 
     const data = await response.json(); 
-    alert("Votre message a bien été distribué, merci !"); 
+    toast.success("Votre message a bien été distribué, on reprendra contact avec vous au plus vite, merci !"); 
     form.reset(); 
     return; 
 
