@@ -9,6 +9,7 @@ import { useModalUpdateStore, useModalClientStore } from "@/stores/useStore";
 import Link from "next/link";
 import Cookies  from "js-cookie"; 
 import AdminClient from "./AdminClient";
+import toast from "react-hot-toast";
 
 
 
@@ -77,6 +78,8 @@ const { isModalClientOpen, toggleClientModal } = useModalClientStore();
 
 
 
+
+
 // Fonction deleteOrder pour supprimer une commande en BDD : ------------------ //
     async function deleteOrder(id: number) {
 
@@ -84,7 +87,7 @@ const { isModalClientOpen, toggleClientModal } = useModalClientStore();
     const confirmation = confirm (`êtes vous sur de vouloir supprimer la commande n° ${id} ?`); 
 
     if(!confirmation) {
-        alert ("suppresion annulée !"); 
+        toast.error("suppresion annulée !"); 
         return; 
     }
 
@@ -117,11 +120,15 @@ const { isModalClientOpen, toggleClientModal } = useModalClientStore();
 
 
 
+
+
 // Fonction updateOrder pour ouvrir la modale qui mettra à jour les statuts de commande : ------------ //
 async function updateOrder (id: number) {
     setUpdateId(Number(id)); 
     toggleUpdateModal(); 
 }
+
+
 
 
 // Fonction pour ouvrir la modale, avec toutes les infos clients avec son id : // 

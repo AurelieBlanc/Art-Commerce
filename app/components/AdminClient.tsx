@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react"; 
 import { useModalClientStore } from "@/stores/useStore";
 import { IoMdCloseCircle } from "react-icons/io"; // icone pour close la modale : <IoMdCloseCircle />
+import toast from "react-hot-toast";
 
 
 
@@ -18,6 +19,7 @@ interface Client {
     ville_livraison:string, 
     telephone: string
 }
+
 
 
 
@@ -58,7 +60,6 @@ useEffect(() => {
     }
 
     const data = await response.json(); 
-    console.log("quelles sont les datas recupérées ?", data.infosClient) 
      
     setClient(data.infosClient)
     setLoading(true); 
@@ -66,7 +67,7 @@ useEffect(() => {
         
         } catch(error) {
             console.error("Erreur lors de la récupération du client", error); 
-            alert("Erreur lors de la récupération du client")
+            toast.error("Erreur lors de la récupération du client")
         }
 
 }

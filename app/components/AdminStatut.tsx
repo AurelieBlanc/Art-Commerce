@@ -3,6 +3,8 @@ import { IoMdCloseCircle } from "react-icons/io"; // icone pour close la modale 
 import { useModalUpdateStore } from "@/stores/useStore";
 import { useEffect, useState } from "react"; 
 import Cookies from "js-cookie"; 
+import toast from "react-hot-toast";
+
 
 
 
@@ -66,6 +68,8 @@ useEffect(() => {
 
 
 
+
+
 // Code , fonction pour fermer la modale : ---------------------------------- //
 function closeModal () {
   toggleUpdateModal(); 
@@ -106,12 +110,12 @@ async function handleSubmitUpdate(event: React.FormEvent<HTMLFormElement>) {
     }
 
     const data = await response.json(); 
-    alert("le statut a bien été mis à jour"); 
+    toast.success("le statut a bien été mis à jour"); 
     toggleUpdateModal(); 
 
   } catch(error) {
     console.error("Erreur lors de la modification du produit", error); 
-    alert("Erreur lors de la modification du produit")
+    toast.error("Erreur lors de la modification du produit")
   }
 
 }

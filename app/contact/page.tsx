@@ -134,7 +134,7 @@ async function submitMessageForm (event: React.FormEvent) {
 
   } catch(error) {
     console.error("Erreur lors de la soumission du form : ", error); 
-    alert("Echec lors de la soumission du message")
+    toast.error("Echec lors de la soumission du message")
   }
 
 }

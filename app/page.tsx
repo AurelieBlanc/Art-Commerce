@@ -110,7 +110,7 @@ export default function Home() {
 
     } catch (error) {
       console.error("Erreur lors de la suppression du produit", error); 
-      alert ("Echec lors de la suppression du produit")
+      toast.error ("Echec lors de la suppression du produit")
     }
   }
 

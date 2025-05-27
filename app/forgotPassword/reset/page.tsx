@@ -4,6 +4,9 @@
 import { useSearchParams, useRouter } from "next/navigation"; 
 import { z } from "zod"; 
 import { useState, useEffect } from "react"; 
+import toast from "react-hot-toast";
+
+
 
 
 
@@ -12,6 +15,7 @@ interface formPassword {
     password: string, 
     confirmPassword: string
 }
+
 
 
 
@@ -36,6 +40,7 @@ export const passwordSchema = z.object({
 
 
 
+
 export default function page() {
 // Code pour déclarer les outils ou states locaux : ---------------------------------- //
     const searchParams = useSearchParams(); 
@@ -48,6 +53,7 @@ export default function page() {
         password: "", 
         confirmPassword: "", 
     }); 
+
 
 
 
@@ -71,6 +77,8 @@ export default function page() {
     }, [token]); 
 
 
+
+    
 // Code pour changer les valeurs du stat formPassword : ------------------------------- //
 function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target; 
@@ -92,7 +100,7 @@ async function submitNewPassword (event: React.FormEvent<HTMLFormElement> ) {
 
 // dans un premier temps, on va verifier que les passwords coïncident bien : ----------- //
     if(formPassword.password !== formPassword.confirmPassword) {
-        alert ("les mots de passe ne correspondent pas"); 
+        toast.error ("les mots de passe ne correspondent pas"); 
         return; 
     }
 
@@ -107,10 +115,10 @@ async function submitNewPassword (event: React.FormEvent<HTMLFormElement> ) {
 
     if(!result.success) { 
         const errorMessages = result.error.errors.map( err => err.message ).join("\n")
-        alert("Erreurs dans le mot de passe : \n" + errorMessages) // le \n ici sert à sauter une première ligne apres le titre :)
+        toast.error("Erreurs dans le mot de passe : \n" + errorMessages) // le \n ici sert à sauter une première ligne apres le titre :)
         return; 
     } else {
-        alert("le nouveau mot de passe est correct")
+        toast.success("le nouveau mot de passe est correct")
     }
 
 
@@ -118,7 +126,7 @@ async function submitNewPassword (event: React.FormEvent<HTMLFormElement> ) {
 // Maintenant qu'on a procédé aux différentes vérifs, on va pouvoir faire l'appel API : //
     try {
             if(!token || !email) {
-                return alert("email ou lien invalide")
+                return toast.error("email ou lien invalide")
             }; 
 
         const response = await fetch("/api/password/reset", {
@@ -139,7 +147,7 @@ async function submitNewPassword (event: React.FormEvent<HTMLFormElement> ) {
             throw new Error(data.message || "Erreur lors de la réinitialisation")
         }
 
-        alert ("Le mot de passe a été modifié avec succès"); 
+        toast.success("Le mot de passe a été modifié avec succès"); 
 
 
 // si response.ok alors on vide le formulaire et on renvoie sur la page d'accueil : //
@@ -153,7 +161,7 @@ async function submitNewPassword (event: React.FormEvent<HTMLFormElement> ) {
 
     } catch(error) {
         console.error("Erreur pendant l'appel API : ", error); 
-        alert("Erreur lors de la réinitialisation du mot de passe")
+        toast.error("Erreur lors de la réinitialisation du mot de passe")
     }
 
 }

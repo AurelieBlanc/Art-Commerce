@@ -3,6 +3,9 @@
 
 import { useRef } from "react"; 
 import { z } from "zod"; 
+import toast from "react-hot-toast";
+
+
 
 
 
@@ -38,7 +41,7 @@ async function handleSubmitEmail(event: React.FormEvent) {
     })
 
     if(!result.success) {
-        alert("le format du mail est incorrect"); 
+        toast.error("Le format de l'email est incorrect"); 
         return; 
     } else {
         console.log("Format de l'email correct")
@@ -46,7 +49,7 @@ async function handleSubmitEmail(event: React.FormEvent) {
 
 
 
-// Code pour l'appel API : --------------------------------------- //
+// Code pour l'appel API qui déclenchera l'envoi d'un email de réinitialisation : //
 try {
     const response = await fetch ("/api/password/sendEmail", {
         method :"POST", 
@@ -62,12 +65,11 @@ try {
 
     const data = await response.json(); 
     
-    alert (`Un  email de réinitialisation a été envoyé à votre adresse : ${email}`); 
+    toast.success(`Un  email de réinitialisation a été envoyé à votre adresse : ${email}`); 
 
-    
     } catch(error) {
     console.error("Erreur serveur: ", error); 
-    alert ("Erreur lors de l'envoi de l'email de réinitialisation du mot de passe")
+    toast.error("Erreur lors de l'envoi de l'email de réinitialisation du mot de passe")
     }
 }
 

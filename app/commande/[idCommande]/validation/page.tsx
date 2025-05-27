@@ -6,7 +6,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useStore } from "@/stores/useStore";
 import Cookies from "js-cookie"; 
 import { useRouter } from "next/navigation"; 
-
+import toast from "react-hot-toast";
 
 if(!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) { // on checke pour eviter des erreurs TS
   throw new Error ("La clé publique Stripe est manquante !"); 
@@ -124,7 +124,7 @@ export default function page() {
 
 // On verifiera que le client est bien connecté sinon on renverra à la page de connexion : //
     if(!isAuthenticated && role !== "client") {
-      alert("connectes toi à ton compte pour pouvoir régler ta commande.")
+      toast.error("connectes toi à ton compte pour pouvoir régler ta commande.")
       return router.push ("/loginAndRegister"); 
     }
 
@@ -146,12 +146,13 @@ export default function page() {
     if(stripe && data.id) {  // si on a bien une sessions Stripe et un id, alors on va declencher la redirection vers la page de paiement : 
       stripe.redirectToCheckout({ sessionId: data.id})
     } else {
-      alert("Erreur lors de la redirection vers le paiement")
+      toast.error("Erreur lors de la redirection vers le paiement")
     }
 
   }
 
 
+// Code pour retourner le composant JSX : -------------------------------- //
   return (
     <div
       className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center flex flex-col items-center">

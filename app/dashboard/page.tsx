@@ -247,7 +247,7 @@ try {
 function backBasket() {
 
     if(!isAuthenticated) {
-        alert("Vous devez d'abord vous authentifier afin de pouvoir accéder à votre récap de panier"); 
+        toast.error("Vous devez d'abord vous authentifier afin de pouvoir accéder à votre récap de panier"); 
         return router.push ("/loginAndRegister")
     } 
 

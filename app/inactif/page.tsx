@@ -139,10 +139,10 @@ if(loading) {
 
                 ) : (
                     <div
-                        className="font-boogaloo text-3xl ">
+                        className="font-boogaloo text-3xl flex flex-col items-center">
                             <h2
-                                className="mt-8">
-                                PAS DE PRODUITS INACTIFS
+                                className="mt-8 w-[70%] mx-auto text-center">
+                                PAS DE PRODUIT INACTIF pour le moment...
                             </h2> 
                             <div
                                 className="">

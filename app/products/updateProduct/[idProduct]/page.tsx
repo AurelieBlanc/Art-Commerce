@@ -95,7 +95,7 @@ useEffect (() =>  {
       
       } catch(error) {
         console.error("Erreur lors de la récupération des infos du produit", error); 
-        alert ("Echec lors de la récup des données")
+        toast.error("Echec lors de la récup des données")
       }
   }; 
 

@@ -6,6 +6,8 @@ import { getPanier } from "../../../utils/panierCookie";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; 
+import toast from "react-hot-toast";
+
 
 
 
@@ -27,6 +29,7 @@ interface Client {
   ville_livraison: string, 
   telephone: string, 
 }
+
 
 
 
@@ -177,6 +180,7 @@ export default function page() {
  
   }, [id])
 
+  
 
 
 // Code pour mettre à jour la recharge de la page une fois que les states client et totalCommande ont été implémentés : //
@@ -187,11 +191,12 @@ export default function page() {
 
 
 
+
 // Code pour valider et créer une commande en BDD, seulement si la personne est bien authentifiée : //
   async function validOrder() {
 
     if(!isAuthenticated && role !== "client") {
-      alert("Vous devez etre connecté pour continuer vers la finalisation de la commande")
+      toast.error("Vous devez etre connecté pour continuer vers la finalisation de la commande")
       return router.push("/loginAndRegister"); 
     }
 
@@ -215,7 +220,7 @@ export default function page() {
       })
 
       if(!response.ok) {
-          alert("erreur dans la validation de commande"); 
+          toast.error("erreur dans la validation de commande"); 
           return; 
        }
        
@@ -232,7 +237,7 @@ export default function page() {
 
 
 
-
+// Code pour retourner le composant JSX : -------------------------- //
 if(loadingPage) {
   return (
     <div

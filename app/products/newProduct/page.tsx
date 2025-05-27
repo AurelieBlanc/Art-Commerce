@@ -3,7 +3,7 @@
 import { useRef } from "react"; 
 import { z } from "zod"; 
 import Cookies from "js-cookie"; 
-
+import toast from "react-hot-toast";
 
 
 
@@ -46,6 +46,7 @@ const imageRef = useRef<HTMLInputElement>(null)
 
 
 
+
 // Fonction pour la création d'un nouveau produit : ---------------------------//
 const handleSubmitNewProduct =  async(e: React.FormEvent) => {
     e.preventDefault(); 
@@ -58,6 +59,7 @@ const handleSubmitNewProduct =  async(e: React.FormEvent) => {
     const description = descriptionRef.current?.value
     const prix = prixRef.current?.value
     const image = imageRef.current?.value
+
 
 
 
@@ -77,11 +79,12 @@ const handleSubmitNewProduct =  async(e: React.FormEvent) => {
           .map(([field, errs]) => errs?.join(', '))
           .filter(Boolean)
       
-        alert("Erreurs dans le formulaire:\n- " + messages.join("\n- "))
+        toast.error("Erreurs dans le formulaire:\n- " + messages.join("\n- "))
         return
       } else {
         console.log("Les données entrées sont correctes")
       }
+
 
 
 
@@ -108,18 +111,21 @@ const handleSubmitNewProduct =  async(e: React.FormEvent) => {
            }
       
         const data = await response.json();
-        alert("le nouveau produit a bien été ajouté"); 
+        toast.success("le nouveau produit a bien été ajouté"); 
 
         form.reset() // on reset le formulaire
         return; 
 
     } catch (error) {
         console.error("Erreur lors de la création du produit", error); 
-        alert ("Echec lors de la création du nouveau produit")
+        toast.error ("Echec lors de la création du nouveau produit")
     }
 }
 
 
+
+
+// Code pour retourner le composant JSX : ------------------------------ //
   return (
     <div
         className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center flex justify-center flex-col items-center">
@@ -195,8 +201,6 @@ const handleSubmitNewProduct =  async(e: React.FormEvent) => {
                 className="w-[150px] h-[60px] bg-slate-700 text-white rounded-md font-boogaloo mx-auto text-xl ">
                 Valider le produit      
             </button>
-           
-            
 
         </form>
         </div>

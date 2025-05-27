@@ -7,7 +7,7 @@ import { IoRadioButtonOn } from "react-icons/io5";
 import dayjs from "dayjs"; 
 import "dayjs/locale/fr"; 
 import Cookies from "js-cookie";
-
+import toast from "react-hot-toast";
 
 
 
@@ -85,7 +85,7 @@ useEffect(() => {
         const confirmLogout = confirm(`Etes vous sur de déconnecter le client de la session numéro ${id} ?`)
 
         if(!confirmLogout) {
-            alert("Ok, operation annulée"); 
+            toast.error("Ok, operation annulée"); 
             return; 
         }
 
@@ -110,7 +110,7 @@ useEffect(() => {
 
             setSessionsClients(refreshSessionsClients);
     
-            alert(data.message); 
+            toast.success(data.message); 
 
         } catch(error) {
             console.error("la suppression de la session a échouée :", error)
