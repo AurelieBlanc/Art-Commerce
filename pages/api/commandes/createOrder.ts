@@ -96,6 +96,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                 }
             })
 
+
             const products = await prisma.produit.findMany({
                 where: {
                     id_produit: {
@@ -116,6 +117,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                     })
                 )
             ); 
+
 
             let prixProduits = 0; 
 

@@ -168,7 +168,7 @@ export default function Home() {
                 {produits.map((produit) => (
                   <div
                     key = {produit.id_produit}
-                    className="divProduct w-[300px] h-[540px] border-2 border-white bg-blue-500 bg-opacity-10 flex flex-col justify-center items-center font-rubik rounded-md">
+                    className="divProduct w-[300px] h-[540px] border-2 border-white  bg-blue-500 bg-opacity-10 flex flex-col justify-center items-center font-rubik rounded-md">
 
                     <div
                       className="imageProduct ">

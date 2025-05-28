@@ -57,6 +57,8 @@ export default async function handler (req:NextApiRequest, res: NextApiResponse)
             const session = event.data.object as Stripe.Checkout.Session; 
             const idCommande = session.metadata?.idCommande; // dans cet objet, on va récupérer l'id de la commande
 
+            
+
             if(idCommande) { // et grace à cet id, on mettra àjour le nouveau statut de commande
                 try {
                     await prisma.commande.update({
@@ -64,7 +66,7 @@ export default async function handler (req:NextApiRequest, res: NextApiResponse)
                         data: { statut: "PAYEE, EN COURS DE PREPARATION"}
                     }); 
 
-                    console.log("Statut mis a jour pour la commande id: ", idCommande)
+                   
 
                 } catch(error) {
                   console.error("Erreur lors de la mise à jour de la commande: ", error); 

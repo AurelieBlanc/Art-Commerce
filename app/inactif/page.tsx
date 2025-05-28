@@ -91,7 +91,7 @@ if(loading) {
                     
                          produits.map((elem) => (
                     <div
-                        className="w-[300px] h-[500px] bg-blue-600 bg-opacity-10 border-white border-2 flex flex-col justify-center items-center rounded-md">
+                        className="w-[300px] h-[600px] bg-blue-600 bg-opacity-10 border-white border-2 flex flex-col justify-center items-center rounded-md">
 
                         <div
                             className="">

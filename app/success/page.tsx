@@ -33,10 +33,9 @@ useEffect(()=> {
       }
 
       const data = await response.json();
-      console.log("qu y a t'il dans data ? ", data) 
-
+      
       const statut = data.order.statut 
-      console.log("qu y a til dans statut ? ", statut); 
+      
 
       if(statut === "PAYEE, EN COURS DE PREPARATION") {
         deletePanier(); 

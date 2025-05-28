@@ -283,15 +283,9 @@ if ( role === "admin" && isAuthenticated === true) {
                 Email : 
             </p>
             <p
-                className="mt-1 font-rubik bg-white w-[240px] text-center rounded-lg mb-6">
+                className="mt-1 font-rubik bg-white w-[240px] text-center rounded-lg mb-10">
                 {infosAdmin.mail}
             </p>
-
-            <button
-                className="bg-slate-700 text-white w-[240px] font-boogaloo p-3 rounded-md mb-8 border border-black shadow-2xl">
-                Gestion des statuts de commandes et des sessions clients
-
-            </button>
         
         </div>
       )

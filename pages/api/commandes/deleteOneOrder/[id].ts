@@ -73,16 +73,41 @@ export default async function handle ( req:NextApiRequest, res:NextApiResponse )
             return res.status(403).json({message: "authToken invalide"})
         }
 
-        let deletedOrder; 
+        
 
-// une fois toutes les verifs de sécu faites, on va pouvoir appeler Prisma pour supprimer une commande : //
+// une fois toutes les verifs de sécu faites, on va pouvoir appeler Prisma pour chercher la commande à supprimer (sans la supprimer de suite) : //
         if(csrfToken && decoded && decoded.role === "admin") {
-            deletedOrder = await prisma.commande.delete({
-                where: {id_commande: Number(id)}
+
+            const orderToDelete = await prisma.commande.findUnique({
+                where: { id_commande: Number(id)}
             })
+
+
+            if(!orderToDelete) {
+                throw new Error ("Il n y a pas de commande à supprimer")
+            }
+
+            
+       
+// ici on va rerouver les produits de la commande supprimée en question pour pouvoir les repasser de inactif à actif pour qu ils puissent retourner sur le site : //
+            const inactivesProducts = await prisma.produit.updateMany({
+                where : { 
+                    id_commande: orderToDelete.id_commande, 
+                    is_active: false, 
+                }, 
+                data: {
+                     is_active: true
+                    }
+            })
+
+            await prisma.commande.delete({
+                where: { id_commande: Number(id)}
+            })
+
         }
 
-    return res.status(200).json({ message: "commande bien supprimée", deletedOrder})
+
+    return res.status(200).json({ message: "commande bien supprimée, et produit(s) corresponsants remis en ligne" })
 
 
     } catch(error) {
