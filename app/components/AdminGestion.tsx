@@ -144,39 +144,42 @@ async function openInfosClient(id: number) {
 // Code pour le retour composant : ------------------------------------------ // 
   return (
     <div
-        className="mt-8 flex flex-col items-center">
+        className="mt-8 flex flex-col w-full">
             <h2
-                className="font-boogaloo text-3xl text-slate-800 mb-5">
+                className="font-boogaloo text-3xl text-slate-800 mb-5 text-center">
                 Gestion des Commandes :     
             </h2>
+
+            <div
+                className="overflow-x-auto w-[90%] mx-auto">
             <table
-                className="mb-8">
+                className="text-center mb-8 w-[800px]">
                     <thead
                         className="">
                             <tr
                                 className="">
                                     <th 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px]">
+                                        className="border border-slate-900 font-boogaloo text-xl p-2">
                                         ID Commande :
                                     </th>
                                     <th 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[160px]">
+                                        className="border border-slate-900 font-boogaloo text-xl p-2">
                                         Date :
                                     </th>
                                     <th 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[180px]">
+                                        className="border border-slate-900 font-boogaloo text-xl p-2">
                                         Statut :
                                     </th>
                                     <th 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px]">
+                                        className="border border-slate-900 font-boogaloo text-xl p-2">
                                         Montant :
                                     </th>
                                     <th 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px]">
+                                        className="border border-slate-900 font-boogaloo text-xl p-2">
                                         Id Client :
                                     </th>
                                     <th 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px]">
+                                        className="border border-slate-900 font-boogaloo text-xl p-2">
                                         à nettoyer ? 
                                     </th>
                             </tr>
@@ -188,15 +191,15 @@ async function openInfosClient(id: number) {
                                 <tr
                                 className="">
                                      <td 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
+                                        className="border border-slate-900 font-boogaloo text-xl p-2 text-center">
                                         {commande.id_commande}
                                     </td>
                                      <td 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[160px] text-center">
+                                        className="border border-slate-900 font-boogaloo text-xl p-2 text-center">
                                         {dayjs(commande.date_commande).locale("fr").format("dddd DD MMMM YYYY")}
                                     </td>
                                      <td 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[180px] text-center">
+                                        className="border border-slate-900 font-boogaloo text-xl p-2 text-center">
                                         {commande.statut}
                                             <button>
                                             <FaPencilAlt 
@@ -206,11 +209,11 @@ async function openInfosClient(id: number) {
 
                                     </td>
                                      <td 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
+                                        className="border border-slate-900 font-boogaloo text-xl p-2 text-center">
                                         {commande.total} €
                                     </td>
                                      <td 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
+                                        className="border border-slate-900 font-boogaloo text-xl p-2 text-center">
                                             <button
                                                 className="w-[37px] h-[30px] bg-slate-800 text-white rounded-md shadow-xl border border-white"
                                                 onClick={() => openInfosClient(commande.id_client)}>
@@ -218,7 +221,7 @@ async function openInfosClient(id: number) {
                                             </button>
                                     </td>
                                      <td 
-                                        className="border border-slate-900 font-boogaloo text-xl m-2 w-[120px] text-center">
+                                        className="border border-slate-900 font-boogaloo text-xl p-2 text-center">
                                        
                                         <button
                                             className="text-red-700 text-2xl"
@@ -233,6 +236,7 @@ async function openInfosClient(id: number) {
                     </tbody>
 
             </table>
+            </div>
 
             {isModalUpdateOpen && <AdminStatut updateId={updateId}/> }
 
@@ -242,7 +246,7 @@ async function openInfosClient(id: number) {
             <div    
                 className="">
                     <h2
-                        className="font-boogaloo text-3xl text-slate-800 mb-10">
+                        className="font-boogaloo text-3xl text-slate-800 mb-10 text-center">
                         Pour la gestion des Connexions Clients : clique 
                         <Link
                             className="underline ml-2"

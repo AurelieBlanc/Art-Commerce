@@ -73,14 +73,16 @@ useEffect(()=> {
 // Code pour le retour du composant : ---------------------------------- //
  return loading ? (
     <div
-        className="flex flex-col items-center ">
+        className="flex flex-col">
             <h2
-                className="font-boogaloo text-3xl mt-6"> 
+                className="font-boogaloo text-3xl mt-6 text-center"> 
                 Bienvenue sur votre page Récap de Commandes : 
             </h2>
 
+            <div
+                className="overflow-x-auto">
             <table
-                className="font-boogaloo mt-6 mb-10 text-center">
+                className="font-boogaloo mt-6 mb-10 text-center w-[800px] mx-auto">
                     <thead
                         className="text-2xl">
                             <tr>
@@ -152,6 +154,7 @@ useEffect(()=> {
                     </tbody>
 
         </table>
+        </div>
 
     </div>
   ) : (

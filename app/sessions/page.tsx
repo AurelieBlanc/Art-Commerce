@@ -122,16 +122,21 @@ useEffect(() => {
 // Code pour retourner le composant JSX : ------------------------------------- //
   return (
     <div
-        className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center flex flex-col items-center">
+        className="bg-[url('/fond/fondArtCommerceBeige.png')] bg-cover bg-center flex flex-col ">
         <h2
-            className="font-boogaloo text-3xl text-slate-800 mt-6">
+            className="font-boogaloo text-3xl text-slate-800 mt-6 text-center">
             Clients Connectés : 
         </h2>
 
 
+        <div
+            className="overflow-x-auto w-[90%] mx-auto">
+
+
+       
         {loading && (
             <table
-                className="mt-4 mb-10">
+                className="mt-4 mb-10 w-[900px]">
                     <thead
                         className="">
                             <tr
@@ -211,6 +216,8 @@ useEffect(() => {
                     </tbody>
             </table>
         )}
+
+         </div>
          
 
         
