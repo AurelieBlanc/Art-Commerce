@@ -22,7 +22,7 @@ interface formData {
 
 
 // Code pour les schémas de validation ZOD : --------------------------- //
-export const formContactSchema = z.object({
+const formContactSchema = z.object({
   nom: z
   .string()
   .min(2, {message: "le nom doit contenir au moins 2 caractères"})

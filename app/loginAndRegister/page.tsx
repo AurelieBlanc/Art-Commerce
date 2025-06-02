@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 
 
 // Code pour les schémas de validation Zod pour le form LOGIN :-----------------------------//
-export const loginSchema = z.object({
+const loginSchema = z.object({
   email: z.string().email({ message: "Email invalide"}), 
   password: z
   .string()
@@ -26,7 +26,7 @@ export const loginSchema = z.object({
 
 
 // code pour le schéma de validation ZOD pour le form Register : ---------------------------------//
-export const registerSchema = z.object({
+const registerSchema = z.object({
   email: z.string().email({ message: "Email invalide"}),
 
   password: z
