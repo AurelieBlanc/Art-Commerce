@@ -6,7 +6,7 @@ import Banner from "./components/Banner";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import { Toaster } from "react-hot-toast"
-
+import { Suspense } from "react"; 
 
 
 
@@ -45,6 +45,7 @@ export default function RootLayout({
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
       <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet"/>
       </head>
+      <Suspense fallback={<div>Loading...</div>}>
       <body>
         <Banner/>
         <Nav/>
@@ -55,6 +56,7 @@ export default function RootLayout({
         <Footer/>
 
       </body>
+      </Suspense>
     </html>
   );
 }

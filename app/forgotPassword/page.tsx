@@ -4,7 +4,7 @@
 import { useRef } from "react"; 
 import { z } from "zod"; 
 import toast from "react-hot-toast";
-
+import { Suspense } from "react";
 
 
 
@@ -19,7 +19,7 @@ const emailSchema = z.object({
 
 
 
-export default function page() {
+function ResetPassword() {
 // Code pour récup l'email avec useRef (alternative au state) : -------- //
 const emailRef = useRef<HTMLInputElement>(null)
 
@@ -101,4 +101,12 @@ try {
         </div>
     </div>
   )
+}; 
+
+export default function pageWrape() {
+    return (
+        <Suspense>
+            <ResetPassword/>
+        </Suspense>
+    )
 }
