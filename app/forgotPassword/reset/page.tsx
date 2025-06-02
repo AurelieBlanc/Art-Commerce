@@ -21,7 +21,7 @@ interface formPassword {
 
 
 // Code pour le schéma du password: -------------------------------------------- //
-export const passwordSchema = z.object({
+const passwordSchema = z.object({
     password: z.string()
     .min(5, { message: "le mot de passe doit contenir au moins 5 caractères"}) 
     .regex(/[a-z]/, { message: "le mot de passe doit contenir au moins une lettre minuscule"})

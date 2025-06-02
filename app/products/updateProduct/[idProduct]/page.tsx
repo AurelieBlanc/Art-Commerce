@@ -25,7 +25,7 @@ interface Produit {
 
 
 //Code pour les schémas de validation de données Zod pour le form updateProduct : //
-export const productSchema = z.object({
+const productSchema = z.object({
   nom: z
   .string()
   .min(1, { message: "nom requis"})

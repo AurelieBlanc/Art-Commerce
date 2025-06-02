@@ -35,7 +35,7 @@ interface InfosAdmin {
 
 
 // code pour le schéma de validation ZOD pour le form UPDATE : ---------------------------------//
-export const updateSchema = z.object({
+const updateSchema = z.object({
     email: z.string().email({ message: "Email invalide"}),
   
     // password: z

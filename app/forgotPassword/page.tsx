@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 
 
 // Code pour valider le schema du mail : ---------------------------- //
-export const emailSchema = z.object({
+const emailSchema = z.object({
     email: z.string().email({ message: "Email invalide"}), 
 }); 
 

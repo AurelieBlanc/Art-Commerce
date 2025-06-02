@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 
 
 //Code pour les schémas de validation de données Zod pour le form createProduct : //
-export const productSchema = z.object({
+const productSchema = z.object({
     nom: z
     .string()
     .min(1, { message: "nom requis"})
