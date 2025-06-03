@@ -113,45 +113,85 @@ export default function page() {
 
 
 
-// Code pour calculer le montant des produits seuls à chaque fois que le state produitsCommande est modifié : //
-  useEffect(() => {
+// // Code pour calculer le montant des produits seuls à chaque fois que le state produitsCommande est modifié : //
+//   useEffect(() => {
 
-    let totalPrix = 0; 
-    produitsCommande.map((produit) => {
+//     let totalPrix = 0; 
+//     produitsCommande.map((produit) => {
+//       totalPrix = totalPrix + Number(produit.prix)
+//     })
+
+//     setTotalProduits(totalPrix)
+    
+//   }, [produitsCommande])
+
+
+
+
+
+// // Code pour calculer les frais de ports une fois que le state totalProduits est modifié : //
+//   useEffect(() => {
+    
+//     if(totalProduits < 150) {
+//       setPorts(20)
+//     } else if (totalProduits >= 150 && totalProduits < 300) {
+//       setPorts(10)
+//     } else {
+//       setPorts(0)
+//     }
+
+//   }, [totalProduits]); 
+
+
+
+
+// // Code pour calculer le montant total de la commande, une fois que le state ports est modifié : //
+//   useEffect(() => {
+
+//     setTotalCommande(totalProduits + ports); 
+
+//   }, [ports])
+
+
+
+
+
+
+// Code pour calculer le total Produits, puis les ports en fonction de cela, puis le total de la commande : //
+
+useEffect(() => {
+
+  let totalPrix = 0;
+
+  // Calcul des prix de tous les produits :
+  produitsCommande.map((produit) => {
       totalPrix = totalPrix + Number(produit.prix)
-    })
-
-    setTotalProduits(totalPrix)
-    
-  }, [produitsCommande])
+  }); 
 
 
-
-
-
-// Code pour calculer les frais de ports une fois que le state totalProduits est modifié : //
-  useEffect(() => {
-    
-    if(totalProduits < 150) {
-      setPorts(20)
+  // Calcul des frais de ports de la commande: 
+  let fdp = 0; 
+  if(totalPrix < 150) {
+      fdp = 20; 
     } else if (totalProduits >= 150 && totalProduits < 300) {
-      setPorts(10)
+      fdp = 10; 
     } else {
-      setPorts(0)
+      fdp = 0; 
     }
 
-  }, [totalProduits]); 
+  
+  // Calcul de la totalité de la commande: 
+  let totalCommande = totalPrix + fdp
 
 
+  // Mise à jour des states en fonction :
 
+  setTotalProduits(totalPrix);
+  setPorts(fdp); 
+  setTotalCommande(totalCommande); 
+  
 
-// Code pour calculer le montant total de la commande, une fois que le state ports est modifié : //
-  useEffect(() => {
-
-    setTotalCommande(totalProduits + ports); 
-
-  }, [ports])
-
+}, [produitsCommande])
 
 
 
