@@ -9,7 +9,7 @@ const prisma = new PrismaClient(); // on appelle une instance de Prisma
 
 // Code pour créer l'admin avec les différents champs à remplir : ----------------------------------------------------------------------------------------//
 async function createAdmin () {
-    const mdp = "Admin868!!"; 
+    const mdp = "Admin86!!"; 
     const saltRounds = 10; 
     const mdpHashed = await bcrypt.hash(mdp, saltRounds); 
     const mail = "aurelieblanc86@gmail.com"

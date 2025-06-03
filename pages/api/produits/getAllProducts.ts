@@ -37,5 +37,12 @@ export default async function getProducts(req:NextApiRequest, res:NextApiRespons
     } catch (error) {
         console.error("la récuperation de tous les produits a échoué", error)
         return res.status(500).json({ message: "Erreur interne du serveur"})
+
+
+
+        
+// Code pour déconnecter Prisma : ------------------------------------------ //
+    } finally {  
+        await prisma.$disconnect(); 
     }
 }
