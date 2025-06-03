@@ -18,6 +18,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 
 
+
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     if(req.method !== "POST") {
         return res.status(405).json({ message: "requête HTTP non autorisée"})
@@ -30,6 +31,13 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
      if(!email || !amount) {
             return res.status(400).json({ error: "Champs requis manquants"}); 
         }
+
+
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/+$/, "");
+
+const success_url = `${baseUrl}/success?idCommande=${idCommande}`;
+const cancel_url = `${baseUrl}/cancel`;
+
 
     try {
 // Code pour faire les vérifs de sécurité: authToken et csrfToken : //
@@ -105,9 +113,15 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
             ], 
             metadata : { idCommande: idCommande.toString() }, // on envoie à Stripe l'id de la commande en question
         // On renverra sur ces URL, en cas de succès ou d'échec :  --------- //
-            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?idCommande=${idCommande}`, 
-            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`
+            success_url, 
+            // `${process.env.NEXT_PUBLIC_APP_URL}/success?idCommande=${idCommande}`, 
+            cancel_url
+            // `${process.env.NEXT_PUBLIC_APP_URL}/cancel`
+
+            
         }); 
+
+        
 
         return res.status(200).json({id: session.id})
 
