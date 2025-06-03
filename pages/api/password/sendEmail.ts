@@ -85,7 +85,7 @@ export default async function handle(req:NextApiRequest, res:NextApiResponse) {
 
 
 // On créé le lien de reset qui amènera à la page de reset : ------------------ //
-        const resetURL = `http://localhost:3000/forgotPassword/reset?token=${resetToken}`; 
+        const resetURL = `https://art-commerce-ten.vercel.app/forgotPassword/reset?token=${resetToken}`; 
 
 
 
