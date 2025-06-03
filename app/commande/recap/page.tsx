@@ -119,8 +119,9 @@ export default function page() {
     let totalPrix = 0; 
     produitsCommande.map((produit) => {
       totalPrix = totalPrix + Number(produit.prix)
-      setTotalProduits(totalPrix)
     })
+
+    setTotalProduits(totalPrix)
     
   }, [produitsCommande])
 
