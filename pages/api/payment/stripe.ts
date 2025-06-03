@@ -113,7 +113,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
 
     } catch (error) {
-        console.error("erreur lors de la création d'une session de paiement pour Stripe"); 
+        console.error("erreur lors de la création d'une session de paiement pour Stripe", error); 
         return res.status(500).json({ messsage: "Erreur interne du serveur"})
     }
 
