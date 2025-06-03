@@ -33,12 +33,6 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         }
 
 
-        const baseUrl = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/+$/, "");
-
-const success_url = `${baseUrl}/success?idCommande=${idCommande}`;
-const cancel_url = `${baseUrl}/cancel`;
-
-
     try {
 // Code pour faire les vérifs de sécurité: authToken et csrfToken : //
         const cookies = cookie.parse(req.headers.cookie || ""); 
@@ -93,6 +87,12 @@ const cancel_url = `${baseUrl}/cancel`;
             throw new Error("il manque l'URL publique dans les variables d'environnement")
         }
 
+        const successUrl = `${process.env.NEXT_PUBLIC_APP_URL}/success?idCommande=${idCommande}`;
+const cancelUrl = `${process.env.NEXT_PUBLIC_APP_URL}/cancel`;
+
+console.log("✅ URL success Stripe :", successUrl);
+console.log("❌ URL cancel Stripe :", cancelUrl);
+
 
 // ...et si oui, alors on va créer une session de paiement Stripe : ------- //
         const session = await stripe.checkout.sessions.create({
@@ -113,9 +113,9 @@ const cancel_url = `${baseUrl}/cancel`;
             ], 
             metadata : { idCommande: idCommande.toString() }, // on envoie à Stripe l'id de la commande en question
         // On renverra sur ces URL, en cas de succès ou d'échec :  --------- //
-            success_url, 
+            success_url: successUrl, 
             // `${process.env.NEXT_PUBLIC_APP_URL}/success?idCommande=${idCommande}`, 
-            cancel_url
+            cancel_url: cancelUrl
             // `${process.env.NEXT_PUBLIC_APP_URL}/cancel`
 
             
