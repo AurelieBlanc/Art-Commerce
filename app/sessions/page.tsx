@@ -136,7 +136,7 @@ useEffect(() => {
        
         {loading && (
             <table
-                className="mt-4 mb-10 w-[900px]">
+                className="mt-4 mb-10 w-[900px] mx-auto">
                     <thead
                         className="">
                             <tr

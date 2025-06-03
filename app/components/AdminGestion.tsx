@@ -153,7 +153,7 @@ async function openInfosClient(id: number) {
             <div
                 className="overflow-x-auto w-[90%] mx-auto">
             <table
-                className="text-center mb-8 w-[800px]">
+                className="text-center mb-8 w-[800px] mx-auto">
                     <thead
                         className="">
                             <tr
