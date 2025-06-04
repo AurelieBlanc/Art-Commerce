@@ -38,10 +38,13 @@ export default function Page (){
                    
 
                     <p
-                        className="font-rubik text-center mb-6">
+                        className="font-rubik text-center mb-4 text-red-600 font-bold">
                         Tout a été réalisé de mon fait, les appels API, l'architecture, l'authentification / la sécurité, la BDD, le déploiement, etc.. avec le framework Next.JS. J'ai décidé, pour la sécurité (cookies onlyHTTP authToken, csrf, middlewares, schema de validation ZOD, etc etc) de ne pas la sous traiter par une bibliotheque externe type Next Auth: c'est un vrai choix personnel pour apprehender pleinement la logique du dev web et pouvoir switcher de langage facilement , si besoin est. 
-                        <br />
-                        Aussi, j'ai conscience que des choses sont largement améliorables dans mon code notamment la refactorisation, l'idée ici etant de faire un code très "scolaire" pour avoir un mode d'emploi, un manuel explicite pour mes nombreux futurs projets à venir, et pour montrer la logique et clarté (je l'espère) de mon code. Je ne mets pas de coté toutes les ameliorations que je peux apporter, sachant que je recherche toujours l'optimisation. 
+                    </p>
+
+                    <p
+                        className="font-rubik text-center mb-8">
+                        Aussi, j'ai conscience que des choses sont largement améliorables dans mon code notamment la refactorisation, l'idée ici etant de faire un code très "scolaire" pour avoir un mode d'emploi, un manuel explicite pour mes nombreux futurs projets à venir, et pour montrer la logique et la clarté (je l'espère) de mon code. Je ne mets pas de coté toutes les ameliorations que je peux apporter, sachant que je suis toujours en quête d'optimisation. 
                     </p>
 
                      <h2
@@ -50,12 +53,26 @@ export default function Page (){
                     </h2>
 
                     <p
-                        className="font-rubik text-center font-bold">
+                        className="font-rubik text-center mb-4">
                             
-                            Le projet étant certes, fictif, mais bien opérationnel ; ce site e-commerce , bien que simple, est fonctionnel et permet de vous présenter quelques unes de mes compétences. <br />Voici quelques quelques exemples de fonctionnalités développées : 
+                            Le projet étant certes, fictif, mais bien opérationnel ; ce site e-commerce , bien que simple, est fonctionnel et permet de vous présenter quelques unes de mes compétences. 
+                    </p>
+
+                    <p
+                        className="font-rubik text-center mb-10">
+                             Contexte : Il simule la vente d'oeuvres d'arts fictives avec tout le process d'un site de vente; mise au panier ou en favoris, validation du panier, demande de connexion, validation  de la commande, paiement, etc...  
+                    </p>
+
+                     <p
+                        className="font-rubik text-center font-bold text-red-700 text-xl">
+                            Voici quelques quelques exemples de fonctionnalités développées : 
+                    </p>
+
+                    
+                        
 
                             <ul
-                                className="text-left w-[70%] mx-auto mt-4">
+                                className="text-left w-[70%] mx-auto mt-4 font-bold  font-rubik">
 
                                 <li
                                     className="list-disc text-center mb-4">
@@ -79,19 +96,19 @@ export default function Page (){
                                         Possibilité de consulter et suivre ses commandes 
                                 </li>
                                 <li
-                                    className="list-disc text-center mb-4">
+                                    className="list-disc text-center mb-10">
                                         Nombreuses fonctionnalités pour l'admin : créer, modifier ou supprimer un produit ; supprimer les sessions des clients pour un meilleur controle sécurité, rendre des produits inactifs, possibilité de modifier des commandes etc ...
                                 </li>
                             </ul>  
-                    </p>
+                    
 
                     <p
-                        className="font-rubik text-center mb-6 pt-2 font-bold text-red-700 text-xl">
-                        Le mieux est de tester par vous-même : soit en vous créant un compte , soit en me demandant des identifiants tests pour une connexion rapide.    
+                        className="font-rubik text-center mb-10 pt-2 font-bold text-red-700 text-xl">
+                        Le mieux étant de tester par vous-même : soit en vous créant un compte , soit en me demandant des identifiants tests pour une connexion rapide.    
                     </p>
 
                     <h2
-                        className="font-boogaloo text-3xl mt-8 text-center"> 
+                        className="font-boogaloo text-3xl mt-8 text-center mb-2"> 
                         Simulation de paiements :
                     </h2>
 
