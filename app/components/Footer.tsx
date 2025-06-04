@@ -20,7 +20,7 @@ export default function Footer() {
                       href="/qui-sommes-nous">
                       <li
                       className="">
-                        Qui Sommes-nous ?
+                        Qui Sommes-nous ? (+ fonctionnement de ce site)
                       </li>
                     </Link>
 
