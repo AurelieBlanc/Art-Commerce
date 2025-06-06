@@ -36,7 +36,7 @@ export default function Page (){
                             pour vous servir ; je vous invite à découvrir mon portfolio et mes projets ici: 
                                 <Link
                                     className="underline ml-2 mr-2"
-                                    href="/https://portfolio-miss-white-dev-web.vercel.app/">
+                                    href="https://portfolio-miss-white-dev-web.vercel.app/">
                                     <GiSecretBook 
                                         className="inline-block text-3xl"/>
                                 </Link>
